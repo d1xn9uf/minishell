@@ -1,6 +1,6 @@
 #include "../../inc/builtins.h"
 
-t_status	minishell_cd(char **argv, t_env *l_env)
+t_status	minishell_cd(char **argv, t_env *l_env) // add cd with no options ~
 {
 	if (argv && l_env)
 	{

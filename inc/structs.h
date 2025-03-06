@@ -11,6 +11,7 @@ enum e_char_cmdsep
 	CHAR_AMPERSNAD		= 38,
 	CHAR_PAREN_OPEN		= 40,
 	CHAR_PAREN_CLOSE	= 41,
+	CHAR_ASTERISK		= 42,
 	CHAR_DASH			= 45,
 	CHAR_GT				= 62,
 	CHAR_LT				= 60,
@@ -20,10 +21,7 @@ enum e_char_cmdsep
 typedef enum e_token_type
 {
     TTOKEN_COMMAND,
-    TTOKEN_OPTION,
     TTOKEN_ARGUMENT,
-    TTOKEN_STRING,
-    TTOKEN_VARIABLE,
     TTOKEN_PIPE,
     TTOKEN_AND_OP,
     TTOKEN_OR_OP,
@@ -50,7 +48,8 @@ typedef enum e_status
 	STATUS_SYNTAXERR		= 0x000006,
 	STATUS_MALLOCERR		= 0x000007,
 	STATUS_EMPTYCMD			= 0x000008,
-	STATUS_ENVFAILED		= 0x000009
+	STATUS_ENVFAILED		= 0x000009,
+	STATUS_CMDFAILED		= 0x000010
 }	t_status;
 
 typedef struct s_env
@@ -60,14 +59,21 @@ typedef struct s_env
 	struct s_env	*next_key;
 }	t_env;
 
+// heredoce handler
+typedef struct s_hd
+{
+	bool	is_hd;
+	int32_t	fd;
+}	t_hd;
+
 typedef struct s_token
 {
 	t_token_type	ttype;
 	uint32_t		tid;
 	char			*tvalue;
 	struct s_token	*next_token;
-
 	uint32_t		priority;
+	t_hd			hd;		// do u use it yet?
 	struct s_token	*right;
 	struct s_token	*left;
 }	t_token;
@@ -111,8 +117,22 @@ typedef struct s_minishell
 	t_env	*env;
 	t_lexer	*lexer;
 	t_root	*root;
+	int32_t	stdfd[2];
 	int32_t	exit_code;
 	
 }	t_minishell;
+
+typedef struct s_ast
+{
+	bool	before;
+	bool	after;
+}	t_ast;
+
+typedef struct s_fixe
+{
+	char		**fixes;
+	t_ast		*flags;
+	uint32_t	count;
+}	t_fixe;
 
 #endif

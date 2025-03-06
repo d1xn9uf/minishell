@@ -25,7 +25,7 @@ static char **getargs_init(t_root *root, uint32_t *argc)
 	if (root)
 	{
 		*argc = getargs_argc(root);
-		argv = (char **)malloc(sizeof(char *) * (*argc + 1));
+		argv = (char **)minishell_calloc(1, sizeof(char *) * (*argc + 1));
 		if (!argv)
 			return (NULL);
 		return (argv);

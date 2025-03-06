@@ -1,6 +1,6 @@
 #include "../../inc/builtins.h"
 
-t_status	minishell_pwd(char **argv, t_env *l_env)
+t_status	minishell_pwd(char **argv, t_env *l_env) // fix and check bash behavior biman kolani
 {
 	char	*cwd;
 

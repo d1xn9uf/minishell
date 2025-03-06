@@ -6,8 +6,8 @@ void    reset_token(t_root *root)
     {
         reset_token(root->left);
         reset_token(root->right);
-        if (root->tvalue)
-            free(root->tvalue);
+        //if (root->tvalue)
+         //   free(root->tvalue);
         free(root);
     }
 }

@@ -9,14 +9,12 @@ t_status	minishell_parser(t_minishell *minishell)
 {
 	t_token		*head;
 	uint32_t	size;
-	t_status	status;
 
 	head = minishell->lexer->token;
 	size = minishell->lexer->sztoken;
 	fill_tokens(head, size);
 	minishell->root = parse_tree(head, 0, size);
-	if ((status = minishell_translate(minishell->root, minishell->env)))
-		return (status);
+	minishell_translate(minishell->root, minishell->env); // remove
 	return (STATUS_SUCCESS);
 }
 
@@ -81,18 +79,8 @@ static t_token	*parse_tree(t_token	*head, uint32_t start, uint32_t end)
 
 	if (end <= start)
 		return (NULL);
-<<<<<<< HEAD
-	prior = 0;
-	token_p = head;
-	while (prior < start)
-	{
-		prior += 1;
-		token_p = token_p->next_token;
-	}
-=======
 	prior = start;
 	token_p = head;
->>>>>>> b1ac43f (saving)
 	i = prior + 1;
 	token_i = token_p->next_token;
 	while (i < end)
@@ -106,6 +94,6 @@ static t_token	*parse_tree(t_token	*head, uint32_t start, uint32_t end)
 		token_i = token_i->next_token;
 	}
 	token_p->left = parse_tree(head, start, prior);
-	token_p->right = parse_tree(token_p->next, prior + 1, end);
+	token_p->right = parse_tree(token_p->next_token, prior + 1, end);
 	return (token_p);
 }

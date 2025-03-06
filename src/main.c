@@ -9,13 +9,15 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 {
 	if (minishell)
 	{
-		*minishell = (t_minishell *)malloc(sizeof(t_minishell));
+		*minishell = (t_minishell *)minishell_calloc(1, sizeof(t_minishell));
 		if (!minishell)
 			return (STATUS_MALLOCERR);
 		(*minishell)->prompt = PROMPT;
 		(*minishell)->env = minishell_getenv(env);
 		if (!(*minishell)->env)
 			return (STATUS_ENVFAILED);
+		(*minishell)->stdfd[0] = dup(STDIN_FILENO);
+		(*minishell)->stdfd[1] = dup(STDOUT_FILENO);
 		return (STATUS_SUCCESS);
 	}
 	return (STATUS_MSINITERROR);

@@ -44,11 +44,8 @@ char		*minishell_getvalue(t_env *env, char *key);
 
 char		*minishell_getpath(t_env *env, char *cmd);
 
-<<<<<<< HEAD
 // REDIRECTION UTILS 
 bool		minishell_isred(t_root *node);
-=======
-t_status	minishell_asterisk(t_token *token);
->>>>>>> b1ac43f (saving)
+char		*minishell_generate_filename();
 
 #endif

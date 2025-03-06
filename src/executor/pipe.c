@@ -1,30 +1,89 @@
 #include "../../inc/executor.h"
 
-static void pipeit_child(t_root *node, int32_t input_fd,
-	int32_t output_fd, int32_t *exit_code)
+static void exec_redirect_if_needed(t_minishell *minishell, t_root *node,
+                                    int32_t input_fd, int32_t output_fd)
 {
-    char **argv;
+    t_root *rnode = NULL;
+    
+    if (minishell_isred(node) || minishell_isred(node->left))
+	{
+		if (minishell_isred(node))
+			rnode = node;
+		else
+			rnode = node->left;
+        exec_redirect(minishell, rnode, input_fd, output_fd);
+        exit(minishell->exit_code);
+    }
+}
 
-    if (minishell_isred(node->left))
-        exec_redirect(node->left, input_fd, output_fd, exit_code);
-    if (input_fd != 0)
-    {
-        dup2(input_fd, STDIN_FILENO);
+static void setup_input_output(t_root *node, int32_t input_fd, int32_t output_fd)
+{
+    if (input_fd != 0 || node->hd.is_hd)
+	{
+		if (node->hd.is_hd && dup2(node->hd.fd, STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+        else if (dup2(input_fd, STDIN_FILENO) == -1)
+		{
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         close(input_fd);
     }
-    if (node->ttype == TTOKEN_PIPE)
-    {
-        dup2(output_fd, STDOUT_FILENO);
+    if (output_fd != STDOUT_FILENO)
+	{
+        if (dup2(output_fd, STDOUT_FILENO) == -1)
+		{
+            perror("dup2");
+            exit(EXIT_FAILURE);
+        }
         close(output_fd);
-        argv = executor_getargs(node->left);
     }
+}
+
+static void pipeit_child(t_minishell *minishell, t_root *node,
+				int32_t input_fd, int32_t output_fd)
+{
+    char	**argv;
+	t_root	*cmd_node;
+
+	exec_redirect_if_needed(minishell, node, input_fd, output_fd);
+	if (node->ttype == TTOKEN_COMMAND)
+		cmd_node = node;
+	else
+		cmd_node = node->left;
+	setup_input_output(cmd_node, input_fd, output_fd);
+	if (node->ttype == TTOKEN_PIPE)
+        argv = executor_getargs(node->left);
     else
         argv = executor_getargs(node);
-    execve(argv[0], argv, NULL);
+	if (minishell_isbuiltin(argv[0]))
+		exec_builtin(minishell, argv);
+	else
+		execve(argv[0], argv, NULL);
     exit(EXIT_FAILURE);
 }
 
-static void	pipeit(t_root *node, int32_t input_fd, int32_t *exit_code)
+static void handle_parent(t_minishell *minishell, t_root *node,
+				int32_t input_fd, int32_t pipe_fd[2], pid_t pid)
+{
+    int32_t status;
+
+    if (input_fd != 0)
+        close(input_fd);
+    if (node->ttype == TTOKEN_PIPE)
+        close(pipe_fd[PIPE_WRITE_END]);
+    if (node->ttype == TTOKEN_PIPE)
+        pipeit(minishell, node->right, pipe_fd[PIPE_READ_END]);
+    
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+        minishell->exit_code = WEXITSTATUS(status);
+}
+
+void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 {
 	int32_t pipe_fd[2];
 	pid_t	pid;
@@ -32,31 +91,19 @@ static void	pipeit(t_root *node, int32_t input_fd, int32_t *exit_code)
 
 	if (node == NULL)
 		return ;
-	if (node->ttype == TTOKEN_PIPE)
-		pipe(pipe_fd);
+	if (node->ttype == TTOKEN_PIPE && pipe(pipe_fd) == -1) 
+	{
+        perror("pipe");
+        exit(EXIT_FAILURE); // TODO exit cleanly
+    }
 	pid = fork();
 	if (pid == CHILD_PROCESS)
-		pipeit_child(node, input_fd, pipe_fd[PIPE_WRITE_END], exit_code);
+	{
+        if (node->ttype == TTOKEN_PIPE)
+            pipeit_child(minishell, node, input_fd, pipe_fd[PIPE_WRITE_END]);
+        else
+        	pipeit_child(minishell, node, input_fd, minishell->stdfd[1]);
+    }	
 	else if (pid > 0)
-	{
-		if (input_fd != 0)
-			close(input_fd); // Close the old input
-		if (node->ttype == TTOKEN_PIPE)
-			close(pipe_fd[PIPE_WRITE_END]); // Close the write end of the pipe
-		if (node->ttype == TTOKEN_PIPE)
-			pipeit(node->right, pipe_fd[PIPE_READ_END], exit_code);
-		else
-			pipeit(node->right, input_fd, exit_code);
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(*exit_code) && WEXITSTATUS(status) != 0)
-			*exit_code = WEXITSTATUS(status);
-    }
-}
-
-void	exec_pipe(t_root *root, int32_t *exit_code)
-{
-	if (root)
-	{
-		pipeit(root, 0, exit_code);
-	}
+		handle_parent(minishell, node, input_fd, pipe_fd, pid);
 }

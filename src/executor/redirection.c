@@ -14,11 +14,15 @@ static void redirect_output(t_root *node, int32_t output_fd)
     {
         fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd == -1)
-        {	
+        {
             perror("Error opening file");
-            exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
         }
-        dup2(fd, output_fd);
+        if (dup2(fd, output_fd) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
         close(fd);
     }
 }
@@ -41,7 +45,11 @@ static void redirect_append(t_root *node, int32_t output_fd)
             perror("Error opening file");
             exit(EXIT_FAILURE);
         }
-        dup2(fd, output_fd);
+        if (dup2(fd, output_fd) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
         close(fd);
     }
 }
@@ -64,48 +72,31 @@ static void redirect_input(t_root *node, int32_t input_fd)
             perror("Error opening file");
             exit(EXIT_FAILURE);
         }
-        dup2(fd, input_fd);
+        if (dup2(fd, input_fd) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
         close(fd);
     }
 }
 
-static void redirect_heredoc(t_root *node)
+static void	redirect_hdoc(t_root *cmd_node, int32_t input_fd)
 {
-    int32_t	pipe_fd[2];
-    pid_t	pid;
-    
-    pipe(pipe_fd);
-    pid = fork();
-    if (pid == 0)
-    {
-        close(pipe_fd[0]);
-        // Write the here document input to the pipe
-        write(pipe_fd[1], node->right->tvalue, strlen(node->right->tvalue));
-        close(pipe_fd[1]);
-        dup2(pipe_fd[0], STDIN_FILENO);
-        close(pipe_fd[0]);
-        
-        // Execute the command with redirected input
-        execve(node->left->tvalue, executor_getargs(node->left), NULL);
-        exit(EXIT_FAILURE);
-    }
-    else if (pid > 0)
-    {
-        close(pipe_fd[0]);
-        close(pipe_fd[1]);
-        wait(NULL);
-    }
+	if (cmd_node && cmd_node->hd.is_hd)
+	{
+		if (dup2(cmd_node->hd.fd, input_fd) == -1)
+		{
+			perror("redirect_hdoc : dup2");
+			exit(EXIT_FAILURE);
+		}
+		//close(cmd_node->hd.fd);
+	}
 }
 
-void		exec_redirect(t_root *node, int32_t input_fd,
-				int32_t output_fd, int32_t *exit_code)
+static void	handle_ioa(t_root *node, t_root *cmd_node,
+				int32_t input_fd, int32_t output_fd)
 {
-	t_root	*cmd_node;
-	int32_t	bkpfd[2];
-
-	bkpfd[0] = dup(input_fd);
-	bkpfd[1] = dup(output_fd);
-	cmd_node = node->left;
 	while (minishell_isred(node))
 	{
 		if (node->ttype == TTOKEN_OUTPUT)
@@ -115,12 +106,24 @@ void		exec_redirect(t_root *node, int32_t input_fd,
 		else if (node->ttype == TTOKEN_INPUT)
 			redirect_input(node, input_fd);
 		else if (node->ttype == TTOKEN_HEREDOC)
-			redirect_heredoc(node);
+			redirect_hdoc(cmd_node, input_fd);
 		node = node->right;
 		while (node && (!minishell_isred(node)))
 			node = node->right;
 	}
-	exec_cmd(cmd_node, output_fd, exit_code);
-	dup2(bkpfd[1], output_fd);
+}
+
+void		exec_redirect(t_minishell *minishell, t_root *node,
+				int32_t input_fd, int32_t output_fd)
+{
+	t_root	*cmd_node;
+	int32_t	bkpfd[2];
+
+	bkpfd[0] = dup(input_fd);
+	bkpfd[1] = dup(output_fd);
+	cmd_node = node->left;
+	handle_ioa(node, cmd_node, input_fd, output_fd);
+	exec_cmd(minishell, cmd_node, input_fd, output_fd);
 	dup2(bkpfd[0], input_fd);
+	dup2(bkpfd[1], output_fd);
 }

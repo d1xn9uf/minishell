@@ -4,7 +4,7 @@ static t_status	export(char *arg, t_env *l_env);
 static t_status	modify_node(t_env *node, char *value);
 static t_status	add_node(t_env *l_env, char *key, char *value);
 
-t_status	minishell_export(char **argv, t_env *l_env)
+t_status	minishell_export(char **argv, t_env *l_env) // asterisk expands a jemmi
 {
 	int	i;
 

@@ -46,8 +46,8 @@ static char	*fetch(char *PATH, char *cmd)
 			break ;
 		i += 1;
 	}
-	return (minishell_free_arr(split), path); //this path (if not null) is malloced and needs to be freed !!
-}												// solution would be to statically allocated path !!
+	return (minishell_free_arr(split), path);
+}
 
 static char	*fetch_dir(char *cmd, char *dir)
 {

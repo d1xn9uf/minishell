@@ -3,19 +3,6 @@
 
 # include "minishell.h"
 
-// typedef enum e_node_type
-// {
-// 	TNODE_COMMAND,
-// 	TNODE_ARG,
-// 	TNODE_PIPE,
-// 	TNODE_AND,
-// 	TNODE_OR,
-// 	TNODE_IRED,
-// 	TNODE_ORED,
-// 	TNODE_IRED_OVER,
-// 	TNODE_ORED_OVER
-// }	t_node_type;
-
 typedef enum e_default_priority
 {
 	PRIORITY_CRITICAL = 1,
@@ -25,8 +12,28 @@ typedef enum e_default_priority
 	PRIORITY_REMOVE
 }	t_default_priority;
 
+typedef struct s_chunk
+{
+	char			*content;
+	struct s_chunk	*next;
+}	t_chunk;
+
+// to be called before execution
 t_status	minishell_parser(t_minishell *minishell);
+
+// to be called during execution
 t_status	minishell_translate(t_token *root, t_env *env);
-char     	*remove_quotes(char *s);
+
+// helper functions
+t_status	minishell_interpret(t_token *token, t_env *env);
+
+t_chunk		*minishell_chunker(char *value, t_env *env);
+void		free_chunks(t_chunk *chunks);
+
+char		*minishell_expand(char *content, t_env *env);
+
+t_status	minishell_asterisk(t_token *token, bool *asterisk); // TODO
+t_fixe		*split_pattern(char *pattern);
+bool		matches_pattern(t_fixe *fixe, char *s);
 
 #endif

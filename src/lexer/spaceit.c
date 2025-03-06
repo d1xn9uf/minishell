@@ -6,7 +6,7 @@ static t_status	cmd_spaced_len(char *cmdline, uint64_t *sz)
 	{
 		if (minishell_iscmdsep(*cmdline))
 		{
-			if (!minishell_iscmdsep(*(cmdline - 1)))
+			if (!minishell_iscmdsep(*(cmdline - 1))) //  fix this -1 shit
 				(*sz)++;
 			else if (*cmdline != *(cmdline - 1))
 				(*sz)++;
@@ -69,7 +69,7 @@ static t_status	init_spaced(t_lexer *lexer)
 	cmd_spaced_len(lexer->cmdline, &lexer->spaced.sz);
 	if (lexer->spaced.sz == 0)
 		return (STATUS_EMPTYCMD);
-	lexer->spaced.spaced_cmdline = (char *)malloc(lexer->spaced.sz + 1);
+	lexer->spaced.spaced_cmdline = (char *)minishell_calloc(1, lexer->spaced.sz + 1);
 	if (!lexer->spaced.spaced_cmdline)
 		return (STATUS_MALLOCERR);
 	return (STATUS_SUCCESS);
