@@ -1,15 +1,15 @@
 #include "../../inc/tools.h"
 
-static char	*fetch(char *PATH, char *cmd);
-static char	*fetch_dir(char *cmd, char *dir);
+static char	*fetch(char *PATH, char *cmd, t_status *status);
+static char	*fetch_dir(char *cmd, char *dir, t_status *status);
 
-char	*minishell_getpath(t_env *env, char *cmd)
+char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 {
 	char	*PATH;
 	t_env	*node;
 
 	if (!env || !cmd)
-		return (NULL); // empty environment !
+		return (*status = STATUS_CMDNOTFOUND, NULL); // empty environment !
 	if (*cmd == '/' || *cmd == '.')
 		return (minishell_strdup(cmd));
 	PATH = NULL;
@@ -24,24 +24,26 @@ char	*minishell_getpath(t_env *env, char *cmd)
 		node = node->next_key;
 	}
 	if (!PATH)
-		return (NULL); // no PATH in environment
-	return (fetch(PATH, cmd));
+		return (*status = STATUS_PATHNOTFOUND, NULL); // no PATH in environment
+	return (fetch(PATH, cmd, status));
 }
 
-static char	*fetch(char *PATH, char *cmd)
+static char	*fetch(char *PATH, char *cmd, t_status *status)
 {
 	char	**split;
 	int		i;
 	char	*path;
 
-	split = minishell_split(PATH, ':');
+	split = minishell_split(PATH, ':', NULL);
 	if (!split)
-		return (NULL);
+		return (*status = STATUS_MALLOCERR, NULL);
 	i = 0;
 	path = NULL;
 	while (split[i])
 	{
-		path = fetch_dir(cmd, split[i]);
+		path = fetch_dir(cmd, split[i], status);
+		if (*status)
+			return (minishell_free_arr(split), NULL);
 		if (path)
 			break ;
 		i += 1;
@@ -49,7 +51,7 @@ static char	*fetch(char *PATH, char *cmd)
 	return (minishell_free_arr(split), path);
 }
 
-static char	*fetch_dir(char *cmd, char *dir)
+static char	*fetch_dir(char *cmd, char *dir, t_status *status)
 {
 	DIR				*dirp;
 	struct dirent	*entry;
@@ -67,10 +69,10 @@ static char	*fetch_dir(char *cmd, char *dir)
 		{
 			join = minishell_strjoin(dir, "/");
 			if (!join)
-				return (closedir(dirp), NULL);
+				return (*status = STATUS_MALLOCERR, closedir(dirp), NULL);
 			path = minishell_strjoin(join, cmd);
 			if (!path)
-				return (closedir(dirp), free(join), NULL);
+				return (*status = STATUS_MALLOCERR, closedir(dirp), free(join), NULL);
 			free(join);
 		}
 		entry = readdir(dirp);

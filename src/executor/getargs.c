@@ -7,8 +7,7 @@ static uint32_t getargs_argc(t_root *root)
 	sz = 0;
 	if (root)
 	{
-		while (root && root->ttype != TTOKEN_PARENTHESE_CLOSE
-		&& root->ttype != TTOKEN_PARENTHESE_OPEN)
+		while (root)
 		{
 			sz++;
 			root = root->right;
@@ -33,14 +32,20 @@ static char **getargs_init(t_root *root, uint32_t *argc)
 	return (NULL);
 }
 
-char	**executor_getargs(t_root *root)
+char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 {
 	char		**argv;
 	uint32_t	argc;
 	uint32_t	count;
 
 	count = 0;
-	argv = NULL;
+	*status = minishell_translate(root, ms->env, minishell_i32tostr(ms->exit_code));
+	if (*status)
+	{
+		if (*status != STATUS_MALLOCERR)
+			ms->exit_code = 127;
+		return (NULL);
+	}
 	argv = getargs_init(root, &argc);
 	if (!argv || !argc)
 		return (NULL);
@@ -49,8 +54,7 @@ char	**executor_getargs(t_root *root)
 		argv[count++] = root->tvalue;
 		root = root->right;
 	}
-	while (root && root->ttype != TTOKEN_PARENTHESE_CLOSE
-		&& root->ttype != TTOKEN_PARENTHESE_OPEN)
+	while (root)
 	{
 		argv[count++] = root->tvalue;
 		root = root->right;

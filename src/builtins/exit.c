@@ -2,6 +2,6 @@
 
 t_status	minishell_exit(t_minishell *minishell)
 {
-	minishell_reset(&minishell);
-	exit(STATUS_SUCCESS);
+	minishell_cleanup(minishell, STATUS_SUCCESS);
+	return (STATUS_SUCCESS);
 }

@@ -49,7 +49,7 @@ t_status	lexer_lex(t_lexer *lexer)
 {
 	t_status	status;
 
-	status = lex_lex(lexer, lexer->spaced_arr.spaced_cmdline_arr);
+	status = lex_lex(lexer, lexer->splited_cmdline);
 	if (status)
 		return (status);
 	return (STATUS_SUCCESS);

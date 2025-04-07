@@ -1,22 +1,31 @@
 #include "../../inc/builtins.h"
 
-static t_status	export(char *arg, t_env *l_env);
+// do not forget the shell level variable
+
+static t_status	extract_pair(t_env *pair, char *s);
 static t_status	modify_node(t_env *node, char *value);
 static t_status	add_node(t_env *l_env, char *key, char *value);
 
 t_status	minishell_export(char **argv, t_env *l_env) // asterisk expands a jemmi
 {
-	int	i;
+	int			i;
+	t_env		pair;
+	t_status	status;
 
 	if (argv && l_env)
 	{
-		if (!argv[1])
-			return (STATUS_FAILURE);
+		if (!argv[1]) // fix behavior
+			return (default_export(l_env)); // TODO
 		i = 1;
 		while (argv[i])
 		{
-			if (minishell_strchr(argv[i], '=') && export(argv[i], l_env))
-				return (STATUS_MALLOCERR);
+			if (minishell_strchr(argv[i], '='))
+			{
+				if ((status = extract_pair(&pair, argv[i])))
+					return (status);
+				if ((status = export(pair.key, pair.value, l_env)))
+					return (status);
+			}
 			i += 1;
 		}
 		return (STATUS_SUCCESS);
@@ -24,23 +33,30 @@ t_status	minishell_export(char **argv, t_env *l_env) // asterisk expands a jemmi
 	return (STATUS_FAILURE);
 }
 
-static t_status	export(char *arg, t_env *l_env)
+static t_status	extract_pair(t_env *pair, char *s)
 {
-	int		equal_i;
-	char	*key;
-	char	*value;
-	t_env	*node;
+	uint32_t	equal_i;
 
 	equal_i = 0;
-	while (arg[equal_i] != '=')
+	while (s[equal_i] != '=')
 		equal_i += 1;
-	value = minishell_strdup(arg + equal_i + 1);
-	if (!value)
+	pair->value = minishell_strdup(s + equal_i + 1);
+	if (!pair->value)
 		return (STATUS_MALLOCERR);
-	arg[equal_i] = 0;
-	key = minishell_strdup(arg);
-	if (!key)
-		return (free(value), STATUS_MALLOCERR);
+	s[equal_i] = 0;
+	pair->key = minishell_strdup(s);
+	s[equal_i] = '=';
+	if (!pair->key)
+		return (free(pair->value), STATUS_MALLOCERR);
+	return (STATUS_SUCCESS);
+}
+
+t_status	export(char *key, char *value, t_env *l_env)
+{
+	t_env	*node;
+
+	if (!key || !value) // might occure when strdup is called in cd in update_wd
+		return (minishell_free((void **)&key), minishell_free((void **)&value), STATUS_MALLOCERR);
 	node = l_env;
 	while (node)
 	{

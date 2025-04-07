@@ -1,94 +1,121 @@
 #include "../../inc/parser.h"
 
-// static t_status	add_token(t_token **list, char *s);
-// static void		pre_link(t_token *list, t_token *token);
-// static void		free_add_list(t_token *list);
-// static void		free_fixe(t_fixe *fixes);
+typedef struct s_match
+{
+	char			*name;
+	struct s_match	*next;
+}	t_match;
 
-// t_status	minishell_asterisk(t_token *token, bool *asterisk) // check if u need to interpret * inside quotes eagle eye baby
-// {
-// 	DIR				*dirp;
-// 	t_token			*tokens_add;
-// 	struct dirent	*entry;
-// 	t_fixe			*fixe;
-
-// 	dirp = opendir(".");
-// 	if (!dirp)
-// 		return (STATUS_FAILURE); // custom status pls? :<)
-// 	tokens_add = NULL;
-// 	entry = readdir(dirp);
-// 	while (entry)
-// 	{
-// 		fixe = split_pattern(token->tvalue);
-// 		if (!fixe)
-// 			return (closedir(dirp), STATUS_MALLOCERR);
-// 		if (matches_pattern(fixe, entry->d_name))
-// 		{
-// 			if (add_token(&tokens_add, entry->d_name))
-// 				return (free_fixe(fixe), closedir(dirp), STATUS_MALLOCERR);
-// 		}
-// 		entry = readdir(dirp);
-// 	}
-// 	pre_link(tokens_add, token);
-// 	return (free_fixe(fixe), closedir(dirp), STATUS_SUCCESS);
-// }
-
-// static void	pre_link(t_token *list, t_token *token)
-// {
-// 	t_token	*next;
-
-// 	next = token->right;
-// 	token->right = list;
-// 	while (list->right)
-// 		list = list->right;
-// 	list->right = next;
-// }
-
-// static t_status	add_token(t_token **list, char *s)
-// {
-// 	t_token	*token;
-// 	t_token	*last;
-
-// 	token = (t_token *)malloc(sizeof(t_token));
-// 	if (!token)
-// 		return (free_add_list(*list), STATUS_MALLOCERR);
-// 	token->tvalue = minishell_strdup(s); // s is not in heap, read documentation
-// 	if (!token->tvalue)
-// 		return (free(token), free_add_list(*list), STATUS_MALLOCERR);
-// 	token->ttype = TTOKEN_ARGUMENT;
-// 	token->right = NULL;
-// 	token->left = NULL;
-// 	if (!*list)
-// 		return (*list = token, STATUS_SUCCESS);
-// 	last = *list;
-// 	while (last->right)
-// 		last = last->right;
-// 	last->right = token;
-// 	return (STATUS_SUCCESS);
-// }
-
-// static void		free_add_list(t_token *list)
-// {
-// 	t_token	*next;
-
-// 	while (list)
-// 	{
-// 		next = list->right;
-// 		free(list);
-// 		list = next;
-// 	}
-// }
-
-// static void		free_fixe(t_fixe *fixe)
-// {
-// 	minishell_free_arr(fixe->fixes);
-// 	free(fixe->flags);
-// 	free(fixe);
-// }
+static t_status	add_name(t_match **names, char *s);
+static void		free_mem(t_match *names, t_fixe *fixe);
+static t_status	add_to_tree(t_token *token, t_match *names);
 
 t_status	minishell_asterisk(t_token *token, bool *asterisk)
 {
-	if (token && asterisk)
-		return (STATUS_SUCCESS);
+	t_match			*names;
+	t_fixe			*fixe;
+	DIR				*dirp;
+	struct dirent	*entry;
+
+	names = NULL;
+	fixe = minishell_analyse(token->tvalue, asterisk);
+	if (!fixe)
+		return (STATUS_MALLOCERR);
+	dirp = opendir(".");
+	if (!dirp)
+		return (free_mem(NULL, fixe), STATUS_FAILURE); // custom status pls? :<)
+	entry = readdir(dirp);
+	while (entry)
+	{
+		if (entry->d_name[0] != '.' && minishell_matcher(fixe, entry->d_name))
+		{
+			if (add_name(&names, entry->d_name))
+				return (free_mem(names, fixe) , closedir(dirp), STATUS_MALLOCERR);
+		}
+		entry = readdir(dirp);
+	}
+	return (free_mem(NULL, fixe), closedir(dirp), add_to_tree(token, names));
+}
+
+static t_status	add_name(t_match **names, char *s)
+{
+	t_match	*match;
+	t_match	*last;
+
+	match = (t_match *)malloc(sizeof(t_match));
+	if (!match)
+		return (STATUS_MALLOCERR);
+	match->name = minishell_strdup(s); // s is not in heap, read documentation
+	if (!match->name)
+		return (free(match), STATUS_MALLOCERR);
+	match->next = NULL;
+	if (!*names)
+		return (*names = match, STATUS_SUCCESS);
+	last = *names;
+	while (last->next)
+		last = last->next;
+	last->next = match;
 	return (STATUS_SUCCESS);
+}
+
+static void		free_mem(t_match *names, t_fixe *fixe)
+{
+	t_match	*next;
+
+	while (names)
+	{
+		next = names->next;
+		free(names->name);
+		free(names);
+		names = next;
+	}
+	if (fixe)
+	{
+		minishell_free_arr(fixe->fixes);
+		free(fixe->flags);
+		free(fixe);
+	}
+}
+
+static t_status	add_to_tree(t_token *token, t_match *names) // gad had lkhra - m0hc33n
+{
+		t_token *rright;
+		bool first;
+		char *rep;
+		t_match	*saver;
+		t_token *cur;
+		
+		rright = token->right;
+		first = true;
+		cur = token;
+		saver = names;
+		while (names)
+		{
+			//fprintf(stderr, "[%p]\n", names->name);
+			rep = minishell_strdup(names->name);
+			if (!rep)
+				return (free_mem(names, NULL), STATUS_MALLOCERR);
+			if (first)
+			{
+				free(cur->tvalue);
+				first = false;
+			}
+			cur->tvalue = rep;
+			cur->ttype = TTOKEN_ARGUMENT;
+			names = names->next;
+			if (names)
+			{
+				cur->right = (t_token *)malloc(sizeof(t_token));
+				if (!cur->right)
+				{
+					cur->right = rright;
+					return (free_mem(names, NULL), STATUS_MALLOCERR);
+				}
+				cur = cur->right;
+				cur->left = NULL;
+			}
+			else
+				cur->right = rright;
+		}
+		return (free_mem(saver, NULL), STATUS_SUCCESS);
 }

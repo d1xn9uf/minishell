@@ -21,3 +21,13 @@ void	*minishell_calloc(size_t count, size_t size)
 	minishell_memset(ptr, 0, count * size);
 	return (ptr);
 }
+
+bool	minishell_free(void **p)
+{
+	if (*p)
+	{
+		free(*p);
+		*p = NULL;
+	}
+	return (true);
+}

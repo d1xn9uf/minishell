@@ -8,8 +8,10 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <wait.h>
 # include <sys/types.h>
+# include <signal.h>
 # include <dirent.h>
 # include "structs.h"
 # include "lexer.h"
@@ -23,5 +25,8 @@
 
 // INIT
 t_status	minishell_init(t_minishell **minishell, char **env);
+
+// SIGNALS
+t_status	siginit_init(int32_t signum, void (*sighandler)(int32_t));
 
 #endif

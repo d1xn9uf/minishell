@@ -32,9 +32,9 @@ t_status	exec_builtin(t_minishell *minishell, char **argv)
 	else if (minishell_strequal(argv[0], ENV))
 		status = minishell_env(argv, minishell->env);
 	else if (minishell_strequal(argv[0], PWD))
-		status = minishell_pwd(argv, minishell->env);
+		status = minishell_pwd(minishell, argv, minishell->env);
 	else if (minishell_strequal(argv[0], CD))
-		status = minishell_cd(argv, minishell->env);
+		status = minishell_cd(minishell, argv, minishell->env);
 	else if (minishell_strequal(argv[0], EXIT))
 		status = minishell_exit(minishell);
 	return (status);

@@ -13,7 +13,7 @@ bool	minishell_strchr(const char *s, int c)
 
 bool	minishell_isspace(int c)
 {
-	return (c == 32);
+	return (c == 32 || (c >= 9 && c <= 13));
 }
 
 uint32_t	minishell_strlen(const char *s)

@@ -1,46 +1,56 @@
 #include "../../inc/tools.h"
 
-static int	s_count(char const *s, char c);
-static int	ft_split(char const *s, char c, char **split, int count);
-
-char		**minishell_split(char *s, char c)
+typedef struct s_split
 {
-	char	**split;
+	char	*s;
+	bool	*flags;
+	char	c;
 	int		count;
+	char	**split;
+}	t_split;
 
-	if (!s)
+static int	s_count(t_split *split);
+static int	ft_split(t_split *split);
+
+char		**minishell_split(char *s, char c, bool *flags)
+{
+	t_split	split;
+
+	split.s = s;
+	if (!split.s)
 		return (NULL);
-	count = s_count(s, c);
-	split = (char **)malloc(sizeof(char *) * (count + 1));
-	if (split == NULL)
+	split.flags = flags;
+	split.c = c;
+	split.count = s_count(&split);
+	split.split = (char **)malloc(sizeof(char *) * (split.count + 1));
+	if (split.split == NULL)
 		return (NULL);
-	if (!ft_split(s, c, split, count))
+	if (!ft_split(&split))
 		return (NULL);
-	return (split);
+	return (split.split);
 }
 
-static int	s_count(char const *s, char c)
+static int	s_count(t_split *split)
 {
-	int		i;
-	int		count;
+	int			i;
 
 	i = 0;
-	count = 0;
-	while (s[i])
+	split->count = 0;
+	while (split->s[i])
 	{
-		if (s[i] == c)
+		if (split->s[i] == split->c && (!split->flags || split->flags[i]))
 			i++;
 		else
 		{
-			count++;
-			while (s[i] && s[i] != c)
+			split->count++;
+			while (split->s[i] && (split->s[i] != split->c || (split->flags && !split->flags[i])))
 				i++;
 		}
 	}
-	return (count);
+	return (split->count);
 }
 
-static int	ft_split(char const *s, char c, char **split, int count)
+static int	ft_split(t_split *split)
 {
 	int	i;
 	int	st;
@@ -48,23 +58,24 @@ static int	ft_split(char const *s, char c, char **split, int count)
 
 	i = 0;
 	split_i = 0;
-	while (split_i < count)
+	while (split_i < split->count)
 	{
-		while (s[i] && s[i] == c)
+		while (split->s[i] && split->s[i] == split->c 
+				&& (!split->flags || split->flags[i]))
 			i++;
 		st = i;
-		while (s[i] && s[i] != c)
+		while (split->s[i] && (split->s[i] != split->c || (split->flags && !split->flags[i])))
 			i++;
-		split[split_i] = (char *)malloc(sizeof(char) * (i - st + 1));
-		if (split[split_i] == NULL)
+		split->split[split_i] = (char *)malloc(sizeof(char) * (i - st + 1));
+		if (split->split[split_i] == NULL)
 		{
-			minishell_free_arr(split);
+			minishell_free_arr(split->split);
 			return (0);
 		}
-		minishell_strlcpy(split[split_i], s + st, i - st + 1);
+		minishell_strlcpy(split->split[split_i], split->s + st, i - st + 1);
 		split_i++;
 	}
-	split[count] = NULL;
+	split->split[split->count] = NULL;
 	return (1);
 }
 

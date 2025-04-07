@@ -23,16 +23,25 @@ static void	executor_exec(t_minishell *minishell, t_root *root)
 		}
 		else if (root->ttype == TTOKEN_PIPE)
 			exec_pipe(minishell, root);
-		else if (minishell_isred(root))
+		else if (minishell_isred(root)) // FOR HDOC TEST cat << "eof"
 			exec_redirect(minishell, root, STDIN_FILENO, STDOUT_FILENO);
 		else if (root->ttype == TTOKEN_COMMAND)
-			exec_cmd(minishell, root, STDIN_FILENO ,STDOUT_FILENO);
+			exec_cmd(minishell, root);
 	}
 }
 
 t_status	minishell_executor(t_minishell *minishell)
 {
-	executor_handle_hdoc(minishell->root);
+	t_status	status;
+
+	status = 0;
+	executor_handle_hdoc(minishell->root, &status);
+	if (status)
+	{
+		if (status == STATUS_HDOCSIGINT)
+			minishell->exit_code = g_sig.sigint_code;
+		return (status);
+	}
 	executor_exec(minishell, minishell->root);
 	return (STATUS_SUCCESS);
 }

@@ -29,7 +29,6 @@ t_token_type	lex_get_token_type(char *token_value)
 		return (cmdsep_token_type(token_value));
 	else
 		return (TTOKEN_ARGUMENT);
-	return (TTOKEN_UNKOWN);
 }
 
 t_token	*lex_last_token(t_token *token)
