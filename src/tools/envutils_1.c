@@ -6,13 +6,14 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:49 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:49 by mzary            ###   ########.fr       */
+/*   Updated: 2025/04/15 11:29:17 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tools.h"
 
 static t_status	key_value(t_env *node, char *line);
+static char		*quoted_value(char *value);
 
 t_env	*minishell_getenv(char **env)
 {
@@ -78,13 +79,29 @@ char	*minishell_getvalue(t_env *env, char *key)
 		node = env;
 		while (node)
 		{
-			if (minishell_strequal(key, node->key))
-				return (minishell_strdup(node->value));
+			if (minishell_strequal(key, node->key) && node->valid)
+				return (quoted_value(minishell_strdup(node->value)));
 			node = node->next_key;
 		}
 		return (minishell_strdup(""));
 	}
 	return (NULL);
+}
+
+static char	*quoted_value(char *value)
+{
+	char	*qvalue;
+
+	if (!value)
+		return (NULL);
+	qvalue = minishell_strjoin("\"", value);
+	minishell_free((void **)&value);
+	if (!qvalue)
+		return (NULL);
+	value = qvalue;
+	qvalue = minishell_strjoin(value, "\"");
+	minishell_free((void **)&value);
+	return (qvalue);
 }
 
 void	minishell_envfree(t_env *env)

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:48 by mzary            ###   ########.fr       */
+/*   Updated: 2025/04/15 11:20:48 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static uint32_t	get_env_size(t_env *env)
 	node = env;
 	while (node)
 	{
-		size += 1;
+		if (node->valid)
+			size += 1;
 		node = node->next_key;
 	}
 	return (size);
@@ -57,15 +58,18 @@ static bool	fill_envp(t_env *env, char **envp)
 	node_i = env;
 	while (node_i)
 	{
-		kl = minishell_strlen(node_i->key);
-		vl = minishell_strlen(node_i->value);
-		envp[i] = (char *)malloc(sizeof(char) * (kl + vl + 2));
-		if (!envp[i])
-			return (false);
-		minishell_strlcpy(envp[i], node_i->key, kl + 1);
-		minishell_strlcpy(envp[i] + kl, "=", 2);
-		minishell_strlcat(envp[i], node_i->value, kl + vl + 2);
-		i += 1;
+		if (node_i->valid)
+		{
+			kl = minishell_strlen(node_i->key);
+			vl = minishell_strlen(node_i->value);
+			envp[i] = (char *)malloc(sizeof(char) * (kl + vl + 2));
+			if (!envp[i])
+				return (false);
+			minishell_strlcpy(envp[i], node_i->key, kl + 1);
+			minishell_strlcpy(envp[i] + kl, "=", 2);
+			minishell_strlcat(envp[i], node_i->value, kl + vl + 2);
+			i += 1;
+		}
 		node_i = node_i->next_key;
 	}
 	return (true);

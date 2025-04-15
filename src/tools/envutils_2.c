@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:48 by mzary            ###   ########.fr       */
+/*   Updated: 2025/04/15 11:20:02 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 	node = env;
 	while (node)
 	{
-		if (minishell_strequal("PATH", node->key))
+		if (minishell_strequal("PATH", node->key) && node->valid)
 		{
 			env_path = node->value;
 			break ;
