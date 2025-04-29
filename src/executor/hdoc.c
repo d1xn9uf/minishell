@@ -93,7 +93,8 @@ static t_status	handle_hdoc(t_root *cmd_node, t_root *hdoc_node)
 	status = hdoc_keyword_file(cmd_node, hdoc_node, &keyword);
 	if (status || !cmd_node->hd.filename || cmd_node->hd.fd == -1)
 		return (STATUS_HDOCFAILED);
-	if (fork() == CHILD_PROCESS)
+	g_sig_pid = fork();
+	if (g_sig_pid == CHILD_PROCESS)
 	{
 		signal(SIGINT, SIG_DFL);
 		fd = open(cmd_node->hd.filename, O_RDWR);

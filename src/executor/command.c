@@ -26,11 +26,11 @@ static void	exec_failed(t_root *cmd_node, int32_t status)
 static void	exec_exec(t_minishell *minishell, char **argv)
 {
 	int32_t	status;
-	pid_t	pid;
+	//pid_t	pid;
 	char	**envp;
 
-	pid = fork();
-	if (pid == CHILD_PROCESS)
+	g_sig_pid = fork();
+	if (g_sig_pid == CHILD_PROCESS)
 	{
 		envp = minishell_getenvp(minishell->env);
 		if (!envp)
@@ -39,7 +39,7 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		minishell_free_arr(envp);
 		exit(EXIT_FAILURE);
 	}
-	waitpid(pid, &status, 0);
+	waitpid(g_sig_pid, &status, 0);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		minishell->exit_code = 0;
 	else
