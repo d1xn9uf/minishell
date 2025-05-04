@@ -55,7 +55,7 @@ static t_status	minishell(t_minishell *minishell)
 	add_history(minishell->cmdline);
 	status = minishell_lexer(minishell);
 	if (status)
-		return (status);
+		return (minishell_free_token(minishell->lexer->token), status);
 	status = minishell_parser(minishell);
 	if (status)
 		return (status);

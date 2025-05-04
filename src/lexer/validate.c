@@ -18,7 +18,7 @@ static bool	validate_paren(t_token *token)
 
 	if (token)
 	{
-		count = 0;
+		count = 1;
 		while (token)
 		{
 			if (token->ttype == TTOKEN_PARENTHESE_CLOSE && !count)

@@ -26,12 +26,12 @@ static void	exec_failed(t_root *cmd_node, int32_t status)
 static void	exec_exec(t_minishell *minishell, char **argv)
 {
 	int32_t	status;
-	//pid_t	pid;
 	char	**envp;
 
 	g_sig_pid = fork();
 	if (g_sig_pid == CHILD_PROCESS)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		envp = minishell_getenvp(minishell->env);
 		if (!envp)
 			exit(EXIT_FAILURE);

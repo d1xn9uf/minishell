@@ -51,6 +51,7 @@ void		minishell_error(t_status status);
 void		minishell_reset(t_minishell *minishell);
 void		minishell_cleanup(t_minishell *minishell, int32_t exit_status);
 void		minishell_free_arr(char **arr);
+void		minishell_free_token(t_token *token);
 
 // ENVIRONMENT UTILS
 t_env		*minishell_envlist(int32_t count);

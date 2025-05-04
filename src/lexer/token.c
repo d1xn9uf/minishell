@@ -14,19 +14,23 @@
 
 static	t_token_type	cmdsep_token_type(char *token_value)
 {
-	if (*token_value == CHAR_PIPE && *(token_value + 1) == CHAR_PIPE)
+	if (*token_value == CHAR_PIPE && *(token_value + 1) == CHAR_PIPE
+		&& !*(token_value + 2))
 		return (TTOKEN_OR_OP);
-	if (*token_value == CHAR_PIPE)
+	if (*token_value == CHAR_PIPE && !*(token_value + 1))
 		return (TTOKEN_PIPE);
-	if (*token_value == CHAR_AMPERSNAD && *(token_value + 1) == CHAR_AMPERSNAD)
+	if (*token_value == CHAR_AMPERSNAD && *(token_value + 1) == CHAR_AMPERSNAD
+		&& !*(token_value + 2))
 		return (TTOKEN_AND_OP);
-	if (token_value[0] == CHAR_GT && token_value[1] == CHAR_GT)
+	if (token_value[0] == CHAR_GT && token_value[1] == CHAR_GT
+		&& !*(token_value + 2))
 		return (TTOKEN_APPEND);
-	if (token_value[0] == CHAR_LT && token_value[1] == CHAR_LT)
+	if (token_value[0] == CHAR_LT && token_value[1] == CHAR_LT
+		&& !*(token_value + 2))
 		return (TTOKEN_HEREDOC);
-	if (token_value[0] == CHAR_GT)
+	if (token_value[0] == CHAR_GT && !token_value[1])
 		return (TTOKEN_OUTPUT);
-	if (token_value[0] == CHAR_LT)
+	if (token_value[0] == CHAR_LT && !token_value[1])
 		return (TTOKEN_INPUT);
 	if (*token_value == CHAR_PAREN_OPEN)
 		return (TTOKEN_PARENTHESE_OPEN);

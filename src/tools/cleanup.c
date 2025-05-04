@@ -12,6 +12,20 @@
 
 #include "../../inc/tools.h"
 
+void	minishell_free_token(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token->next_token;
+		if (token->tvalue)
+			minishell_free((void **)&token->tvalue);
+		minishell_free((void **)&token);
+		token = tmp;
+	}
+}
+
 void	minishell_free_arr(char **arr)
 {
 	uint64_t	i;
