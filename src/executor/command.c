@@ -12,7 +12,7 @@
 
 #include "../../inc/executor.h"
 
-static void	exec_failed(t_root *cmd_node, int32_t status)
+void	exec_failed(t_root *cmd_node, int32_t status)
 {
 	if (status == STATUS_CMDNOTFOUND)
 	{
