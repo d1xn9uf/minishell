@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:30 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:30 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 13:57:08 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,17 @@ size_t	minishell_strlcat(char *dst, const char *src, size_t size)
 	}
 	else
 		return (size + src_len);
+}
+
+bool	is_separator(char c)
+{
+	if (c == '_')
+		return (false);
+	if ('a' <= c && c <= 'z')
+		return (false);
+	if ('A' <= c && c <= 'Z')
+		return (false);
+	if ('0' <= c && c <= '9')
+		return (false);
+	return (true);
 }

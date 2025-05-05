@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:54 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 13:20:05 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_status	export_inv(char *arg, t_env **l_env)
 
 	if (!arg)
 		return (STATUS_MALLOCERR);
+	if (!minishell_validkey(arg))
+		return (minishell_free((void **)&arg), STATUS_FAILURE);
 	node = (t_env *)malloc(sizeof(t_env));
 	if (!node)
 		return (minishell_free((void **)&arg), STATUS_MALLOCERR);

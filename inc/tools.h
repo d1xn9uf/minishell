@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 18:26:13 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 13:57:14 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int32_t		minishell_strcmp(const char *s1, const char *s2);
 
 char		**minishell_split(char *s, char c, bool *flags);
 size_t		minishell_strlcat(char *dst, const char *src, size_t size);
+bool		is_separator(char c);
 
 char		*minishell_i32tostr(int32_t nbr);
 

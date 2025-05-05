@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 18:10:10 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 14:13:10 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,33 @@ static t_status	extract_pair(t_env *pair, char *s);
 static t_status	modify_node(t_env *node, char *value);
 static t_status	add_node(t_env **l_env, char *key, char *value);
 
-t_status	minishell_export(char **argv, t_env **l_env) // check if key is valid ni**a
+t_status	minishell_export(char **argv, t_env **l_env)
 {
-	int			i;
 	t_env		pair;
+	t_status	status;
 
-	if (argv && l_env)
+	if (!argv || !l_env)
+		return (STATUS_FAILURE);
+	if (!argv[1])
+		return (default_export(*l_env));
+	while (*(++argv))
 	{
-		if (!argv[1])
-			return (default_export(*l_env));
-		i = 0;
-		while (argv[++i])
+		if (minishell_strchr(*argv, '='))
 		{
-			if (minishell_strchr(argv[i], '='))
-			{
-				if (extract_pair(&pair, argv[i]))
-					return (STATUS_MALLOCERR);
-				if (export(pair.key, pair.value, l_env))
-					return (STATUS_MALLOCERR);
-			}
-			else if (export_inv(minishell_strdup(argv[i]), l_env))
+			if (extract_pair(&pair, *argv))
 				return (STATUS_MALLOCERR);
+			status = export(pair.key, pair.value, l_env);
+			if (status)
+				return (status);
 		}
-		return (STATUS_SUCCESS);
+		else
+		{
+			status = export_inv(minishell_strdup(*argv), l_env);
+			if (status)
+				return (status);
+		}
 	}
-	return (STATUS_FAILURE);
+	return (STATUS_SUCCESS);
 }
 
 static t_status	extract_pair(t_env *pair, char *s)
@@ -68,6 +70,9 @@ t_status	export(char *key, char *value, t_env **l_env)
 	if (!key || !value)
 		return (minishell_free((void **)&key),
 			minishell_free((void **)&value), STATUS_MALLOCERR);
+	if (!minishell_validkey(key))
+		return (minishell_free((void **)&key),
+			minishell_free((void **)&value), STATUS_FAILURE);
 	node = *l_env;
 	while (node)
 	{
@@ -82,6 +87,7 @@ static t_status	modify_node(t_env *node, char *value)
 {
 	minishell_free((void **)&node->value);
 	node->value = value;
+	node->valid = true;
 	return (STATUS_SUCCESS);
 }
 

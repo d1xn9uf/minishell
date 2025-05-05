@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:05 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 18:14:57 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 13:59:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char		*expand(t_result *buff, t_env *env, t_args args);
 static t_status	modify(t_result *buff, t_env *env, t_args args, uint32_t *i);
-static bool		is_separator(char c);
+static void		flagger(t_result *buff, uint32_t *i);
 static bool		free_buff(t_result *buff, uint32_t l, bool free_res);
 
 char	*minishell_expand(char *content, t_env *env, t_args args)
@@ -40,20 +40,18 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 		if (buff->result[i[0]] == CHAR_DOLLAR_SIGN && !buff->flag[0])
 		{
 			i[1] = i[0] + 1;
-			while (buff->result[i[1]] && !is_separator(buff->result[i[1]]))
-				i[1] += 1;
+			while (buff->result[i[1]++])
+			{
+				if (!minishell_strncmp(buff->result + i[1] - 2, "$?", 2)
+					|| is_separator(buff->result[i[1] - 1]))
+					break ;
+			}
 			buff->key = (char *)malloc(sizeof(char) * (i[1] - i[0] + 1));
 			if (!buff->key || modify(buff, env, args, i))
 				return (minishell_free((void **)&buff->result), NULL);
 		}
 		else
-		{
-			if (buff->result[i[0]] == CHAR_SINGLE_QUOTE && !buff->flag[1])
-				buff->flag[0] = !buff->flag[0];
-			else if (buff->result[i[0]] == CHAR_DOUBLE_QUOTE && !buff->flag[0])
-				buff->flag[1] = !buff->flag[1];
-			i[0] += 1;
-		}
+			flagger(buff, i);
 	}
 	return (buff->result);
 }
@@ -86,17 +84,13 @@ static t_status	modify(t_result *buff, t_env *env, t_args args, uint32_t *i)
 	return (STATUS_SUCCESS);
 }
 
-static bool	is_separator(char c)
+static void	flagger(t_result *buff, uint32_t *i)
 {
-	if (c == '_')
-		return (false);
-	if ('a' <= c && c <= 'z')
-		return (false);
-	if ('A' <= c && c <= 'Z')
-		return (false);
-	if ('0' <= c && c <= '9')
-		return (false);
-	return (true);
+	if (buff->result[i[0]] == CHAR_SINGLE_QUOTE && !buff->flag[1])
+		buff->flag[0] = !buff->flag[0];
+	else if (buff->result[i[0]] == CHAR_DOUBLE_QUOTE && !buff->flag[0])
+		buff->flag[1] = !buff->flag[1];
+	i[0] += 1;
 }
 
 static bool	free_buff(t_result *buff, uint32_t l, bool free_res)

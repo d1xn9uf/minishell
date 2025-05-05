@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:35:00 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 13:18:07 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef enum e_status
 	STATUS_PATHNOTFOUND		= 0x00000F,
 	STATUS_DIRFAILED		= 0x000010,
 	STATUS_TERMIOSAVE		= 0X000011,
-	STATUS_TERMIOSRES		= 0X000011
+	STATUS_TERMIOSRES		= 0X000012,
 }	t_status;
 
 typedef struct s_env
