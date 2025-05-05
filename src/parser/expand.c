@@ -40,11 +40,10 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 		if (buff->result[i[0]] == CHAR_DOLLAR_SIGN && !buff->flag[0])
 		{
 			i[1] = i[0] + 1;
-			while (buff->result[i[1]])
+			while (buff->result[i[1]++])
 			{
-				i[1] += 1;
 				if (!minishell_strncmp(buff->result + i[1] - 2, "$?", 2)
-					|| is_separator(buff->result[i[1] - 1]))
+					|| is_separator(buff->result[i[1]]))
 					break ;
 			}
 			buff->key = (char *)malloc(sizeof(char) * (i[1] - i[0] + 1));
