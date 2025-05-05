@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/15 11:20:48 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:26:06 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,26 @@ static bool	fill_envp(t_env *env, char **envp)
 		node_i = node_i->next_key;
 	}
 	return (true);
+}
+
+bool	minishell_validkey(char *key)
+{
+	char	f;
+
+	if (key)
+	{
+		f = *key;
+		if (f != '_' && !(('a' <= f && f <= 'z') || ('A' <= f && f <= 'Z')))
+			return (false);
+		while (*key)
+		{
+			f = *key;
+			if (f != '_' && !(('a' <= f && f <= 'z') || ('A' <= f && f <= 'Z'))
+				&& !('0' <= f && f <= '9'))
+				return (false);
+			key += 1;
+		}
+		return (true);
+	}
+	return (false);
 }

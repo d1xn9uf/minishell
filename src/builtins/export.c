@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:48 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:10:10 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_status	extract_pair(t_env *pair, char *s);
 static t_status	modify_node(t_env *node, char *value);
 static t_status	add_node(t_env **l_env, char *key, char *value);
 
-t_status	minishell_export(char **argv, t_env **l_env)
+t_status	minishell_export(char **argv, t_env **l_env) // check if key is valid ni**a
 {
 	int			i;
 	t_env		pair;
@@ -25,8 +25,8 @@ t_status	minishell_export(char **argv, t_env **l_env)
 	{
 		if (!argv[1])
 			return (default_export(*l_env));
-		i = 1;
-		while (argv[i])
+		i = 0;
+		while (argv[++i])
 		{
 			if (minishell_strchr(argv[i], '='))
 			{
@@ -37,7 +37,6 @@ t_status	minishell_export(char **argv, t_env **l_env)
 			}
 			else if (export_inv(minishell_strdup(argv[i]), l_env))
 				return (STATUS_MALLOCERR);
-			i += 1;
 		}
 		return (STATUS_SUCCESS);
 	}

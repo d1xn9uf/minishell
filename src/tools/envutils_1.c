@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:49 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/15 11:29:17 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:25:45 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ char	*minishell_getvalue(t_env *env, char *key)
 		key += 1;
 		if (!*key)
 			return (minishell_strdup("$"));
+		if ('0' <= *key && *key <= '9')
+			return (minishell_strdup(key + 1));
 		node = env;
 		while (node)
 		{

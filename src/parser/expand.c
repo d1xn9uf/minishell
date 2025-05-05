@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:05 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 13:26:25 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:14:57 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,19 +86,17 @@ static t_status	modify(t_result *buff, t_env *env, t_args args, uint32_t *i)
 	return (STATUS_SUCCESS);
 }
 
-static bool	is_separator(char c) // handle all separators
+static bool	is_separator(char c)
 {
-	if (minishell_isspace(c))
-		return (true);
-	if (c == CHAR_ASTERISK)
-		return (true);
-	if (c == CHAR_SINGLE_QUOTE)
-		return (true);
-	if (c == CHAR_DOUBLE_QUOTE)
-		return (true);
-	if (c == CHAR_DOLLAR_SIGN)
-		return (true);
-	return (false);
+	if (c == '_')
+		return (false);
+	if ('a' <= c && c <= 'z')
+		return (false);
+	if ('A' <= c && c <= 'Z')
+		return (false);
+	if ('0' <= c && c <= '9')
+		return (false);
+	return (true);
 }
 
 static bool	free_buff(t_result *buff, uint32_t l, bool free_res)

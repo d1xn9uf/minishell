@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 17:57:28 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/04 18:26:13 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void		minishell_envfree(t_env *env);
 char		*minishell_getpath(t_env *env, char *cmd, t_status *status);
 
 char		**minishell_getenvp(t_env *env);
+bool		minishell_validkey(char *key);
 
 // REDIRECTION UTILS 
 bool		minishell_isred(t_root *node);
