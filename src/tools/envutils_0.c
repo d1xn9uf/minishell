@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:50 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:50 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 17:41:06 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,25 @@ void	minishell_freelst(t_env *l_env)
 		minishell_free((void **)&l_env);
 		l_env = next;
 	}
+}
+
+char	*minishell_unquoted(t_env *env, char *key)
+{
+	char		*value;
+	char		*unqoted;
+	uint32_t	len;
+
+	value = minishell_getvalue(env, key);
+	if (!value)
+		return (NULL);
+	len = minishell_strlen(value);
+	if (value[0] == CHAR_DOUBLE_QUOTE && value[len - 1] == CHAR_DOUBLE_QUOTE)
+	{
+		value[len - 1] = 0;
+		unqoted = minishell_strdup(value + 1);
+		value[len - 1] = CHAR_DOUBLE_QUOTE;
+		minishell_free((void **)&value);
+		return (unqoted);
+	}
+	return (value);
 }

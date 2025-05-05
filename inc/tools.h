@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 13:57:14 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/05 17:51:54 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_env		*minishell_envlist(int32_t count);
 int32_t		minishell_envsize(char **env);
 void		minishell_freekv(t_env *l_env, int32_t index);
 void		minishell_freelst(t_env *l_env);
+char		*minishell_unquoted(t_env *env, char *key);
 
 t_env		*minishell_getenv(char **env);
 char		*minishell_getvalue(t_env *env, char *key);
