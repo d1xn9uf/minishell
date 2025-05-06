@@ -18,17 +18,17 @@ static bool	validate_paren(t_token *token)
 
 	if (token)
 	{
-		count = 1;
+		count = 0;
 		while (token)
 		{
-			if (token->ttype == TTOKEN_PARENTHESE_CLOSE && !count)
-				return (true);
 			if (token->ttype == TTOKEN_PARENTHESE_OPEN)
-				count++;
+				count += minishell_strlen(token->tvalue);
 			else if (token->ttype == TTOKEN_PARENTHESE_CLOSE)
-				count--;
+				count -= minishell_strlen(token->tvalue);
 			token = token->next_token;
 		}
+		if (count == 0)
+			return (true);
 		return (false);
 	}
 	return (false);
@@ -36,15 +36,21 @@ static bool	validate_paren(t_token *token)
 
 t_status	lexer_validate(t_token *token)
 {
+	bool	tflag;
+
+	tflag = true;
 	while (token)
 	{
 		if (token->ttype == TTOKEN_UNKOWN)
 			return (STATUS_SYNTAXERR);
-		if (token->ttype == TTOKEN_PARENTHESE_OPEN)
+		if (tflag && token->ttype == TTOKEN_PARENTHESE_OPEN)
 		{
-			if (!validate_paren(token->next_token))
+			if (!validate_paren(token))
 				return (STATUS_SYNTAXERR);
+			tflag = false;
 		}
+		if (tflag && token->ttype == TTOKEN_PARENTHESE_CLOSE)
+			return (STATUS_SYNTAXERR);
 		token = token->next_token;
 	}
 	return (STATUS_SUCCESS);
