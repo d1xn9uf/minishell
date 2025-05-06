@@ -6,14 +6,14 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 14:13:10 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/06 13:11:36 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 
 static t_status	extract_pair(t_env *pair, char *s);
-static t_status	modify_node(t_env *node, char *value);
+static t_status	modify_node(t_env *node, char *value, bool append);
 static t_status	add_node(t_env **l_env, char *key, char *value);
 
 t_status	minishell_export(char **argv, t_env **l_env)
@@ -66,27 +66,46 @@ static t_status	extract_pair(t_env *pair, char *s)
 t_status	export(char *key, char *value, t_env **l_env)
 {
 	t_env	*node;
+	bool	append;
 
 	if (!key || !value)
 		return (minishell_free((void **)&key),
 			minishell_free((void **)&value), STATUS_MALLOCERR);
-	if (!minishell_validkey(key))
-		return (minishell_free((void **)&key),
-			minishell_free((void **)&value), STATUS_FAILURE);
+	append = false;
+	if (key[minishell_strlen(key) - 1] == '+' && setbool(&append, true))
+	{
+		key[minishell_strlen(key) - 1] = 0;
+		if (!minishell_validkey(key) && minishell_free((void **)&key))
+			return (minishell_free((void **)&value), STATUS_FAILURE);
+	}
+	else if (!minishell_validkey(key) && minishell_free((void **)&key))
+		return (minishell_free((void **)&value), STATUS_FAILURE);
 	node = *l_env;
 	while (node)
 	{
-		if (minishell_strequal(key, node->key))
-			return (minishell_free((void **)&key), modify_node(node, value));
+		if (minishell_strequal(key, node->key) && minishell_free((void **)&key))
+			return (modify_node(node, value, append));
 		node = node->next_key;
 	}
 	return (add_node(l_env, key, value));
 }
 
-static t_status	modify_node(t_env *node, char *value)
+static t_status	modify_node(t_env *node, char *value, bool append)
 {
+	char	*old_value;
+
 	minishell_free((void **)&node->value);
-	node->value = value;
+	if (append && node->value)
+	{
+		old_value = node->value;
+		node->value = minishell_strjoin(old_value, value);
+		minishell_free((void **)&value);
+		if (!node->value)
+			return (node->value = old_value, STATUS_MALLOCERR);
+		minishell_free((void **)&old_value);
+	}
+	else
+		node->value = value;
 	node->valid = true;
 	return (STATUS_SUCCESS);
 }
