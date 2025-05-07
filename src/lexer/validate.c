@@ -41,6 +41,11 @@ t_status	lexer_validate(t_token *token)
 	tflag = true;
 	while (token)
 	{
+		if (token->ttype == TTOKEN_HEREDOC)
+		{
+			if (token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD)
+				return (STATUS_SYNTAXERR);
+		}
 		if (token->ttype == TTOKEN_UNKOWN)
 			return (STATUS_SYNTAXERR);
 		if (tflag && token->ttype == TTOKEN_PARENTHESE_OPEN)
