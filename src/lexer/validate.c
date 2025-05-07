@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:13 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:13 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 13:29:10 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ static bool	validate_paren(t_token *token)
 	return (false);
 }
 
+bool	validate_pipe(t_token *token)
+{
+	if (token->ttype == TTOKEN_PIPE)
+	{
+		if (token->next_token && token->next_token->ttype != TTOKEN_COMMAND)
+			return (false);
+	}
+	return (true);
+}
+
 t_status	lexer_validate(t_token *token)
 {
 	bool	tflag;
@@ -41,6 +51,8 @@ t_status	lexer_validate(t_token *token)
 	tflag = true;
 	while (token)
 	{
+		if (!validate_pipe(token))
+			return (STATUS_SYNTAXERR);
 		if (token->ttype == TTOKEN_HEREDOC)
 		{
 			if (token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD)

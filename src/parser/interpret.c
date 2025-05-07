@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:56 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 14:12:29 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static t_status	interpret_asterisk(t_token *token)
 	t_status	status;
 	uint32_t	len;
 
-	if (minishell_strchr(token->tvalue, '*'))
+	if (minishell_strchr(token->tvalue, '*') && !token->is_filename)
 	{
 		len = minishell_strlen(token->tvalue);
 		asterisk = (bool *)malloc(sizeof(bool) * len);

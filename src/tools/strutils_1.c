@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:31 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 14:26:01 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,16 @@ int32_t	minishell_strncmp(const char *s1, const char *s2, size_t n)
 
 char	*minishell_strdup(const char *s)
 {
-	char	*c;
+	char		*c;
+	uint32_t	len;
 
 	if (!s)
 		return (NULL);
-	c = (char *)malloc(sizeof(char) * (minishell_strlen(s) + 1));
+	len = minishell_strlen(s);
+	c = (char *)minishell_calloc(len + 1, sizeof(char));
 	if (c == NULL)
 		return (NULL);
-	minishell_strlcpy(c, s, minishell_strlen(s) + 1);
+	minishell_strlcpy(c, s, len + 1);
 	return (c);
 }
 

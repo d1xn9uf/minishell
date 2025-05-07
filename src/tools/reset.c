@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:39 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:11:07 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	minishell_reset(t_minishell *minishell)
 		if (minishell->cmdline)
 			minishell_free((void **)&minishell->cmdline);
 		g_sig_pid = 0;
+		minishell->pipe_exit = false;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell->original_termios)
 			== -1)
 		{

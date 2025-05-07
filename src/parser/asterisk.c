@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:09 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 14:12:11 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ static t_status	add_name_to_tree(t_norm_ast *local)
 		}
 		local->cur = local->cur->right;
 		local->cur->left = NULL;
+		local->cur->is_filename = true;
 	}
 	else
 		local->cur->right = local->rright;

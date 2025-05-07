@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:22 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:25:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,26 @@ static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
 	exec_redirect_if_needed(minishell, node, 0, 1);
 	p.status = 0;
 	p.argv = executor_getargs(p.cmd_node, minishell, &p.status);
-	if (!p.argv)
+	if (!p.argv && p.status != STATUS_CMDNOTFOUND)
 	{
+		
+
 		exec_failed(p.cmd_node, p.status);
 		exit(p.status);
 	}
+	printf("[[arg : %s]]", p.argv[0]);
 	if (minishell_isbuiltin(p.argv[0]))
 		exec_builtin(minishell, p.argv);
 	else
 	{
+		printf("[[arg : %s]]", p.argv[0]);
 		p.envp = minishell_getenvp(minishell->env);
 		if (p.envp)
 			execve(p.argv[0], p.argv, p.envp);
 		minishell_free_arr(p.envp);
 	}
-	(minishell_free((void **)&p.argv), exit(EXIT_FAILURE));
+	printf("[[execve failed]]");
+	(minishell_free((void **)&p.argv), exit(STATUS_FAILURE));
 }
 
 static void	handle_parent(t_minishell *minishell, t_root *node,

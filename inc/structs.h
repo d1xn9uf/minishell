@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/06 12:56:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:08:34 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_token
 	t_hd			hd;
 	struct s_token	*right;
 	struct s_token	*left;
+	bool			is_filename;
 }	t_token;
 
 typedef t_token	t_root;
@@ -122,6 +123,7 @@ typedef struct s_minishell
 	t_lexer			*lexer;
 	t_root			*root;
 	int32_t			stdfd[2];
+	bool			pipe_exit;
 	int32_t			exit_code;
 	struct termios	original_termios;
 }	t_minishell;
