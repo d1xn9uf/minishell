@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:40:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/07 13:06:36 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 		return ;
 	cmd_node = node->left;
 	tflag = true;
-	if (handle_ioa(node, cmd_node, input_fd, output_fd))
+	if (minishell_translate(node->right, minishell->env,
+			minishell_i32tostr(minishell->exit_code))
+		|| handle_ioa(node, cmd_node, input_fd, output_fd))
 	{
 		minishell->exit_code = 1;
 		fd_indobkp(bkpfd, input_fd, output_fd);
@@ -103,10 +105,8 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 		tflag = expand_hdoc_in(cmd_node, minishell->env, minishell->exit_code);
 	if (tflag)
 		exec_cmd(minishell, cmd_node);
-	if (cmd_node->hd.is_hd && setbool(&cmd_node->hd.is_hd, false))
-	{
-		minishell_free((void **)&cmd_node->hd.filename);
+	if (cmd_node->hd.is_hd && setbool(&cmd_node->hd.is_hd, false)
+		&& minishell_free((void **)&cmd_node->hd.filename))
 		close(cmd_node->hd.fd);
-	}
 	fd_indobkp(bkpfd, input_fd, output_fd);
 }
