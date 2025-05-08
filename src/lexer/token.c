@@ -61,6 +61,7 @@ t_token	*lex_last_token(t_token *token)
 t_status	lex_add_token(t_lexer *lexer, char *tvalue, t_token_type ttype)
 {
 	t_token			*token;
+	t_token			*last_token;
 	static uint32_t	tid;
 
 	token = (t_token *)minishell_calloc(1, sizeof(t_token));
@@ -73,6 +74,10 @@ t_status	lex_add_token(t_lexer *lexer, char *tvalue, t_token_type ttype)
 	if (!lexer->token)
 		lexer->token = token;
 	else
-		lex_last_token(lexer->token)->next_token = token;
+	{
+		last_token = lex_last_token(lexer->token);
+		last_token->next_token = token;
+		token->prev_token = last_token;
+	}
 	return (STATUS_SUCCESS);
 }

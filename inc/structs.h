@@ -65,11 +65,12 @@ typedef enum e_status
 	STATUS_HDOCFAILED		= 0x00000B,
 	STATUS_HDOCSIGINT		= 0x00000C,
 	STATUS_SIGINIT			= 0x00000D,
-	STATUS_CMDNOTFOUND		= 0x00000E,
+	STATUS_FILLERFILLER		= 0x00000E,
 	STATUS_PATHNOTFOUND		= 0x00000F,
 	STATUS_DIRFAILED		= 0x000010,
 	STATUS_TERMIOSAVE		= 0X000011,
 	STATUS_TERMIOSRES		= 0X000012,
+	STATUS_CMDNOTFOUND		= 0x00007F
 }	t_status;
 
 typedef struct s_env
@@ -96,6 +97,7 @@ typedef struct s_token
 	uint32_t		tid;
 	char			*tvalue;
 	struct s_token	*next_token;
+	struct s_token	*prev_token;
 	uint32_t		priority;
 	t_hd			hd;
 	struct s_token	*right;

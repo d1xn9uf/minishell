@@ -33,7 +33,6 @@ t_status	minishell_protect(t_token *root)
 	return (STATUS_SUCCESS);
 }
 
-/* handle all pipe cases ??? */
 static t_status	protect(t_token *rnode)
 {
 	if (!rnode->right)

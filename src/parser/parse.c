@@ -26,7 +26,7 @@ t_status	minishell_parser(t_minishell *minishell)
 	t_status	status;
 
 	head = minishell->lexer->token;
-	size = minishell->lexer->sztoken;
+	size = minishell_getokensize(minishell->lexer->token);
 	fill_tokens(head, size);
 	minishell->root = parse_tree(head, 0, size);
 	status = minishell_protect(minishell->root);

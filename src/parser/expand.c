@@ -35,7 +35,7 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 	uint32_t	i[2];
 
 	minishell_memset(&i, 0, 2 * sizeof(uint32_t));
- 	while (buff->result[i[0]])
+	while (buff->result[i[0]])
 	{
 		if (buff->result[i[0]] == CHAR_DOLLAR_SIGN && !buff->flag[0])
 		{

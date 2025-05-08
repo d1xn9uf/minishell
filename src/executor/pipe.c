@@ -72,25 +72,20 @@ static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
 	exec_redirect_if_needed(minishell, node, 0, 1);
 	p.status = 0;
 	p.argv = executor_getargs(p.cmd_node, minishell, &p.status);
-	if (!p.argv && p.status != STATUS_CMDNOTFOUND)
+	if (!p.argv)
 	{
-		
-
 		exec_failed(p.cmd_node, p.status);
 		exit(p.status);
 	}
-	printf("[[arg : %s]]", p.argv[0]);
 	if (minishell_isbuiltin(p.argv[0]))
 		exec_builtin(minishell, p.argv);
 	else
 	{
-		printf("[[arg : %s]]", p.argv[0]);
 		p.envp = minishell_getenvp(minishell->env);
 		if (p.envp)
 			execve(p.argv[0], p.argv, p.envp);
 		minishell_free_arr(p.envp);
 	}
-	printf("[[execve failed]]");
 	(minishell_free((void **)&p.argv), exit(STATUS_FAILURE));
 }
 
