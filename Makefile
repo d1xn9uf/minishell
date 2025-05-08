@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -g  #ioctl tests
 
 ## minishell headers
 MINISHELL_HDR	= inc/minishell.h

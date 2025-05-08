@@ -27,11 +27,12 @@ char		*pwd(t_minishell *minishell, t_env *l_env);
 t_status	minishell_export(char **argv, t_env **l_env);
 t_status	export(char *key, char *value, t_env **l_env);
 t_status	default_export(t_env *env);
+void		invalid_key(char *key, char *value, bool append);
 t_status	export_inv(char *arg, t_env **l_env);
 t_status	minishell_unset(char **argv, t_env **l_env);
 t_status	minishell_env(char **argv, t_env *l_env);
 
-t_status	minishell_exit(t_minishell *minishell);
+t_status	minishell_exit(t_minishell *minishell, char *code);
 
 # define ECHOO	"echo"
 # define CD		"cd"

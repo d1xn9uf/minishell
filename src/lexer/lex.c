@@ -65,7 +65,8 @@ static void	reposition_token(t_lexer *lexer, t_token *token,
 	if (token->prev_token)
 	{
 		cmd_token = token->prev_token;
-		*token_arg = token->next_token->next_token;
+		if (token->next_token)
+			*token_arg = token->next_token->next_token;
 	}
 	else
 	{

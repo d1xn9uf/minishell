@@ -59,11 +59,11 @@ void	minishell_reset(t_minishell *minishell)
 			minishell_free((void **)&minishell->cmdline);
 		g_sig_pid = 0;
 		minishell->pipe_exit = false;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell->original_termios)
-			== -1)
-		{
-			perror("tcsetattr");
-			minishell_cleanup(minishell, STATUS_TERMIOSRES);
-		}
+		// if (tcsetattr(STDIN_FILENO, TCSANOW, &minishell->original_termios)
+		// 	== -1)
+		// {
+		// 	perror("tcsetattr");
+		// 	minishell_cleanup(minishell, STATUS_TERMIOSRES);
+		// }
 	}
 }

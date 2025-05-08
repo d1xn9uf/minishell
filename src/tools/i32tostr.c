@@ -61,3 +61,26 @@ char	*minishell_i32tostr(int32_t nbr)
 		str[0] = '-';
 	return (str);
 }
+
+uint8_t	minishell_strtoui8(char *str)
+{
+	uint8_t		res;
+	int			sign;
+
+	res = 0;
+	sign = 1;
+	while (minishell_isspace(*str))
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while ('0' <= *str && *str <= '9')
+	{
+		res = res * 10 + (*str - 48);
+		str++;
+	}
+	return (res * sign);
+}

@@ -78,3 +78,11 @@ t_status	export_inv(char *arg, t_env **l_env)
 	last->next_key = node;
 	return (STATUS_SUCCESS);
 }
+
+void	invalid_key(char *key, char *value, bool append)
+{
+	if (append)
+		printf("minishell_export: %s+=%s: not a valid id\n", key, value);
+	else
+		printf("minishell_export: %s=%s: not a valid id\n", key, value);
+}

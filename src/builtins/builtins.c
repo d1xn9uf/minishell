@@ -51,6 +51,6 @@ t_status	exec_builtin(t_minishell *minishell, char **argv)
 	else if (minishell_strequal(argv[0], CD))
 		status = minishell_cd(minishell, argv, &minishell->env);
 	else if (minishell_strequal(argv[0], EXIT))
-		status = minishell_exit(minishell);
+		status = minishell_exit(minishell, argv[1]);
 	return (status);
 }

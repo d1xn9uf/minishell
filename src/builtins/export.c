@@ -27,7 +27,7 @@ t_status	minishell_export(char **argv, t_env **l_env)
 		return (default_export(*l_env));
 	while (*(++argv))
 	{
-		if (minishell_strchr(*argv, '='))
+		if (minishell_strchr(*argv, '=') && *argv[0] != '=')
 		{
 			if (extract_pair(&pair, *argv))
 				return (STATUS_MALLOCERR);
@@ -68,19 +68,19 @@ t_status	export(char *key, char *value, t_env **l_env)
 	t_env	*node;
 	bool	append;
 
-	if (!key || !value)
+	if (setbool(&append, false) && (!key || !value))
 		return (minishell_free((void **)&key),
 			minishell_free((void **)&value), STATUS_MALLOCERR);
-	append = false;
 	if (key[minishell_strlen(key) - 1] == '+' && setbool(&append, true))
 	{
 		key[minishell_strlen(key) - 1] = 0;
-		if (!minishell_validkey(key) && minishell_free((void **)&key))
-			return (printf("minishell_export: %s: not a valid id\n", key),
+		if (!minishell_validkey(key))
+			return (invalid_key(key, value, append),
+				minishell_free((void **)&key),
 				minishell_free((void **)&value), STATUS_FAILURE);
 	}
-	else if (!minishell_validkey(key) && minishell_free((void **)&key))
-		return (printf("minishell_export: %s: not a valid id\n", key),
+	else if (!minishell_validkey(key))
+		return (invalid_key(key, value, append), minishell_free((void **)&key),
 			minishell_free((void **)&value), STATUS_FAILURE);
 	node = *l_env;
 	while (node)

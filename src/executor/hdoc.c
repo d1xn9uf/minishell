@@ -116,21 +116,23 @@ static t_status	handle_hdoc(t_root *cmd_node, t_root *hdoc_node)
 void	executor_handle_hdoc(t_root *root, t_status *status)
 {
 	t_root	*cmd_node;
+	t_root	*hdoc_right;
 
 	if (!root || *status)
 		return ;
 	if (minishell_isred(root))
 	{
 		cmd_node = root->left;
-		while (root && minishell_isred(root))
+		hdoc_right = root;
+		while (hdoc_right && minishell_isred(hdoc_right))
 		{
-			if (root->ttype == TTOKEN_HEREDOC)
+			if (hdoc_right->ttype == TTOKEN_HEREDOC)
 			{
-				*status = handle_hdoc(cmd_node, root);
+				*status = handle_hdoc(cmd_node, hdoc_right);
 				if (*status)
 					return ;
 			}
-			root = root->right;
+			hdoc_right = hdoc_right->right;
 		}
 	}
 	executor_handle_hdoc(root->left, status);

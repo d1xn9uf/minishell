@@ -35,6 +35,7 @@ size_t		minishell_strlcat(char *dst, const char *src, size_t size);
 bool		is_separator(char c);
 
 char		*minishell_i32tostr(int32_t nbr);
+uint8_t		minishell_strtoui8(char *str);
 
 // MEMORY UTILS
 void		*minishell_memset(void *b, int c, size_t len);

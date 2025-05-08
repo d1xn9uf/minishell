@@ -30,11 +30,11 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 		(*minishell)->stdfd[1] = dup(STDOUT_FILENO);
 		if (minishell_siginit())
 			return (STATUS_SIGINIT);
-		if (tcgetattr(STDIN_FILENO, &(*minishell)->original_termios) == -1)
-		{
-			perror("tcgetattr");
-			return (STATUS_TERMIOSAVE);
-		}
+		// if (tcgetattr(STDIN_FILENO, &(*minishell)->original_termios) == -1)
+		// {
+		// 	perror("tcgetattr");
+		// 	return (STATUS_TERMIOSAVE);
+		// }
 		return (STATUS_SUCCESS);
 	}
 	return (STATUS_MSINITERROR);

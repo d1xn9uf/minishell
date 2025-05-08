@@ -44,6 +44,18 @@ bool	validate_pipe(t_token *token)
 	return (true);
 }
 
+bool	validate_red(t_token *token)
+{
+	if (minishell_isred(token))
+	{
+		if (!token->next_token 
+			||(token->next_token->ttype != TTOKEN_FILE
+			&& token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD))
+			return (false);
+	}
+	return (true);
+}
+
 t_status	lexer_validate(t_token *token)
 {
 	bool	tflag;
@@ -51,6 +63,8 @@ t_status	lexer_validate(t_token *token)
 	tflag = true;
 	while (token)
 	{
+		if (!validate_red(token))
+			return (STATUS_SYNTAXERR);
 		if (!validate_pipe(token))
 			return (STATUS_SYNTAXERR);
 		if (token->ttype == TTOKEN_HEREDOC && token->next_token
