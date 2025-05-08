@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:53 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:07:41 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_status	minishell_translate(t_token *root, t_env *env, char *str_exitcode)
 static t_status	update(t_token *token, t_env *env, t_args args)
 {
 	t_status	s;
-	char		*temp;
 
 	if (!token)
 		return (STATUS_SUCCESS);
@@ -51,14 +50,9 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 	if (args.step == 1 && token->ttype == TTOKEN_COMMAND
 		&& !minishell_isbuiltin(token->tvalue))
 	{
-		s = minishell_remove(token);
+		s = update_command(token, env);
 		if (s)
 			return (s);
-		temp = minishell_getpath(env, token->tvalue, &s);
-		if (!temp)
-			return (s = (s == 0) * STATUS_CMDNOTFOUND + s, s);
-		minishell_free((void **)&token->tvalue);
-		token->tvalue = temp;
 	}
 	args.flag = check_flag(token);
 	s = update(token->right, env, args);

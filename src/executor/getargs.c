@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:23 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:19:47 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,10 @@ static void	getargs_setargc(t_root *root, char **argv)
 	uint32_t	count;
 
 	count = 0;
-	if (root->tvalue == TTOKEN_COMMAND)
-	{
-		argv[count++] = root->tvalue;
-		root = root->right;
-	}
 	while (root)
 	{
-		argv[count++] = root->tvalue;
+		if (root->tvalue && root->tvalue[0])
+			argv[count++] = root->tvalue;
 		root = root->right;
 	}
 	argv[count] = 0;
@@ -79,5 +75,7 @@ char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 	if (!argv || !argc)
 		return (NULL);
 	getargs_setargc(root, argv);
+	if (!argv[0])
+		return (minishell_free((void **)&argv), NULL);
 	return (argv);
 }

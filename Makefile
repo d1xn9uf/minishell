@@ -6,12 +6,12 @@
 #    By: mzary <mzary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 11:33:26 by mzary             #+#    #+#              #
-#    Updated: 2025/05/07 14:17:43 by mzary            ###   ########.fr        #
+#    Updated: 2025/05/08 14:59:59 by mzary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
 
 ## minishell headers
 MINISHELL_HDR	= inc/minishell.h
@@ -28,7 +28,7 @@ EXECUTOR_FILES	= executor.c getargs.c pipe.c redirection.c \
 				  command.c hdoc.c redops.c
 PARSER_FILES	= parse.c translate.c interpret.c \
 				  expand.c separate.c asterisk.c \
-				  analyse.c match.c remove.c
+				  analyse.c match.c remove.c trans_utils.c
 LEXER_FILES		= lexer.c lex.c spaceit.c splitit.c \
 				  validate.c token.c
 TOOLS_FILES		= strutils_0.c strutils_1.c strutils_2.c memutils.c \

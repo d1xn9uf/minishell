@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/15 11:20:02 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 14:38:09 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 
 	if (!env || !cmd)
 		return (*status = STATUS_CMDNOTFOUND, NULL);
+	if (!*cmd)
+		return (*status = STATUS_SUCCESS, NULL);
 	if (*cmd == '/' || *cmd == '.')
 		return (minishell_strdup(cmd));
 	env_path = NULL;
@@ -60,6 +62,8 @@ static char	*fetch(char *env_path, char *cmd, t_status *status)
 			break ;
 		i += 1;
 	}
+	if (!path)
+		*status = STATUS_CMDNOTFOUND;
 	return (minishell_free_arr(split), path);
 }
 

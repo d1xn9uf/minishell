@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 13:20:32 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 14:23:11 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 bool	minishell_isbuiltin(char *cmd)
 {
+	if (!cmd)
+		return (false);
 	if (minishell_strequal(cmd, EXPORT))
 		return (true);
 	else if (minishell_strequal(cmd, UNSET))

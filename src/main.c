@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:29 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 17:23:08 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 13:46:09 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,11 @@ static t_status	minishell(t_minishell *minishell)
 	add_history(minishell->cmdline);
 	status = minishell_lexer(minishell);
 	if (status)
+	{
+		if (status == STATUS_SYNTAXERR)
+			minishell->exit_code = 2;
 		return (minishell_free_token(minishell->lexer->token), status);
+	}
 	status = minishell_parser(minishell);
 	if (status)
 		return (status);

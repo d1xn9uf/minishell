@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 13:26:19 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 15:19:04 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,15 @@ void	exec_failed(t_root *cmd_node, int32_t status)
 {
 	if (status == STATUS_CMDNOTFOUND)
 	{
-		write(STDERR_FILENO, "minishell: ", 11);
-		write(STDERR_FILENO, cmd_node->tvalue,
-			minishell_strlen(cmd_node->tvalue));
-		write(STDERR_FILENO, ": command not found\n", 20);
+		while (cmd_node && !cmd_node->tvalue[0])
+			cmd_node = cmd_node->right;
+		if (cmd_node)
+		{
+			write(STDERR_FILENO, "minishell: ", 11);
+			write(STDERR_FILENO, cmd_node->tvalue,
+				minishell_strlen(cmd_node->tvalue));
+			write(STDERR_FILENO, ": command not found\n", 20);
+		}
 	}
 }
 
@@ -43,7 +48,8 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
 		minishell->exit_code = 0;
 	else
-		minishell->exit_code = WEXITSTATUS(status);
+		minishell_setstatus(minishell, status);
+		//minishell->exit_code = WEXITSTATUS(status);
 }
 
 void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
@@ -62,7 +68,7 @@ void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
 	}
 	if (minishell_isbuiltin(argv[0]))
 		minishell->exit_code = exec_builtin(minishell, argv);
-	else
+	else 
 		exec_exec(minishell, argv);
 	minishell_free((void **)&argv);
 }
