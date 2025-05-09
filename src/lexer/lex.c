@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:18 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:19 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 20:08:20 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,11 @@ static void	reposition_token(t_lexer *lexer, t_token *token,
 static void	lex_reposition_red(t_lexer *lexer)
 {
 	t_token	*token;
-	t_token	*cmd_token;
 	t_token	*token_arg;
 	t_token	*arg_tmp;
 
 	token = lexer->token;
 	token_arg = NULL;
-	cmd_token = NULL;
 	while (token)
 	{
 		if (minishell_isred(token))

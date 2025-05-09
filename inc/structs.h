@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 15:08:34 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 20:47:32 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,10 @@ typedef struct s_result
 	char	*saver;
 	char	*result;
 	bool	flag[2];
+
+	bool	quoted;
+	char	sep;
+	bool	ignore;
 }	t_result;
 
 typedef struct s_ast

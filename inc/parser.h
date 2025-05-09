@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:00 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 15:06:21 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 20:50:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args);
 bool		setbool(bool *flag, bool value);
 
 char		*minishell_expand(char *content, t_env *env, t_args args);
+bool		ignore(t_result *buff, uint32_t i);
 
 t_status	minishell_separate(t_token *token);
 

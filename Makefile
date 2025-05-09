@@ -6,7 +6,7 @@
 #    By: mzary <mzary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 11:33:26 by mzary             #+#    #+#              #
-#    Updated: 2025/05/08 14:59:59 by mzary            ###   ########.fr        #
+#    Updated: 2025/05/08 20:33:42 by mzary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,13 +28,15 @@ EXECUTOR_FILES	= executor.c getargs.c pipe.c redirection.c \
 				  command.c hdoc.c redops.c
 PARSER_FILES	= parse.c translate.c interpret.c \
 				  expand.c separate.c asterisk.c \
-				  analyse.c match.c remove.c trans_utils.c
+				  analyse.c match.c remove.c trans_utils.c \
+				  expand_utils.c
 LEXER_FILES		= lexer.c lex.c spaceit.c splitit.c \
 				  validate.c token.c
 TOOLS_FILES		= strutils_0.c strutils_1.c strutils_2.c memutils.c \
 				  envutils_0.c envutils_1.c envutils_2.c envutils_3.c \
 				  cleanup.c reset.c error.c redutils.c treeutils.c \
-				  futils.c siginit.c i32tostr.c status.c tokenutils.c
+				  futils.c siginit.c i32tostr.c status.c tokenutils.c \
+				  setters.c
 BUILTINS_FILES	= cd.c echo.c env.c exit.c export.c d_export.c \
 				  pwd.c unset.c builtins.c
 

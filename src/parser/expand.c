@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:05 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 14:34:19 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/08 20:49:55 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 	{
 		if (buff->result[i[0]] == CHAR_DOLLAR_SIGN && !buff->flag[0])
 		{
-			i[1] = i[0] + 1;
-			while (buff->result[i[1]])
+			i[1] = i[0];
+			while (setuint32(&i[1], i[1] + 1) && buff->result[i[1]])
 			{
-				i[1] += 1;
-				if (!minishell_strncmp(buff->result + i[1] - 2, "$?", 2)
-					|| is_separator(buff->result[i[1]]))
+				if (!minishell_strncmp(buff->result + i[1] -1, "$?", 2)
+					&& setuint32(&i[1], i[1] + 1))
+					break ;
+				if (is_separator(buff->result[i[1]])
+					&& setchar(&buff->sep, buff->result[i[1]]))
 					break ;
 			}
 			buff->key = (char *)malloc(sizeof(char) * (i[1] - i[0] + 1));
@@ -62,14 +64,14 @@ static t_status	modify(t_result *buff, t_env *env, t_args args, uint32_t *i)
 	minishell_strlcpy(buff->key, buff->result + i[0], i[1] - i[0] + 1);
 	if (minishell_strequal(buff->key, "$?"))
 		buff->value = minishell_strdup(args.exit);
+	else if (minishell_strequal(buff->key, "$") && ignore(buff, i[0]))
+		buff->value = minishell_strdup("");
 	else
 		buff->value = minishell_unquoted(env, buff->key);
-	if (!buff->value)
+	if (setuint32(&buff->result[i[0]], 0) && !buff->value)
 		return (free_buff(buff, 1, true), STATUS_MALLOCERR);
-	buff->result[i[0]] = 0;
 	buff->prefix = minishell_strdup(buff->result);
-	buff->result[i[0]] = CHAR_DOLLAR_SIGN;
-	if (!buff->prefix)
+	if (setuint32(&buff->result[i[0]], '$') && !buff->prefix)
 		return (free_buff(buff, 2, true), STATUS_MALLOCERR);
 	buff->suffix = minishell_strdup(buff->result + i[1]);
 	if (free_buff(buff, 0, true) && !buff->suffix)
