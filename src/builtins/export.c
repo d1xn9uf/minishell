@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 15:31:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/10 17:17:25 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,30 +19,30 @@ static t_status	add_node(t_env **l_env, char *key, char *value);
 t_status	minishell_export(char **argv, t_env **l_env)
 {
 	t_env		pair;
+	t_status	r_status;
 	t_status	status;
 
 	if (!argv || !l_env)
 		return (STATUS_FAILURE);
 	if (!argv[1])
 		return (default_export(*l_env));
+	status = STATUS_SUCCESS;
 	while (*(++argv))
 	{
 		if (minishell_strchr(*argv, '=') && *argv[0] != '=')
 		{
 			if (extract_pair(&pair, *argv))
 				return (STATUS_MALLOCERR);
-			status = export(pair.key, pair.value, l_env);
-			if (status)
-				return (status);
+			r_status = export(pair.key, pair.value, l_env);
 		}
 		else
-		{
-			status = export_inv(minishell_strdup(*argv), l_env);
-			if (status)
-				return (status);
-		}
+			r_status = export_inv(minishell_strdup(*argv), l_env);
+		if (r_status)
+			status = r_status;
+		if (status == STATUS_MALLOCERR)
+			return (status);
 	}
-	return (STATUS_SUCCESS);
+	return (status);
 }
 
 static t_status	extract_pair(t_env *pair, char *s)

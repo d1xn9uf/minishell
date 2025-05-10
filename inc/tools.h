@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 20:20:05 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/10 17:51:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,6 @@ t_status	minishell_protect(t_token *root);
 // NORM UTILS
 bool		setuint32(uint32_t *i, uint32_t v);
 bool		setchar(char *c, char v);
+bool		setbool(bool *flag, bool value);
 
 #endif
