@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:05 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 20:49:55 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/10 15:42:42 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ static t_status	modify(t_result *buff, t_env *env, t_args args, uint32_t *i)
 		buff->value = minishell_strdup("");
 	else
 		buff->value = minishell_unquoted(env, buff->key);
-	if (setuint32(&buff->result[i[0]], 0) && !buff->value)
+	if (setchar(&buff->result[i[0]], 0) && !buff->value)
 		return (free_buff(buff, 1, true), STATUS_MALLOCERR);
 	buff->prefix = minishell_strdup(buff->result);
-	if (setuint32(&buff->result[i[0]], '$') && !buff->prefix)
+	if (setchar(&buff->result[i[0]], '$') && !buff->prefix)
 		return (free_buff(buff, 2, true), STATUS_MALLOCERR);
 	buff->suffix = minishell_strdup(buff->result + i[1]);
 	if (free_buff(buff, 0, true) && !buff->suffix)
