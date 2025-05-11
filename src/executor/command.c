@@ -49,7 +49,6 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		minishell->exit_code = 0;
 	else
 		minishell_setstatus(minishell, status);
-		//minishell->exit_code = WEXITSTATUS(status);
 }
 
 void	exec_cmd(t_minishell *minishell, t_root *cmd_node)

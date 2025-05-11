@@ -126,8 +126,9 @@ void	executor_handle_hdoc(t_root *root, t_status *status)
 		hdoc_right = root;
 		while (hdoc_right && minishell_isred(hdoc_right))
 		{
-			if (hdoc_right->ttype == TTOKEN_HEREDOC)
+			if (hdoc_right->ttype == TTOKEN_HEREDOC && !hdoc_right->hd.tmp_hd)
 			{
+				hdoc_right->hd.tmp_hd = true;
 				*status = handle_hdoc(cmd_node, hdoc_right);
 				if (*status)
 					return ;
