@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:10 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 16:34:57 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:10:38 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	fill_flags(char *pattern, t_fixe *fixe, bool *asterisk)
 		while (pattern[i] && !(pattern[i] == '*' && asterisk[i]))
 			i += 1;
 		flag->after = false;
-		if (pattern[i] == '*')
+		if (pattern[i] == '*' && asterisk[i])
 			flag->after = true;
 		c += 1;
 	}
