@@ -6,13 +6,13 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:10 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:10 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 16:34:57 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
-static void	fill_flags(char *pattern, t_fixe *fixe);
+static void	fill_flags(char *pattern, t_fixe *fixe, bool *asterisk);
 
 t_fixe	*minishell_analyse(char *pattern, bool *asterisk)
 {
@@ -31,11 +31,11 @@ t_fixe	*minishell_analyse(char *pattern, bool *asterisk)
 	if (!fixe->flags)
 		return (minishell_free((void **)&fixe->fixes),
 			minishell_free((void **)&fixe), NULL);
-	fill_flags(pattern, fixe);
+	fill_flags(pattern, fixe, asterisk);
 	return (fixe);
 }
 
-static void	fill_flags(char *pattern, t_fixe *fixe)
+static void	fill_flags(char *pattern, t_fixe *fixe, bool *asterisk)
 {
 	uint32_t	i;
 	uint32_t	c;
@@ -47,13 +47,13 @@ static void	fill_flags(char *pattern, t_fixe *fixe)
 	{
 		flag = fixe->flags + c;
 		flag->before = false;
-		if (pattern[i] == '*')
+		if (pattern[i] == '*' && asterisk[i])
 		{
 			flag->before = true;
-			while (pattern[i] && pattern[i] == '*')
+			while (pattern[i] && pattern[i] == '*' && asterisk[i])
 				i += 1;
 		}
-		while (pattern[i] && pattern[i] != '*')
+		while (pattern[i] && !(pattern[i] == '*' && asterisk[i]))
 			i += 1;
 		flag->after = false;
 		if (pattern[i] == '*')

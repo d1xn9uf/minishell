@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:56 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 16:19:58 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	minishell_matcher(t_fixe *fixe, char *s)
 	uint32_t	min_start;
 	uint32_t	start_i;
 
+	if (s[0] == '.' && (!fixe->count || fixe->fixes[0][0] != '.'))
+		return (false);
 	c = 0;
 	min_start = 0;
 	start_i = 0;
@@ -32,9 +34,9 @@ bool	minishell_matcher(t_fixe *fixe, char *s)
 		if (c == 0 && !fixe->flags[c].before && start_i != 0)
 			return (false);
 		start_i += minishell_strlen(fixe->fixes[c]);
-		min_start = start_i;
 		if (c == fixe->count - 1 && !fixe->flags[c].after && s[start_i])
 			return (false);
+		min_start = start_i;
 		c += 1;
 	}
 	return (true);

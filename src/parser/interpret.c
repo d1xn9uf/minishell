@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/10 18:13:08 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 14:47:53 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static t_status	interpret_dollar(t_token *token, t_env *env, t_args args);
 static t_status	interpret_asterisk(t_token *token);
-static bool		*decide_asterisk(char *value);
+static bool		*get_asterisk(char *value);
+static void		decide_asterisk(bool *asterisk, char *value);
 
 t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
@@ -58,7 +59,7 @@ static t_status	interpret_asterisk(t_token *token)
 	bool		*asterisk;
 	t_status	status;
 
-	asterisk = decide_asterisk(token->tvalue);
+	asterisk = get_asterisk(token->tvalue);
 	if (!asterisk)
 		return (STATUS_MALLOCERR);
 	status = minishell_remove(token);
@@ -71,27 +72,55 @@ static t_status	interpret_asterisk(t_token *token)
 	return (STATUS_SUCCESS);
 }
 
-static bool	*decide_asterisk(char *value)
+static bool	*get_asterisk(char *value)
 {
+	bool		flags[2];
+	uint32_t	final_len;
+	uint32_t	i;
 	bool		*asterisk;
-	// uint32_t	i;
-	// bool		flag[2];
 
-	// i = 0;
-	// flag[0] = false;
-	// flag[1] = false;
-	// while (value[i])
-	// {
-	// 	if (*value == CHAR_DOUBLE_QUOTE && !flag[0])
-	// 		flag[1] = !flag[1];
-	// 	else if (*value == CHAR_SINGLE_QUOTE && !flag[1])
-	// 		flag[0] = !flag[0];
-	// 	asterisk[i] = (!flag[0] && !flag[1]);
-	// 	i += 1;
-	// }
-	/* temp */
-	(void)value;
-	asterisk = minishell_calloc(minishell_strlen(value), sizeof(bool));
-	/* temp */
+	minishell_memset(flags, 0, 2 * sizeof(bool));
+	final_len = 0;
+	i = 0;
+	while (value[i])
+	{
+		if (value[i] == CHAR_DOUBLE_QUOTE && !flags[0])
+			flags[1] = !flags[1];
+		else if (value[i] == CHAR_SINGLE_QUOTE && !flags[1])
+			flags[0] = !flags[0];
+		else
+			final_len += 1;
+		i += 1;
+	}
+	asterisk = minishell_calloc(final_len + 1, sizeof(bool));
+	if (!asterisk)
+		return (NULL);
+	decide_asterisk(asterisk, value);
 	return (asterisk);
+}
+
+static void	decide_asterisk(bool *asterisk, char *value)
+{
+	bool		flags[2];
+	uint32_t	i;
+	uint32_t	j;
+
+	minishell_memset(flags, 0, 2 * sizeof(bool));
+	i = 0;
+	j = 0;
+	while (value[i])
+	{
+		if (value[i] == CHAR_DOUBLE_QUOTE && !flags[0])
+			flags[1] = !flags[1];
+		else if (value[i] == CHAR_SINGLE_QUOTE && !flags[1])
+			flags[0] = !flags[0];
+		else
+		{
+			asterisk[j] = false;
+			if (value[i] == CHAR_ASTERISK)
+				asterisk[j] = (!flags[1] && !flags[0]);
+			j += 1;
+		}
+		i += 1;
+	}
 }
