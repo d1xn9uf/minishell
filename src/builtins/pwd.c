@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:45 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 13:56:39 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:37:13 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*pwd(t_minishell *minishell, t_env *l_env)
 		cwd = get_value_unquote(l_env, "$PWD");
 	if (!cwd)
 		return (NULL);
-	if (!*cwd)
+	if (!*cwd && minishell_free((void **)&cwd))
 	{
 		len = minishell_strlen(minishell->cwd);
 		if (!len)
@@ -61,8 +61,8 @@ static char	*get_value_unquote(t_env *l_env, char *key)
 	char		*unquoted_value;
 
 	value = minishell_getvalue(l_env, key);
-	if (!value)
-		return (NULL);
+	if (!value || !*value)
+		return (value);
 	len = minishell_strlen(value);
 	value[len - 1] = 0;
 	unquoted_value = minishell_strdup(value + 1);

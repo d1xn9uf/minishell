@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/10 17:17:25 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/11 19:32:54 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static t_status	modify_node(t_env *node, char *value, bool append)
 {
 	char	*old_value;
 
-	minishell_free((void **)&node->value);
 	if (append && node->value)
 	{
 		old_value = node->value;
@@ -107,7 +106,10 @@ static t_status	modify_node(t_env *node, char *value, bool append)
 		minishell_free((void **)&old_value);
 	}
 	else
+	{
+		minishell_free((void **)&node->value);
 		node->value = value;
+	}
 	node->valid = true;
 	return (STATUS_SUCCESS);
 }
