@@ -29,15 +29,15 @@ t_status	minishell_asterisk(t_token *token, bool *asterisk)
 	fixe = minishell_analyse(token->tvalue, asterisk);
 	if (!fixe)
 		return (STATUS_MALLOCERR);
-	/* debug */
-	int i = 0;
-	printf("count of fixes is %u\n", fixe->count);
-	while (fixe->fixes[i])
-	{
-		printf("[%s]\n", fixe->fixes[i]);
-		i += 1;
-	}
-	/* debug */
+	// /* debug */
+	// int i = 0;
+	// printf("count of fixes is %u\n", fixe->count);
+	// while (fixe->fixes[i])
+	// {
+	// 	printf("[%s]\n", fixe->fixes[i]);
+	// 	i += 1;
+	// }
+	// /* debug */
 	dirp = opendir(".");
 	if (!dirp)
 		return (free_mem(NULL, fixe), STATUS_FAILURE);

@@ -89,5 +89,9 @@ static bool	*decide_asterisk(char *value)
 	// 	asterisk[i] = (!flag[0] && !flag[1]);
 	// 	i += 1;
 	// }
+	/* temp */
+	(void)value;
+	asterisk = minishell_calloc(minishell_strlen(value), sizeof(bool));
+	/* temp */
 	return (asterisk);
 }

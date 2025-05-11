@@ -45,8 +45,7 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 				if (!minishell_strncmp(buff->result + i[1] -1, "$?", 2)
 					&& setuint32(&i[1], i[1] + 1))
 					break ;
-				if (is_separator(buff->result[i[1]])
-					&& setchar(&buff->sep, buff->result[i[1]]))
+				if (is_separator(buff->result[i[1]]))
 					break ;
 			}
 			buff->key = (char *)malloc(sizeof(char) * (i[1] - i[0] + 1));
