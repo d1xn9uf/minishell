@@ -34,7 +34,10 @@ static void	executor_exec(t_minishell *minishell, t_root *root)
 				executor_exec(minishell, root->right);
 		}
 		else if (root->ttype == TTOKEN_PIPE)
+		{
 			exec_pipe(minishell, root);
+			minishell->pipe_exit = false;
+		}
 		else if (minishell_isred(root))
 			exec_redirect(minishell, root, STDIN_FILENO, STDOUT_FILENO);
 		else if (root->ttype == TTOKEN_COMMAND)

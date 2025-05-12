@@ -45,9 +45,9 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	waitpid(g_sig_pid, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
-		minishell->exit_code = 0;
-	else
+	//if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+	//	minishell->exit_code = 0;
+	//else
 		minishell_setstatus(minishell, status);
 }
 

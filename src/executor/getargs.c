@@ -77,5 +77,18 @@ char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 	getargs_setargc(root, argv);
 	if (!argv[0])
 		return (minishell_free((void **)&argv), NULL);
+	if (!minishell_isbuiltin(argv[0]) && access(argv[0], F_OK))
+	{
+		ms->exit_code = 127;
+		*status = 127;
+		return (minishell_free((void **)&argv), NULL); 
+	}
+	if (!minishell_isbuiltin(argv[0]) && access(argv[0], X_OK))
+	{
+		printf("minishell: permission denied: %s\n", argv[0]);
+		ms->exit_code = 126;
+		*status = 126;
+		return (minishell_free((void **)&argv), NULL);
+	}
 	return (argv);
 }

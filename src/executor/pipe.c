@@ -101,7 +101,11 @@ static void	handle_parent(t_minishell *minishell, t_root *node,
 	if (node->ttype == TTOKEN_PIPE)
 		pipeit(minishell, node->right, pipe_fd[PIPE_READ_END]);
 	waitpid(info[1], &status, 0);
-	minishell_setstatus(minishell, status);
+	if (!minishell->pipe_exit)
+	{
+		minishell_setstatus(minishell, status);
+		minishell->pipe_exit = true;
+	}
 }
 
 void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)

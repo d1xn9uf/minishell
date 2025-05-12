@@ -14,8 +14,6 @@
 
 void	minishell_setstatus(t_minishell *minishell, int status)
 {
-	if (minishell->pipe_exit)
-		return ;
 	if (WIFEXITED(status))
 	{
 		minishell->exit_code = WEXITSTATUS(status);
@@ -24,5 +22,4 @@ void	minishell_setstatus(t_minishell *minishell, int status)
 		minishell->exit_code = 128 + WTERMSIG(status);
 	else
 		minishell->exit_code = 1;
-	minishell->pipe_exit = true;
 }
