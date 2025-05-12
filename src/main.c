@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-pid_t	g_sig_pid = 42;
+pid_t	g_sig_pid = 1;
 
 t_status	minishell_init(t_minishell **minishell, char **env)
 {
@@ -30,12 +30,6 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 		(*minishell)->stdfd[1] = dup(STDOUT_FILENO);
 		if (minishell_siginit())
 			return (STATUS_SIGINIT);
-		if (g_sig_pid == 42 && tcgetattr(STDIN_FILENO, &(*minishell)->original_termios) == -1)
-		{
-			perror("tcgetattr");
-			return (STATUS_TERMIOSAVE);
-		}
-		g_sig_pid = 1;
 		return (STATUS_SUCCESS);
 	}
 	return (STATUS_MSINITERROR);
