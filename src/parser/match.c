@@ -6,64 +6,84 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 16:19:58 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/12 18:17:51 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
-static uint32_t	contains_string(char *string, char *s);
-static bool		found_string(char *string, char *s);
+static bool	is_prefix(char *fix, char **s);
+static bool	is_suffix(char *fix, char **s);
+static bool	is_midfix(char *fix, char **s);
 
 bool	minishell_matcher(t_fixe *fixe, char *s)
 {
 	uint32_t	c;
-	uint32_t	min_start;
-	uint32_t	start_i;
 
 	if (s[0] == '.' && (!fixe->count || fixe->fixes[0][0] != '.'))
 		return (false);
+	if (!fixe->count)
+		return (true);
+	if (!fixe->flags[0].before && !fixe->flags[0].after)
+		return (false);
 	c = 0;
-	min_start = 0;
-	start_i = 0;
 	while (c < fixe->count)
 	{
-		start_i = contains_string(fixe->fixes[c], s);
-		if (!s[start_i] || start_i < min_start)
+		if (!fixe->flags[c].before && !is_prefix(fixe->fixes[c], &s))
 			return (false);
-		if (c == 0 && !fixe->flags[c].before && start_i != 0)
+		if (!fixe->flags[c].after && !is_suffix(fixe->fixes[c], &s))
 			return (false);
-		start_i += minishell_strlen(fixe->fixes[c]);
-		if (c == fixe->count - 1 && !fixe->flags[c].after && s[start_i])
+		if (fixe->flags[c].before && fixe->flags[c].after
+			&& !is_midfix(fixe->fixes[c], &s))
 			return (false);
-		min_start = start_i;
 		c += 1;
 	}
-	return (true);
+	return (false);
 }
 
-static uint32_t	contains_string(char *string, char *s)
-{
-	uint32_t	start_i;
-
-	start_i = 0;
-	while (s[start_i])
-	{
-		if (found_string(string, s + start_i))
-			return (start_i);
-		start_i += 1;
-	}
-	return (start_i);
-}
-
-static bool	found_string(char *string, char *s)
+static bool	is_prefix(char *fix, char **s)
 {
 	uint32_t	i;
 
 	i = 0;
-	while (string[i] && s[i] && string[i] == s[i])
+	while ((*s)[i] && fix[i] && (*s)[i] == fix[i])
 		i += 1;
-	if (!string[i])
-		return (true);
+	if (!fix[i])
+		*s += minishell_strlen(fix);
+	return (!fix[i]);
+}
+
+static bool	is_suffix(char *fix, char **s)
+{
+	int32_t	fixlen;
+	int32_t	slen;
+	int32_t	i;
+
+	fixlen = minishell_strlen(fix);
+	slen = minishell_strlen(*s);
+	i = slen;
+	while (i >= 0 && i >= slen - fixlen && (*s)[i] == fix[i])
+		i -= 1;
+	if (i == slen - fixlen - 1)
+		*s[slen - fixlen] = 0;
+	return (i == slen - fixlen - 1);
+}
+
+static bool	is_midfix(char *fix, char **s)
+{
+	uint32_t	i;
+	uint32_t	fixlen;
+
+	i = 0;
+	fixlen = minishell_strlen(fix);
+	while ((*s)[i])
+	{
+		if (!minishell_strncmp(fix, *s + i, fixlen))
+		{
+			*s = *s + i + fixlen;
+			return (true);
+		}
+		i += 1;
+	}
 	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 20:03:51 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/12 14:56:22 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,28 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
 	t_status	status;
 
-	if (args.step == 0
-		&& minishell_strchr(token->tvalue, '$'))
+	if (args.step == 0)
 	{
-		status = interpret_dollar(token, env, args);
-		if (status)
-			return (status);
-		status = minishell_separate(token);
+		if (minishell_strchr(token->tvalue, '$'))
+		{
+			status = interpret_dollar(token, env, args);
+			if (status)
+				return (status);
+			status = minishell_separate(token);
+			if (status)
+				return (status);
+		}
+	}
+	if (args.step == 1)
+	{
+		if (args.flag && minishell_strchr(token->tvalue, '*')
+			&& !token->is_filename)
+			status = interpret_asterisk(token);
+		else
+			status = minishell_remove(token);
 		if (status)
 			return (status);
 	}
-	if (args.step == 1 && args.flag
-		&& minishell_strchr(token->tvalue, '*')
-		&& !token->is_filename)
-		status = interpret_asterisk(token);
-	else
-		status = minishell_remove(token);
-	if (status)
-		return (status);
 	return (STATUS_SUCCESS);
 }
 
