@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/12 17:29:58 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/12 19:39:42 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,6 @@ t_status	minishell_asterisk(t_token *token, bool *asterisk)
 	fixe = minishell_analyse(token->tvalue, asterisk);
 	if (!fixe)
 		return (STATUS_MALLOCERR);
-	/************* debug ***********/
-	int i =0;
-	while (fixe->fixes[i])
-	{
-		printf("%d-[%s]-%d\n", fixe->flags[i].before, fixe->fixes[i], fixe->flags[i].after);
-		i += 1;
-	}
-	/************* debug ***********/
 	dirp = opendir(".");
 	if (!dirp)
 		return (free_mem(NULL, fixe), STATUS_FAILURE);
@@ -44,9 +36,6 @@ t_status	minishell_asterisk(t_token *token, bool *asterisk)
 	while (entry)
 	{
 		n = entry->d_name;
-		/************* debug ***********/
-		printf("entry: {%s}\n", n);
-		/************* debug ***********/
 		if (!minishell_strequal(n, ".") && !minishell_strequal(n, ".."))
 		{
 			if (minishell_matcher(fixe, n) && add_name(&ns, n))

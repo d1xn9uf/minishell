@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/12 18:17:51 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/12 19:36:18 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	minishell_matcher(t_fixe *fixe, char *s)
 			return (false);
 		c += 1;
 	}
-	return (false);
+	return (true);
 }
 
 static bool	is_prefix(char *fix, char **s)
@@ -55,18 +55,14 @@ static bool	is_prefix(char *fix, char **s)
 
 static bool	is_suffix(char *fix, char **s)
 {
-	int32_t	fixlen;
-	int32_t	slen;
-	int32_t	i;
+	uint32_t	fixlen;
+	uint32_t	slen;
 
 	fixlen = minishell_strlen(fix);
 	slen = minishell_strlen(*s);
-	i = slen;
-	while (i >= 0 && i >= slen - fixlen && (*s)[i] == fix[i])
-		i -= 1;
-	if (i == slen - fixlen - 1)
-		*s[slen - fixlen] = 0;
-	return (i == slen - fixlen - 1);
+	if (slen < fixlen)
+		return (false);
+	return (minishell_strequal(fix, *s + slen - fixlen));
 }
 
 static bool	is_midfix(char *fix, char **s)
