@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 13:57:42 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 20:51:40 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ bool		is_separator(char c);
 
 char		*minishell_i32tostr(int32_t nbr);
 uint8_t		minishell_strtoui8(char *str);
+
+char		*minishell_strjoin3(char *s1, char *s2, char *s3);
 
 // MEMORY UTILS
 void		*minishell_memset(void *b, int c, size_t len);

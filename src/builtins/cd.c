@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 18:11:34 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:02:46 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,16 @@ static char	*get_value_unquote(t_env *l_env, char *key)
 	if (!value)
 		return (NULL);
 	len = minishell_strlen(value);
-	value[len - 1] = 0;
-	unquoted_value = minishell_strdup(value + 1);
-	value[len - 1] = CHAR_DOUBLE_QUOTE;
-	minishell_free((void **)&value);
-	return (unquoted_value);
+	if (len && value[0] == CHAR_DOUBLE_QUOTE
+		&& value[len - 1] == CHAR_DOUBLE_QUOTE)
+	{
+		value[len - 1] = 0;
+		unquoted_value = minishell_strdup(value + 1);
+		value[len - 1] = CHAR_DOUBLE_QUOTE;
+		minishell_free((void **)&value);
+		return (unquoted_value);
+	}
+	return (value);
 }
 
 static char	*get_path(char *arg, t_env *l_env)
@@ -80,20 +85,26 @@ static char	*get_path(char *arg, t_env *l_env)
 
 static t_status	cd(t_minishell *minishell, char *dest, t_env **l_env)
 {
-	char	*op;
-	char	*np;
+	char	*o_pwd;
+	char	*n_pwd;
 
-	op = pwd(minishell, *l_env);
+	o_pwd = getcwd(NULL, 0);
+	if (!o_pwd)
+		o_pwd = minishell_strdup(minishell->cwd);
 	if (chdir(dest))
-		return (perror("minishell_cd"),
-			minishell_free((void **)&dest),
-			minishell_free((void **)&op), STATUS_FAILURE);
+		return (minishell_free((void **)&dest),
+			minishell_free((void **)&o_pwd), STATUS_FAILURE);
+	n_pwd = getcwd(NULL, 0);
+	if (!n_pwd)
+	{
+		printf("minishell_cd: getcwd: eror retrieving cwd\n");
+		n_pwd = minishell_strjoin3(o_pwd, "/", dest);
+		if (!n_pwd)
+			return (minishell_free((void **)&o_pwd),
+				minishell_free((void **)&dest), STATUS_MALLOCERR);
+	}
 	minishell_free((void **)&dest);
-	np = pwd(minishell, *l_env);
-	if (!op || !np)
-		return (minishell_free((void **)&op),
-			minishell_free((void **)&np), STATUS_FAILURE);
-	if (update_wd(minishell, op, np, l_env))
+	if (update_wd(minishell, o_pwd, n_pwd, l_env))
 		return (STATUS_MALLOCERR);
 	return (STATUS_SUCCESS);
 }

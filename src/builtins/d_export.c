@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 13:39:55 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:21:58 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_status	export_inv(char *arg, t_env **l_env)
 	if (!minishell_validkey(arg))
 		return (printf("minishell_export: %s: not a valid id\n", arg),
 			minishell_free((void **)&arg), STATUS_FAILURE);
-	node = (t_env *)malloc(sizeof(t_env));
+	node = (t_env *)minishell_calloc(1, sizeof(t_env));
 	if (!node)
 		return (minishell_free((void **)&arg), STATUS_MALLOCERR);
 	node->key = arg;

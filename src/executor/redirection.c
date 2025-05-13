@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 13:06:36 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 19:29:50 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 		fd_indobkp(bkpfd, input_fd, output_fd);
 		return ;
 	}
-	if (cmd_node->hd.is_hd)
+	if (cmd_node && cmd_node->hd.is_hd)
 		tflag = expand_hdoc_in(cmd_node, minishell->env, minishell->exit_code);
 	if (tflag)
 		exec_cmd(minishell, cmd_node);

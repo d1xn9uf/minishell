@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 17:21:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:23:38 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static t_status	add_name(t_match **ns, char *s)
 	t_match	*match;
 	t_match	*last;
 
-	match = (t_match *)malloc(sizeof(t_match));
+	match = (t_match *)minishell_calloc(1, sizeof(t_match));
 	if (!match)
 		return (STATUS_MALLOCERR);
 	match->name = minishell_strdup(s);

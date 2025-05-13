@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:45 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:26:13 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*readfile_join(const char *s1, const char *s2)
 	if (!s2)
 		return (minishell_strdup(s1));
 	total_len = minishell_strlen(s1) + minishell_strlen(s2);
-	res = (char *)malloc(sizeof(char) * (total_len + 1));
+	res = (char *)minishell_calloc(total_len + 1, sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	minishell_strlcpy(res, s1, minishell_strlen(s1) + 1);

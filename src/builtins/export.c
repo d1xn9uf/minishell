@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 19:32:54 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:22:44 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ static t_status	add_node(t_env **l_env, char *key, char *value)
 	t_env	*node;
 	t_env	*last;
 
-	node = (t_env *)malloc(sizeof(t_env));
+	node = (t_env *)minishell_calloc(1, sizeof(t_env));
 	if (!node)
 		return (minishell_free((void **)&key),
 			minishell_free((void **)&value), STATUS_MALLOCERR);

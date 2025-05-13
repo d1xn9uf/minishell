@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:10 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 19:10:38 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:23:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_fixe	*minishell_analyse(char *pattern, bool *asterisk)
 {
 	t_fixe		*fixe;
 
-	fixe = (t_fixe *)malloc(sizeof(t_fixe));
+	fixe = (t_fixe *)minishell_calloc(1, sizeof(t_fixe));
 	if (!fixe)
 		return (NULL);
 	fixe->fixes = minishell_split(pattern, '*', asterisk);
@@ -27,7 +27,7 @@ t_fixe	*minishell_analyse(char *pattern, bool *asterisk)
 	fixe->count = 0;
 	while (fixe->fixes[fixe->count])
 		fixe->count += 1;
-	fixe->flags = (t_ast *)malloc(sizeof(t_ast) * fixe->count);
+	fixe->flags = (t_ast *)minishell_calloc(fixe->count, sizeof(t_ast));
 	if (!fixe->flags)
 		return (minishell_free((void **)&fixe->fixes),
 			minishell_free((void **)&fixe), NULL);

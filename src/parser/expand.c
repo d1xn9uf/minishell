@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:05 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/10 15:42:42 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:24:02 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*expand(t_result *buff, t_env *env, t_args args)
 				if (is_separator(buff->result[i[1]]))
 					break ;
 			}
-			buff->key = (char *)malloc(sizeof(char) * (i[1] - i[0] + 1));
+			buff->key = (char *)minishell_calloc(i[1] - i[0] + 1, sizeof(char));
 			if (!buff->key || modify(buff, env, args, i))
 				return (minishell_free((void **)&buff->result), NULL);
 		}

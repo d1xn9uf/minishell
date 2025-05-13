@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/11 20:15:26 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 19:31:43 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ static void	exec_redirect_if_needed(t_minishell *minishell, t_root *node,
 	if (minishell_isred(node) || minishell_isred(node->left))
 	{
 		if (minishell_isred(node))
-		{
 			rnode = node;
-		}
 		else
 			rnode = node->left;
 		exec_redirect(minishell, rnode, input_fd, output_fd);

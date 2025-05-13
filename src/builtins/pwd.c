@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:45 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 17:59:41 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 20:42:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ char	*pwd(t_minishell *minishell)
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-	{
-		printf("minishell_pwd: error: getcwd failed.\n");
-		return (minishell_strdup(minishell->cwd));
-	}
+		cwd = minishell_strdup(minishell->cwd);
 	return (cwd);
 }

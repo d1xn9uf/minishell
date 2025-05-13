@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 18:26:06 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:25:37 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static bool	fill_envp(t_env *env, char **envp)
 		{
 			kl = minishell_strlen(node_i->key);
 			vl = minishell_strlen(node_i->value);
-			envp[i] = (char *)malloc(sizeof(char) * (kl + vl + 2));
+			envp[i] = (char *)minishell_calloc(kl + vl + 2, sizeof(char));
 			if (!envp[i])
 				return (false);
 			minishell_strlcpy(envp[i], node_i->key, kl + 1);

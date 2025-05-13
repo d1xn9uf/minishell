@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:54 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:54 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:24:32 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_status	minishell_remove(t_token *token)
 		vars.fsize += (vars.flags[vars.i[0]++] == true);
 	if (vars.fsize < minishell_strlen(token->tvalue))
 	{
-		vars.fvalue = (char *)malloc(sizeof(char) * (vars.fsize + 1));
+		vars.fvalue = (char *)minishell_calloc(vars.fsize + 1, sizeof(char));
 		if (!vars.fvalue)
 			return (minishell_free((void **)&vars.flags), STATUS_MALLOCERR);
 		while (token->tvalue[vars.i[1]])
@@ -49,7 +49,7 @@ static bool	*get_flags_quotes(char *s)
 	uint32_t	i;
 
 	len = minishell_strlen(s);
-	qflags = (bool *)malloc(sizeof(bool) * len);
+	qflags = (bool *)minishell_calloc(len, sizeof(bool));
 	if (!qflags)
 		return (NULL);
 	minishell_memset(flag, 0, sizeof(bool) * 2);

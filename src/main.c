@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:29 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 17:45:23 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:00:42 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 			return (STATUS_MALLOCERR);
 		(*minishell)->prompt = PROMPT;
 		(*minishell)->env = minishell_getenv(env);
-		// (*minishell)->cwd = minishell_getvalue((*minishell)->env, "$PWD");
-		// if (!(*minishell)->cwd)
-		// 	return (STATUS_MALLOCERR);
+		(*minishell)->cwd = getcwd(NULL, 0);
+		if (!(*minishell)->cwd)
+		{
+			printf("minishell_init: error: getcwd: could not get cwd\n");
+		 	return (STATUS_GETCWDINIT);
+		}
 		(*minishell)->stdfd[0] = dup(STDIN_FILENO);
 		(*minishell)->stdfd[1] = dup(STDOUT_FILENO);
 		if (minishell_siginit())
@@ -76,6 +79,8 @@ int	main(int ac, char **av, char **env)
 	{
 		minishell_error(status);
 		minishell_reset(ms);
+		if (status == STATUS_GETCWDINIT)
+			return (STATUS_SUCCESS);
 		return (STATUS_FAILURE);
 	}
 	while (true)

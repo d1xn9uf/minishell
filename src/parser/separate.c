@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:54 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:25:00 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_status	minishell_separate(t_token *token)
 
 	if (*token->tvalue)
 	{
-		flags = (bool *)malloc(sizeof(bool) * minishell_strlen(token->tvalue));
+		flags = (bool *)minishell_calloc(minishell_strlen(token->tvalue), sizeof(bool));
 		if (!flags)
 			return (STATUS_MALLOCERR);
 		get_flags(flags, token->tvalue);
@@ -75,7 +75,7 @@ static t_status	separate(t_token *token, char **splits)
 	i = 1;
 	while (splits[i])
 	{
-		token->right = (t_token *)malloc(sizeof(t_token));
+		token->right = (t_token *)minishell_calloc(1, sizeof(t_token));
 		if (!token->right)
 			return (token->right = last_right, STATUS_MALLOCERR);
 		token->right->tvalue = minishell_strdup(splits[i]);
@@ -85,6 +85,7 @@ static t_status	separate(t_token *token, char **splits)
 		token->right->ttype = TTOKEN_ARGUMENT;
 		i += 1;
 		token = token->right;
+		token->left = NULL;
 	}
 	return (token->right = last_right, STATUS_SUCCESS);
 }

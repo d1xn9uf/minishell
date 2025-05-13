@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:50 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/05 17:41:06 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 21:25:22 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ t_env	*minishell_envlist(int32_t count)
 
 	if (!count)
 		return (NULL);
-	l_env = (t_env *)malloc(sizeof(t_env));
+	l_env = (t_env *)minishell_calloc(1, sizeof(t_env));
 	if (!l_env)
 		return (NULL);
 	node = l_env;
 	while (--count)
 	{
-		node->next_key = (t_env *)malloc(sizeof(t_env));
+		node->next_key = (t_env *)minishell_calloc(1, sizeof(t_env));
 		if (!node->next_key)
 		{
 			minishell_freelst(l_env);
