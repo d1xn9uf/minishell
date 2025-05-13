@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/10 17:51:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 13:57:42 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ char		*minishell_getpath(t_env *env, char *cmd, t_status *status);
 
 char		**minishell_getenvp(t_env *env);
 bool		minishell_validkey(char *key);
+
+// CHAR UTILS
+bool		is_num(char c);
+bool		is_up(char c);
+bool		is_low(char c);
+bool		is_anum(char c);
 
 // REDIRECTION UTILS 
 bool		minishell_isred(t_root *node);

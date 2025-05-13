@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/12 19:39:42 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 13:41:51 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static t_status	add_name(t_match **ns, char *s)
 	match->name = minishell_strdup(s);
 	if (!match->name)
 		return (minishell_free((void **)&match), STATUS_MALLOCERR);
+	match->order = 0;
 	match->next = NULL;
 	if (!*ns)
 		return (*ns = match, STATUS_SUCCESS);
@@ -67,7 +68,7 @@ static t_status	add_name(t_match **ns, char *s)
 	return (STATUS_SUCCESS);
 }
 
-static t_status	add_to_tree(t_token *token, t_match *ns)
+static t_status	add_to_tree(t_token *token, t_match *ns) // order the pzpz
 {
 	t_norm_ast	local;
 	t_status	status;

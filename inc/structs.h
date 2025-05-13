@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/10 17:48:47 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 13:27:40 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ typedef struct s_minishell
 typedef struct s_match
 {
 	char			*name;
+	uint32_t		order;
 	struct s_match	*next;
 }	t_match;
 
