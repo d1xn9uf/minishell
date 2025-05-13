@@ -39,10 +39,7 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 			&& !token->is_filename)
 			status = interpret_asterisk(token);
 		else
-		{
-			printf("salam ana hna\n");
 			status = minishell_remove(token);
-		}
 		if (status)
 			return (status);
 	}

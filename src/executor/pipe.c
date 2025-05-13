@@ -117,8 +117,9 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 		return ;
 	if (node->ttype == TTOKEN_PIPE && pipe(pipe_fd) == -1)
 	{
-		perror("pipe");
-		minishell_cleanup(minishell, EXIT_FAILURE);
+		perror("pipe:");
+		return ;
+		//minishell_cleanup(minishell, EXIT_FAILURE);
 	}
 	g_sig_pid = fork();
 	if (g_sig_pid == CHILD_PROCESS)
@@ -134,4 +135,6 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 		info[1] = g_sig_pid;
 		handle_parent(minishell, node, pipe_fd, info);
 	}
+	else
+		perror("fork:");
 }

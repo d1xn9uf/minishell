@@ -22,7 +22,11 @@ static bool	validate_paren(t_token *token)
 		while (token)
 		{
 			if (token->ttype == TTOKEN_PARENTHESE_OPEN)
+			{
+				if (token->next_token && token->next_token->ttype == TTOKEN_PARENTHESE_CLOSE)
+					return (false);
 				count += minishell_strlen(token->tvalue);
+			}
 			else if (token->ttype == TTOKEN_PARENTHESE_CLOSE)
 				count -= minishell_strlen(token->tvalue);
 			token = token->next_token;

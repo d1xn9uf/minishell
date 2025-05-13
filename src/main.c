@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-pid_t	g_sig_pid = 1;
+pid_t	g_sig_pid = 0;
 
 t_status	minishell_init(t_minishell **minishell, char **env)
 {

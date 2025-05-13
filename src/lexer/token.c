@@ -62,13 +62,12 @@ t_status	lex_add_token(t_lexer *lexer, char *tvalue, t_token_type ttype)
 {
 	t_token			*token;
 	t_token			*last_token;
-	static uint32_t	tid;
 
 	token = (t_token *)minishell_calloc(1, sizeof(t_token));
 	if (!token)
 		return (STATUS_MALLOCERR);
 	token->ttype = ttype;
-	token->tid = tid++;
+	token->tid = lexer->tid++;
 	token->tvalue = tvalue;
 	token->next_token = NULL;
 	if (!lexer->token)

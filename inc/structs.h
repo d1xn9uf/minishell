@@ -111,6 +111,7 @@ typedef t_token	t_root;
 typedef struct s_lexer
 {
 	t_token		*token;
+	int32_t		tid;
 	uint32_t	sztoken;
 	char		*cmdline;
 	char		*spaced_cmdline;
