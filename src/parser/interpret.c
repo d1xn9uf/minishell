@@ -28,7 +28,7 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 			status = interpret_dollar(token, env, args);
 			if (status)
 				return (status);
-			status = minishell_separate(token);
+			status = minishell_separate(token); // flag
 			if (status)
 				return (status);
 		}
@@ -38,7 +38,7 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 		if (args.flag && minishell_strchr(token->tvalue, '*')
 			&& !token->is_filename)
 			status = interpret_asterisk(token);
-		else if (args.flag) // flag??????????
+		else
 			status = minishell_remove(token);
 		if (status)
 			return (status);
