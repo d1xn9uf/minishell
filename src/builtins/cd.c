@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/04 14:05:55 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 18:11:34 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ t_status	minishell_cd(t_minishell *minishell, char **argv, t_env **l_env)
 		if (argv[1] && argv[2])
 			return (write(STDERR_FILENO, CD_ARGS, 33), STATUS_FAILURE);
 		if (!argv[1])
+		{
 			dest = get_value_unquote(*l_env, "$HOME");
+			if (dest && !*dest)
+				return (minishell_free((void **)&dest),
+					write(STDERR_FILENO, CD_HOME, 27), STATUS_FAILURE);
+		}
 		else
 			dest = get_path(argv[1], *l_env);
 		if (!dest)
@@ -61,7 +66,7 @@ static char	*get_path(char *arg, t_env *l_env)
 	char	*home_path;
 	char	*path;
 
-	if (*arg == '~' && (!arg[1] || arg[1] == '/'))
+	if (arg[0] == '~' && (!arg[1] || arg[1] == '/'))
 	{
 		home_path = get_value_unquote(l_env, "$HOME");
 		if (!home_path)

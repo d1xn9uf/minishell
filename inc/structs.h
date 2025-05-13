@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 13:27:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 16:25:02 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct s_match
 	char			*name;
 	uint32_t		order;
 	struct s_match	*next;
+	struct s_match	*o_next;
 }	t_match;
 
 typedef enum e_default_priority
@@ -196,6 +197,7 @@ typedef struct s_quotes
 typedef struct s_norm_ast
 {
 	t_match		*ns;
+	uint32_t	count;
 	t_token		*rright;
 	bool		first;
 	char		*rep;

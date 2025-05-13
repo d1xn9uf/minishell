@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:04 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:35:05 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 17:47:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_status	minishell_echo(char **argv);
 # define CD_HOME	"minishell_cd: HOME not set\n"
 
 t_status	minishell_cd(t_minishell *minishell, char **argv, t_env **l_env);
-t_status	minishell_pwd(t_minishell *minishell, char **argv, t_env *l_env);
-char		*pwd(t_minishell *minishell, t_env *l_env);
+t_status	minishell_pwd(t_minishell *minishell, char **argv);
+char		*pwd(t_minishell *minishell);
 
 t_status	minishell_export(char **argv, t_env **l_env);
 t_status	export(char *key, char *value, t_env **l_env);

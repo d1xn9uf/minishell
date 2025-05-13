@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 13:41:51 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 17:21:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,14 @@ static t_status	add_name(t_match **ns, char *s)
 	return (STATUS_SUCCESS);
 }
 
-static t_status	add_to_tree(t_token *token, t_match *ns) // order the pzpz
+static t_status	add_to_tree(t_token *token, t_match *ns)
 {
 	t_norm_ast	local;
 	t_status	status;
 
 	local.ns = ns;
+	if (local.ns)
+		minishell_order(&local.ns);
 	local.rright = token->right;
 	local.first = true;
 	local.saver = ns;
@@ -97,7 +99,7 @@ static t_status	add_name_to_tree(t_norm_ast *local)
 	if (local->first && minishell_free((void **)&local->cur->tvalue))
 		local->first = false;
 	local->cur->tvalue = local->rep;
-	local->ns = local->ns->next;
+	local->ns = local->ns->o_next;
 	if (local->ns)
 	{
 		local->cur->right = (t_token *)minishell_calloc(1, sizeof(t_token));

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/12 20:05:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/13 18:19:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 		if (args.flag && minishell_strchr(token->tvalue, '*')
 			&& !token->is_filename)
 			status = interpret_asterisk(token);
-		else
+		else if (args.flag) // flag??????????
 			status = minishell_remove(token);
 		if (status)
 			return (status);
