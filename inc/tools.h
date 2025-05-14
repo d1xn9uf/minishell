@@ -49,6 +49,7 @@ bool		minishell_free(void **p);
 // IS FUNCTIONS
 bool		minishell_isspace(int c);
 bool		minishell_iscmdsep(int c);
+bool		minishell_iscmdop(t_token *token);
 
 // ERROR HANDLING
 void		minishell_error(t_status status);

@@ -12,6 +12,15 @@
 
 #include "../../inc/minishell.h"
 
+bool	minishell_iscmdop(t_token *token)
+{
+	if (token->ttype == TTOKEN_AND_OP
+		|| token->ttype == TTOKEN_OR_OP
+		|| token->ttype == TTOKEN_PIPE)
+		return (true);
+	return (false);
+}
+
 uint32_t	minishell_getokensize(t_token *token)
 {
 	uint32_t	size;

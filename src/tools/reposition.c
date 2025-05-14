@@ -40,12 +40,27 @@ static void	reposition_cmd(t_lexer *lexer, t_token *token, t_token **token_arg)
 	}
 }
 
+static bool	valid_red(t_token *token)
+{
+	t_token	*prev;
+
+	prev = token->prev_token;
+	while (prev && !minishell_iscmdop(prev))
+	{
+		if (prev->ttype == TTOKEN_COMMAND)
+			return (true);
+		prev = prev->prev_token;
+	}
+	return (false);
+}
+
 static void	reposition_token(t_lexer *lexer, t_token *token,
 	t_token **token_arg)
 {
 	if (token->prev_token
-		&& token->prev_token->ttype == TTOKEN_COMMAND)
+		&& valid_red(token))
 	{
+
 		if (token->next_token)
 			*token_arg = token->next_token->next_token;
 	}
