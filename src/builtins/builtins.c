@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 17:47:34 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:15:58 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,6 @@ t_status	exec_builtin(t_minishell *minishell, char **argv)
 	else if (minishell_strequal(argv[0], CD))
 		status = minishell_cd(minishell, argv, &minishell->env);
 	else if (minishell_strequal(argv[0], EXIT))
-		status = minishell_exit(minishell, argv[1]);
+		status = minishell_exit(minishell, argv);
 	return (status);
 }

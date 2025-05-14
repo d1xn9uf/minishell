@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:04 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 17:47:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:15:52 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_status	export_inv(char *arg, t_env **l_env);
 t_status	minishell_unset(char **argv, t_env **l_env);
 t_status	minishell_env(char **argv, t_env *l_env);
 
-t_status	minishell_exit(t_minishell *minishell, char *code);
+t_status	minishell_exit(t_minishell *minishell, char **argv);
 
 # define ECHOO	"echo"
 # define CD		"cd"

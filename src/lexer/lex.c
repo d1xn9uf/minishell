@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:18 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 20:08:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:52:48 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	reposition_token(t_lexer *lexer, t_token *token,
 				t_token **token_arg)
 {
 	t_token	*cmd_token;
+	t_token *tmp;
 
 	cmd_token = NULL;
 	if (token->prev_token)
@@ -71,7 +72,7 @@ static void	reposition_token(t_lexer *lexer, t_token *token,
 	{
 		if (token->next_token)
 		{
-			t_token *tmp = token;
+			tmp = token;
 			while (tmp->next_token)
 			{
 				if (tmp->next_token->ttype == TTOKEN_ARGUMENT)

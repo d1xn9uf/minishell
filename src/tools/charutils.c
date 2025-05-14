@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 13:55:10 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 13:56:58 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:50:01 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ bool	is_low(char c)
 {
 	return ('a' <= c && c <= 'z');
 }
+
 bool	is_anum(char c)
 {
 	return (is_num(c) || is_up(c) || is_low(c));

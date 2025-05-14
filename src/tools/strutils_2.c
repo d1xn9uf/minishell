@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:30 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:27:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:51:15 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,10 @@ static int	ft_split(t_split *split)
 		while ((split->s[i] && split->s[i] != split->c)
 			|| (split->s[i] && split->flags && !split->flags[i]))
 			i++;
-		split->split[split_i] = (char *)minishell_calloc(i - st + 1, sizeof(char));
+		split->split[split_i] = (char *)minishell_calloc(i - st + 1,
+				sizeof(char));
 		if (split->split[split_i] == NULL)
-		{
-			minishell_free_arr(split->split);
-			return (0);
-		}
+			return (minishell_free_arr(split->split), 0);
 		minishell_strlcpy(split->split[split_i], split->s + st, i - st + 1);
 	}
 	split->split[split->count] = NULL;

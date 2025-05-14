@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:02:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 15:12:48 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ static t_status	cd(t_minishell *minishell, char *dest, t_env **l_env)
 	if (!o_pwd)
 		o_pwd = minishell_strdup(minishell->cwd);
 	if (chdir(dest))
-		return (minishell_free((void **)&dest),
+		return (printf("minishell_cd: chdir: failed to change dir\n"),
+			minishell_free((void **)&dest),
 			minishell_free((void **)&o_pwd), STATUS_FAILURE);
 	n_pwd = getcwd(NULL, 0);
 	if (!n_pwd)
