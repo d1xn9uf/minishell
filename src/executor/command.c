@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:19:13 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:08:43 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exec_failed(t_root *cmd_node, int32_t status)
 {
 	if (status == STATUS_CMDNOTFOUND)
 	{
-		while (cmd_node && !cmd_node->tvalue[0])
+		while (cmd_node && !cmd_node->tvalue[0] && cmd_node->is_expanded)
 			cmd_node = cmd_node->right;
 		if (cmd_node)
 		{

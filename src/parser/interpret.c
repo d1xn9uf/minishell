@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:35:01 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 17:54:43 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static t_status	interpret_dollar(t_token *token, t_env *env, t_args args)
 		return (STATUS_MALLOCERR);
 	minishell_free((void **)&token->tvalue);
 	token->tvalue = e_value;
+	token->is_expanded = true;
 	return (STATUS_SUCCESS);
 }
 

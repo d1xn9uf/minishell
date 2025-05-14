@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:32:17 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 17:51:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_token
 	struct s_token	*right;
 	struct s_token	*left;
 	bool			is_filename;
+	bool			is_expanded;
 }	t_token;
 
 typedef t_token	t_root;
