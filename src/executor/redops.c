@@ -27,7 +27,7 @@ t_status	redirect_output(t_root *node, int32_t output_fd)
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 		{
-			perror("Error opening file");
+			perror("minishell");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, output_fd) == -1)
@@ -55,7 +55,7 @@ t_status	redirect_append(t_root *node, int32_t output_fd)
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 		{
-			perror("Error opening file");
+			perror("minishell");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, output_fd) == -1)
@@ -83,7 +83,7 @@ t_status	redirect_input(t_root *node, int32_t input_fd)
 		fd = open(file_node->tvalue, O_RDONLY);
 		if (fd == -1)
 		{
-			perror("Error opening file");
+			perror("minishell");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, input_fd) == -1)

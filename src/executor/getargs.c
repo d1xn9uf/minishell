@@ -70,7 +70,7 @@ static char	**getargs_check(t_minishell *ms, char **argv, t_status *status)
 	}
 	if (!minishell_isbuiltin(argv[0]) && access(argv[0], X_OK))
 	{
-		printf("minishell: permission denied: %s\n", argv[0]);
+		minishell_stderr("minishell: permission denied: ", argv[0], "\n");
 		ms->exit_code = 126;
 		*status = 126;
 		return (minishell_free((void **)&argv), NULL);

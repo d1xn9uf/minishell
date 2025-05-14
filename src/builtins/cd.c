@@ -100,7 +100,7 @@ static t_status	cd(t_minishell *minishell, char *dest, t_env **l_env)
 	n_pwd = getcwd(NULL, 0);
 	if (!n_pwd)
 	{
-		printf("minishell_cd: getcwd: eror retrieving cwd\n");
+		minishell_stderr("minishell_cd: getcwd: error retrieving cwd\n", NULL, NULL);
 		n_pwd = minishell_strjoin3(o_pwd, "/", dest);
 		if (!n_pwd)
 			return (minishell_free((void **)&o_pwd),

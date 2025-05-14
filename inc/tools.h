@@ -53,6 +53,7 @@ bool		minishell_iscmdop(t_token *token);
 
 // ERROR HANDLING
 void		minishell_error(t_status status);
+void		minishell_stderr(char *head, char *middle, char *till);
 
 // CLEAN
 void		minishell_reset(t_minishell *minishell);

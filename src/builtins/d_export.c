@@ -60,7 +60,7 @@ t_status	export_inv(char *arg, t_env **l_env)
 	if (!arg)
 		return (STATUS_MALLOCERR);
 	if (!minishell_validkey(arg))
-		return (printf("minishell_export: %s: not a valid id\n", arg),
+		return (minishell_stderr("minishell_export: ",arg,": not a valid id\n"),
 			minishell_free((void **)&arg), STATUS_FAILURE);
 	node = (t_env *)minishell_calloc(1, sizeof(t_env));
 	if (!node)
@@ -82,7 +82,13 @@ t_status	export_inv(char *arg, t_env **l_env)
 void	invalid_key(char *key, char *value, bool append)
 {
 	if (append)
-		printf("minishell_export: %s+=%s: not a valid id\n", key, value);
+	{
+		minishell_stderr("minishell_export: ", key, "+=");
+		minishell_stderr(value, ": not a valid id\n", NULL);
+	}
 	else
-		printf("minishell_export: %s=%s: not a valid id\n", key, value);
+	{
+		minishell_stderr("minishell_export: ", key, "=");
+		minishell_stderr(value, ": not a valid id\n", NULL);
+	}
 }

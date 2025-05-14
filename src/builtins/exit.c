@@ -27,14 +27,14 @@ t_status	minishell_exit(t_minishell *minishell, char **argv)
 		exit_code = 0;
 	else if (invalid(argv[1]))
 	{
-		printf("minishell_exit: %s: numeric arg required\n", argv[1]);
+		minishell_stderr("minishell_exit: ", argv[1], ": numeric arg required\n");
 		exit_code = 2;
 		inv_arg = true;
 	}
 	else
 		exit_code = minishell_strtoui8(argv[1]);
 	if (argv[1] && argv[2] && !inv_arg)
-		return (printf("minishell_exit: too many arguments\n"),
+		return (minishell_stderr("minishell_exit: too many arguments\n", NULL, NULL),
 			STATUS_FAILURE);
 	minishell_cleanup(minishell, exit_code);
 	return (STATUS_SUCCESS);
