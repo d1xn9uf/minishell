@@ -42,7 +42,8 @@ bool	validate_pipe(t_token *token)
 {
 	if (token->ttype == TTOKEN_PIPE)
 	{
-		if (token->next_token && token->next_token->ttype != TTOKEN_COMMAND)
+		if (token->next_token && (token->next_token->ttype != TTOKEN_COMMAND
+			&& !minishell_isred(token->next_token)))
 			return (false);
 	}
 	return (true);

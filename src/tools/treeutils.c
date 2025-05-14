@@ -23,7 +23,8 @@ t_status	minishell_protect(t_token *root)
 		if (minishell_isred(root) || root->ttype == TTOKEN_PIPE)
 		{
 			status = protect(root);
-			return (status);
+			if (status)
+				return (status);
 		}
 		if (minishell_protect(root->right))
 			return (STATUS_MALLOCERR);

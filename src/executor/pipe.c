@@ -117,7 +117,6 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 	{
 		perror("pipe:");
 		return ;
-		//minishell_cleanup(minishell, EXIT_FAILURE);
 	}
 	g_sig_pid = fork();
 	if (g_sig_pid == CHILD_PROCESS)
