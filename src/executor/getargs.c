@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:23 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 15:19:47 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:28:15 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,26 @@ static void	getargs_setargc(t_root *root, char **argv)
 	argv[count] = 0;
 }
 
+static char	**getargs_check(t_minishell *ms, char **argv, t_status *status)
+{
+	if (!argv[0])
+		return (minishell_free((void **)&argv), NULL);
+	if (!minishell_isbuiltin(argv[0]) && access(argv[0], F_OK))
+	{
+		ms->exit_code = 127;
+		*status = 127;
+		return (minishell_free((void **)&argv), NULL);
+	}
+	if (!minishell_isbuiltin(argv[0]) && access(argv[0], X_OK))
+	{
+		printf("minishell: permission denied: %s\n", argv[0]);
+		ms->exit_code = 126;
+		*status = 126;
+		return (minishell_free((void **)&argv), NULL);
+	}
+	return (argv);
+}
+
 char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 {
 	char		**argv;
@@ -75,20 +95,5 @@ char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 	if (!argv || !argc)
 		return (NULL);
 	getargs_setargc(root, argv);
-	if (!argv[0])
-		return (minishell_free((void **)&argv), NULL);
-	if (!minishell_isbuiltin(argv[0]) && access(argv[0], F_OK))
-	{
-		ms->exit_code = 127;
-		*status = 127;
-		return (minishell_free((void **)&argv), NULL); 
-	}
-	if (!minishell_isbuiltin(argv[0]) && access(argv[0], X_OK))
-	{
-		printf("minishell: permission denied: %s\n", argv[0]);
-		ms->exit_code = 126;
-		*status = 126;
-		return (minishell_free((void **)&argv), NULL);
-	}
-	return (argv);
+	return (getargs_check(ms, argv, status));
 }

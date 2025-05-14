@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 19:31:43 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:26:47 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,4 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 		info[1] = g_sig_pid;
 		handle_parent(minishell, node, pipe_fd, info);
 	}
-	else
-		perror("fork:");
 }

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 15:40:15 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:05:36 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ bool		is_low(char c);
 bool		is_anum(char c);
 
 // REDIRECTION UTILS 
+void		lex_reposition_red(t_lexer *lexer);
 bool		minishell_isred(t_root *node);
 t_status	hdoc_keyword_noquotes(char **keyword);
 char		*minishell_generate_filename(void);

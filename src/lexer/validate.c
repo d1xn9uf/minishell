@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:13 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 13:29:10 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:16:55 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static bool	validate_paren(t_token *token)
 		{
 			if (token->ttype == TTOKEN_PARENTHESE_OPEN)
 			{
-				if (token->next_token && token->next_token->ttype == TTOKEN_PARENTHESE_CLOSE)
+				if (token->next_token
+					&& token->next_token->ttype == TTOKEN_PARENTHESE_CLOSE)
 					return (false);
 				count += minishell_strlen(token->tvalue);
 			}
@@ -42,8 +43,9 @@ bool	validate_pipe(t_token *token)
 {
 	if (token->ttype == TTOKEN_PIPE)
 	{
-		if (token->next_token && (token->next_token->ttype != TTOKEN_COMMAND
-			&& !minishell_isred(token->next_token)))
+		if (token->next_token
+			&& (token->next_token->ttype != TTOKEN_COMMAND
+				&& !minishell_isred(token->next_token)))
 			return (false);
 	}
 	return (true);
@@ -53,9 +55,9 @@ bool	validate_red(t_token *token)
 {
 	if (minishell_isred(token))
 	{
-		if (!token->next_token 
-			||(token->next_token->ttype != TTOKEN_FILE
-			&& token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD))
+		if (!token->next_token
+			|| (token->next_token->ttype != TTOKEN_FILE
+				&& token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD))
 			return (false);
 	}
 	return (true);

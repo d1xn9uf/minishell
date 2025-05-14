@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:15 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:15 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:18:33 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	cmd_split_size(const char *s, uint64_t *count)
 	char	quote;
 
 	flag = false;
-	*count = 0;
 	while (*s)
 	{
 		if (*s == CHAR_SINGLE_QUOTE || *s == CHAR_DOUBLE_QUOTE)
@@ -104,8 +103,10 @@ static t_status	init_split(t_lexer *lexer)
 {
 	uint64_t	size;
 
+	size = 0;
 	cmd_split_size(lexer->spaced_cmdline, &size);
-	lexer->splited_cmdline = (char **)minishell_calloc(size + 1, sizeof(char *));
+	lexer->splited_cmdline = (char **)minishell_calloc(
+			size + 1, sizeof(char *));
 	if (!lexer->splited_cmdline)
 		return (STATUS_MALLOCERR);
 	return (STATUS_SUCCESS);

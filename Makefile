@@ -6,7 +6,7 @@
 #    By: mzary <mzary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 11:33:26 by mzary             #+#    #+#              #
-#    Updated: 2025/05/13 21:19:09 by mzary            ###   ########.fr        #
+#    Updated: 2025/05/14 16:06:29 by mzary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ TOOLS_FILES		= strutils_0.c strutils_1.c strutils_2.c memutils.c \
 				  envutils_0.c envutils_1.c envutils_2.c envutils_3.c \
 				  cleanup.c reset.c error.c redutils.c treeutils.c \
 				  futils.c siginit.c i32tostr.c status.c tokenutils.c \
-				  setters.c charutils.c strutils_3.c
+				  setters.c charutils.c strutils_3.c reposition.c
 BUILTINS_FILES	= cd.c echo.c env.c exit.c export.c d_export.c \
 				  pwd.c unset.c builtins.c
 

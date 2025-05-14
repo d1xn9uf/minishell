@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/08 15:19:04 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:19:13 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
 	}
 	if (minishell_isbuiltin(argv[0]))
 		minishell->exit_code = exec_builtin(minishell, argv);
-	else 
+	else
 		exec_exec(minishell, argv);
 	minishell_free((void **)&argv);
 }

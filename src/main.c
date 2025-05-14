@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:29 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:00:42 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:27:40 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 		if (!(*minishell)->cwd)
 		{
 			printf("minishell_init: error: getcwd: could not get cwd\n");
-		 	return (STATUS_GETCWDINIT);
+			return (STATUS_GETCWDINIT);
 		}
 		(*minishell)->stdfd[0] = dup(STDIN_FILENO);
 		(*minishell)->stdfd[1] = dup(STDOUT_FILENO);
