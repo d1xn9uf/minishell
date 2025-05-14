@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:13:34 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:14:43 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:34:34 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	reposition_cmd(t_lexer *lexer, t_token *token, t_token **token_arg)
 	t_token	*cmd_token;
 	t_token	*tmp;
 
+	cmd_token = NULL;
+	tmp = NULL;
 	if (token->next_token)
 	{
 		tmp = token;
