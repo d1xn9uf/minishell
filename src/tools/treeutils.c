@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:31:19 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/15 11:32:01 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/15 17:59:47 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,12 @@ t_status	minishell_protect(t_token *root)
 			if (status)
 				return (status);
 		}
-		if (minishell_protect(root->right))
-			return (STATUS_MALLOCERR);
-		if (minishell_protect(root->left))
-			return (STATUS_MALLOCERR);
+		status = minishell_protect(root->right);
+		if (status)
+			return (status);
+		status = minishell_protect(root->left);
+		if (status)
+			return (status);
 	}
 	return (STATUS_SUCCESS);
 }

@@ -6,12 +6,12 @@
 #    By: mzary <mzary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 11:33:26 by mzary             #+#    #+#              #
-#    Updated: 2025/05/14 16:06:29 by mzary            ###   ########.fr        #
+#    Updated: 2025/05/15 17:09:09 by mzary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 
 ## minishell headers
 MINISHELL_HDR	= inc/minishell.h

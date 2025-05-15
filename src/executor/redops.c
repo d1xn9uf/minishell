@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:20 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/15 17:31:57 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ t_status	redirect_output(t_root *node, int32_t output_fd)
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 		{
-			perror("minishell");
+			minishell_stderr("minishell: ", file_node->tvalue, NULL);
+			perror(" ");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, output_fd) == -1)
@@ -55,7 +56,8 @@ t_status	redirect_append(t_root *node, int32_t output_fd)
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
 		{
-			perror("minishell");
+			minishell_stderr("minishell: ", file_node->tvalue, NULL);
+			perror(" ");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, output_fd) == -1)
@@ -83,7 +85,8 @@ t_status	redirect_input(t_root *node, int32_t input_fd)
 		fd = open(file_node->tvalue, O_RDONLY);
 		if (fd == -1)
 		{
-			perror("minishell");
+			minishell_stderr("minishell: ", file_node->tvalue, NULL);
+			perror(" ");
 			return (STATUS_FAILURE);
 		}
 		if (dup2(fd, input_fd) == -1)
