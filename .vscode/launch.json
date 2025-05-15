@@ -1,28 +1,33 @@
 {
 	"configurations": [
-	{
-		"name": "(gdb) Launch",
-		"type": "cppdbg",
-		"request": "launch",
-		"program": "${workspaceFolder}/minishell",
-		"args": [],
-		"stopAtEntry": false,
-		"cwd": "${fileDirname}",
-		"environment": [],
-		"externalConsole": false,
-		"MIMode": "gdb",
-		"setupCommands": [
-			{
-				"description": "Enable pretty-printing for gdb",
-				"text": "-enable-pretty-printing",
-				"ignoreFailures": true
-			},
-			{
-				"description": "Set Disassembly Flavor to Intel",
-				"text": "-gdb-set disassembly-flavor intel",
-				"ignoreFailures": true
-			}
-		]
-	}
+		{
+			"name": "(gdb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/minishell", // Path to your executable
+			"args": [], // Arguments to pass to your program
+			"stopAtEntry": false, // Set to true if you want to stop at the entry point
+			"cwd": "${fileDirname}", // Current working directory
+			"environment": [], // Environment variables
+			"externalConsole": false, // Set to true if you want to use an external console
+			"MIMode": "gdb", // Use GDB as the debugger
+			"setupCommands": [
+				{
+					"description": "Follow forked child process",
+					"text": "-ex 'set follow-fork-mode child'", // Follow the child process
+					"ignoreFailures": true
+				},  
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing", // Enable pretty printing
+					"ignoreFailures": true
+				},
+				{
+					"description": "Set Disassembly Flavor to Intel",
+					"text": "-gdb-set disassembly-flavor intel", // Set disassembly flavor
+					"ignoreFailures": true
+				}
+			]
+		}
 	]
 }

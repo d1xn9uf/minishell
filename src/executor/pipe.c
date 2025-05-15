@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:26:47 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/15 14:51:20 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
 		exit(p.status);
 	}
 	if (minishell_isbuiltin(p.argv[0]))
-		exec_builtin(minishell, p.argv);
+		exit(exec_builtin(minishell, p.argv));
 	else
 	{
 		p.envp = minishell_getenvp(minishell->env);
@@ -115,7 +115,7 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 		return ;
 	if (node->ttype == TTOKEN_PIPE && pipe(pipe_fd) == -1)
 	{
-		perror("pipe:");
+		perror("pipe");
 		return ;
 	}
 	g_sig_pid = fork();
