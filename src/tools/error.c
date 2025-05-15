@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:47 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:47 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/15 15:23:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	minishell_error(t_status status)
 		printf("MINISHELL_ERROR : %#08x\n", status);
 }
 
-void	minishell_stderr(char *head, char *middle, char *till)
+bool	minishell_stderr(char *head, char *middle, char *till)
 {
 	if (head)
 		write(STDERR_FILENO, head, minishell_strlen(head));
@@ -27,4 +27,5 @@ void	minishell_stderr(char *head, char *middle, char *till)
 		write(STDERR_FILENO, middle, minishell_strlen(middle));
 	if (till)
 		write(STDERR_FILENO, till, minishell_strlen(till));
+	return (true);
 }

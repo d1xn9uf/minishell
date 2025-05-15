@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:05:36 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/15 15:23:14 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool		minishell_iscmdop(t_token *token);
 
 // ERROR HANDLING
 void		minishell_error(t_status status);
-void		minishell_stderr(char *head, char *middle, char *till);
+bool		minishell_stderr(char *head, char *middle, char *till);
 
 // CLEAN
 void		minishell_reset(t_minishell *minishell);
