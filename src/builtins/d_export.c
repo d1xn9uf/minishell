@@ -60,7 +60,8 @@ t_status	export_inv(char *arg, t_env **l_env)
 	if (!arg)
 		return (STATUS_MALLOCERR);
 	if (!minishell_validkey(arg))
-		return (minishell_stderr("minishell_export: ",arg,": not a valid id\n"),
+		return (minishell_stderr("minishell_export: ",
+				arg, ": not a valid id\n"),
 			minishell_free((void **)&arg), STATUS_FAILURE);
 	node = (t_env *)minishell_calloc(1, sizeof(t_env));
 	if (!node)

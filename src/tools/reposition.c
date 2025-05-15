@@ -12,6 +12,27 @@
 
 #include "../../inc/tools.h"
 
+static t_token	*get_target_token(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	while (token)
+	{
+		if (token->ttype == TTOKEN_COMMAND)
+		{
+			while (token)
+			{
+				if (minishell_isred(token))
+					return (token);
+				token = token->next_token;
+			}
+			break ;
+		}
+		token = token->prev_token;
+	}
+	return (NULL);
+}
+
 static void	reposition_cmd(t_lexer *lexer, t_token *token, t_token **token_arg)
 {
 	t_token	*cmd_token;
@@ -72,6 +93,7 @@ void	lex_reposition_red(t_lexer *lexer)
 	t_token	*token;
 	t_token	*token_arg;
 	t_token	*arg_tmp;
+	t_token	*target;
 
 	token = lexer->token;
 	token_arg = NULL;
@@ -85,7 +107,8 @@ void	lex_reposition_red(t_lexer *lexer)
 				while (token_arg && token_arg->ttype == TTOKEN_ARGUMENT)
 				{
 					arg_tmp = token_arg->next_token;
-					move_token(&lexer->token, token_arg->tid, token->tid);
+					target = get_target_token(token);
+					move_token(&lexer->token, token_arg->tid, target->tid);
 					token_arg = arg_tmp;
 				}
 			}

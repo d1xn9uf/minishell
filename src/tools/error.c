@@ -18,6 +18,7 @@ void	minishell_error(t_status status)
 		&& status != STATUS_HDOCSIGINT)
 		printf("MINISHELL_ERROR : %#08x\n", status);
 }
+
 void	minishell_stderr(char *head, char *middle, char *till)
 {
 	if (head)
