@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 15:49:08 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 17:01:07 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ static t_status	separate(t_token *token, char **splits)
 		return (STATUS_MALLOCERR);
 	minishell_free((void **)&token->tvalue);
 	token->tvalue = value;
-	i = 1;
-	while (splits[i])
+	i = 0;
+	while (splits[++i])
 	{
 		token->right = (t_token *)minishell_calloc(1, sizeof(t_token));
 		if (!token->right)
@@ -83,8 +83,8 @@ static t_status	separate(t_token *token, char **splits)
 		if (!token->right->tvalue && minishell_free((void **)&token->right))
 			return (token->right = last_right, STATUS_MALLOCERR);
 		token->right->ttype = TTOKEN_ARGUMENT;
-		i += 1;
 		token = token->right;
+		token->is_expanded = true;
 		token->left = NULL;
 	}
 	return (token->right = last_right, STATUS_SUCCESS);

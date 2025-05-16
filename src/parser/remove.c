@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:54 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:24:32 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:58:56 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_status	minishell_remove(t_token *token)
 {
 	t_quotes	vars;
 
+	if (token->is_expanded)
+		return (STATUS_SUCCESS);
 	minishell_memset(&vars, 0, sizeof(t_quotes));
 	vars.flags = get_flags_quotes(token->tvalue);
 	if (!vars.flags)
