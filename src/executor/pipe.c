@@ -6,14 +6,14 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/15 14:51:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:26:41 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/executor.h"
 
-static void	setup_input_output(t_root *node, int32_t input_fd,
-		int32_t output_fd)
+static void	setup_input_output(t_root *node,
+		int32_t input_fd, int32_t output_fd)
 {
 	if (input_fd != 0 || node->hd.is_hd)
 	{
@@ -53,8 +53,10 @@ static void	exec_redirect_if_needed(t_minishell *minishell, t_root *node,
 		else
 			rnode = node->left;
 		exec_redirect(minishell, rnode, input_fd, output_fd);
+		cleanup_fds(minishell);
 		exit(minishell->exit_code);
 	}
+	cleanup_fds(minishell);
 }
 
 static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,

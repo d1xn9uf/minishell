@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:25 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:25 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:03:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_status	minishell_executor(t_minishell *minishell)
 	t_status	status;
 
 	status = 0;
-	executor_handle_hdoc(minishell->root, &status);
+	executor_handle_hdoc(minishell, minishell->root, &status);
 	if (status)
 	{
 		if (status == STATUS_HDOCSIGINT)

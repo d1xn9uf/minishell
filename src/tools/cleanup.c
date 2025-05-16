@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:51 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:52 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:31:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,22 @@ void	minishell_cleanup(t_minishell *minishell, int32_t exit_status)
 	minishell_free((void **)&minishell);
 	rl_clear_history();
 	exit(exit_status);
+}
+
+static void	close_hdoc_fds(t_root *root)
+{
+	if (root)
+	{
+		close_hdoc_fds(root->left);
+		close_hdoc_fds (root->right);
+		if (root->hd.is_hd)
+			close(root->hd.fd);
+	}
+}
+
+void	cleanup_fds(t_minishell *minishell)
+{
+	close(minishell->stdfd[0]);
+	close(minishell->stdfd[1]);
+	close_hdoc_fds(minishell->root);
 }

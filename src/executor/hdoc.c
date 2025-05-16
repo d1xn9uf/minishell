@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:22 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 17:50:09 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:30:56 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@ static char	*insert_newline(char *buffer)
 	return (buffer_nl);
 }
 
-static void	hdoc_input(int32_t fd, char *keyword)
+static void	hdoc_input(char *filename, char *keyword)
 {
 	char	*buffer;
 	char	*buffer_nl;
+	int		fd;
 
+	fd = open(filename, O_RDWR);
+	if (fd == -1)
+		exit(STATUS_HDOCFAILED);
 	while (true)
 	{
 		buffer = readline("> ");
@@ -81,39 +85,39 @@ static t_status	hdoc_keyword_file(t_root *cmd_node, t_root *hdoc_node,
 	}
 	cmd_node->hd.filename = minishell_generate_filename();
 	cmd_node->hd.fd = open(cmd_node->hd.filename, O_CREAT | O_RDWR, 0644);
+	if (cmd_node->hd.fd == -1)
+		return (STATUS_FAILURE);
 	return (STATUS_SUCCESS);
 }
 
-static t_status	handle_hdoc(t_root *cmd_node, t_root *hdoc_node)
+static t_status	handle_hdoc(t_minishell *minishell,
+		t_root *cmd_node, t_root *hdoc_node)
 {
-	int32_t	fd;
 	int32_t	status;
 	char	*keyword;
 
 	status = hdoc_keyword_file(cmd_node, hdoc_node, &keyword);
 	if (status || !cmd_node->hd.filename || cmd_node->hd.fd == -1)
 		return (STATUS_HDOCFAILED);
+	cmd_node->hd.is_hd = true;
 	g_sig_pid = fork();
 	if (g_sig_pid == CHILD_PROCESS)
 	{
 		signal(SIGINT, SIG_DFL);
-		fd = open(cmd_node->hd.filename, O_RDWR);
-		if (fd == -1)
-			exit(STATUS_HDOCFAILED);
-		hdoc_input(fd, keyword);
-		minishell_free((void **)&keyword);
+		cleanup_fds(minishell);
+		hdoc_input(cmd_node->hd.filename, keyword);
 	}
 	if (!cmd_node->hd.is_expand)
 		minishell_free((void **)&keyword);
 	status = 0;
 	waitpid(-1, &status, 0);
-	cmd_node->hd.is_hd = true;
 	if (WTERMSIG(status) == SIGINT)
 		return (STATUS_HDOCSIGINT);
 	return (STATUS_SUCCESS);
 }
 
-void	executor_handle_hdoc(t_root *root, t_status *status)
+void	executor_handle_hdoc(t_minishell *minishell,
+			t_root *root, t_status *status)
 {
 	t_root	*cmd_node;
 	t_root	*hdoc_right;
@@ -129,13 +133,13 @@ void	executor_handle_hdoc(t_root *root, t_status *status)
 			if (hdoc_right->ttype == TTOKEN_HEREDOC && !hdoc_right->hd.tmp_hd)
 			{
 				hdoc_right->hd.tmp_hd = true;
-				*status = handle_hdoc(cmd_node, hdoc_right);
+				*status = handle_hdoc(minishell, cmd_node, hdoc_right);
 				if (*status)
 					return ;
 			}
 			hdoc_right = hdoc_right->right;
 		}
 	}
-	executor_handle_hdoc(root->left, status);
-	executor_handle_hdoc(root->right, status);
+	executor_handle_hdoc(minishell, root->left, status);
+	executor_handle_hdoc(minishell, root->right, status);
 }

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:49:53 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:32:20 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,8 @@ static t_status	cd(t_minishell *minishell, char *dest, t_env **l_env)
 		minishell_stderr("minishell_cd: getcwd: error retrieving cwd\n",
 			NULL, NULL);
 		n_pwd = minishell_strjoin3(o_pwd, "/", dest);
-		if (!n_pwd)
-			return (minishell_free((void **)&o_pwd),
-				minishell_free((void **)&dest), STATUS_MALLOCERR);
+		if (!n_pwd && minishell_free((void **)&o_pwd))
+			return (minishell_free((void **)&dest), STATUS_MALLOCERR);
 	}
 	minishell_free((void **)&dest);
 	if (update_wd(minishell, o_pwd, n_pwd, l_env))

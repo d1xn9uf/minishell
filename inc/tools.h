@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/15 15:23:14 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:08:05 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ bool		minishell_stderr(char *head, char *middle, char *till);
 // CLEAN
 void		minishell_reset(t_minishell *minishell);
 void		minishell_cleanup(t_minishell *minishell, int32_t exit_status);
+void		cleanup_fds(t_minishell *minishell);
 void		minishell_free_arr(char **arr);
 void		minishell_free_token(t_token *token);
 

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 18:08:43 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:30:29 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		if (!envp)
 			exit(EXIT_FAILURE);
 		execve(argv[0], argv, envp);
+		cleanup_fds(minishell);
 		minishell_free_arr(envp);
 		exit(EXIT_FAILURE);
 	}

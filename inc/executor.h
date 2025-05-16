@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:03 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:35:03 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 16:02:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_status	redirect_output(t_root *node, int32_t output_fd);
 t_status	redirect_append(t_root *node, int32_t output_fd);
 t_status	redirect_input(t_root *node, int32_t input_fd);
 t_status	redirect_hdoc(t_root *cmd_node, int32_t input_fd);
-void		executor_handle_hdoc(t_root *root, t_status *status);
+void		executor_handle_hdoc(t_minishell *minishell,
+				t_root *root, t_status *status);
 char		**executor_getargs(t_root *root, t_minishell *ms, t_status *status);
 
 #endif

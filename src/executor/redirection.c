@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 19:29:50 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/16 15:50:29 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,16 +65,22 @@ static t_status	handle_ioa(t_root *node, t_root *cmd_node, int32_t input_fd,
 static bool	fd_bkp(int bkpfd[], int32_t input_fd, int32_t output_fd)
 {
 	bkpfd[0] = dup(input_fd);
-	bkpfd[1] = dup(output_fd);
-	if (bkpfd[0] == -1 || bkpfd[1] == -1)
+	if (bkpfd[0] == -1)
 	{
+		perror("exec_redirect");
+		return (false);
+	}
+	bkpfd[1] = dup(output_fd);
+	if (bkpfd[1] == -1)
+	{
+		close(bkpfd[0]);
 		perror("exec_redirect");
 		return (false);
 	}
 	return (true);
 }
 
-static void	fd_indobkp(int32_t fds[], int32_t input_fd, int32_t output_fd)
+static void	fd_undobkp(int32_t fds[], int32_t input_fd, int32_t output_fd)
 {
 	dup2(fds[0], input_fd);
 	dup2(fds[1], output_fd);
@@ -98,7 +104,7 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 		|| handle_ioa(node, cmd_node, input_fd, output_fd))
 	{
 		minishell->exit_code = 1;
-		fd_indobkp(bkpfd, input_fd, output_fd);
+		fd_undobkp(bkpfd, input_fd, output_fd);
 		return ;
 	}
 	if (cmd_node && cmd_node->hd.is_hd)
@@ -108,5 +114,5 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 	if (cmd_node->hd.is_hd && setbool(&cmd_node->hd.is_hd, false)
 		&& minishell_free((void **)&cmd_node->hd.filename))
 		close(cmd_node->hd.fd);
-	fd_indobkp(bkpfd, input_fd, output_fd);
+	fd_undobkp(bkpfd, input_fd, output_fd);
 }
