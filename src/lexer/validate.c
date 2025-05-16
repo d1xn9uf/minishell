@@ -59,7 +59,7 @@ bool	validate_pipe_and_or(t_token *token)
 		if (token->next_token
 			&& (token->next_token->ttype != TTOKEN_COMMAND
 				&& !minishell_isred(token->next_token))
-				&& token->next_token->ttype != TTOKEN_PARENTHESE_OPEN)
+			&& token->next_token->ttype != TTOKEN_PARENTHESE_OPEN)
 			return (false);
 	}
 	if (token->ttype == TTOKEN_AND_OP || token->ttype == TTOKEN_OR_OP)

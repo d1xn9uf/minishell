@@ -26,7 +26,8 @@ t_status	minishell_init(t_minishell **minishell, char **env)
 		(*minishell)->cwd = getcwd(NULL, 0);
 		if (!(*minishell)->cwd)
 		{
-			minishell_stderr("minishell_init: error: getcwd: could not get cwd\n",
+			minishell_stderr(
+				"minishell_init: error: getcwd: could not get cwd\n",
 				NULL, NULL);
 			return (STATUS_GETCWDINIT);
 		}

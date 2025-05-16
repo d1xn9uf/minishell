@@ -125,8 +125,7 @@ void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
 			close(pipe_fd[PIPE_READ_END]);
 		if (node->ttype == TTOKEN_PIPE)
 			pipeit_child(minishell, node, input_fd, pipe_fd[PIPE_WRITE_END]);
-		else
-			pipeit_child(minishell, node, input_fd, minishell->stdfd[1]);
+		pipeit_child(minishell, node, input_fd, minishell->stdfd[1]);
 	}
 	else if (g_sig_pid > 0)
 	{
