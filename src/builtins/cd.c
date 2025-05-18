@@ -36,9 +36,8 @@ t_status	minishell_cd(t_minishell *minishell, char **argv, t_env **l_env)
 			dest = get_path(argv[1], *l_env);
 		if (!dest)
 			return (STATUS_MALLOCERR);
-		if (!argv[1] && !*dest)
-			return (minishell_free((void **)&dest),
-				write(STDERR_FILENO, CD_HOME, 27), STATUS_CMDFAILED);
+		if (!*dest)
+			return (minishell_free((void **)&dest), STATUS_FAILURE);
 		return (cd(minishell, dest, l_env));
 	}
 	return (STATUS_FAILURE);
@@ -69,6 +68,7 @@ static char	*get_value_unquote(t_env *l_env, char *key)
 static char	*get_path(char *arg, t_env *l_env)
 {
 	char	*home_path;
+	char	*old_pwd;
 	char	*path;
 
 	if (arg[0] == '~' && (!arg[1] || arg[1] == '/'))
@@ -76,9 +76,18 @@ static char	*get_path(char *arg, t_env *l_env)
 		home_path = get_value_unquote(l_env, "$HOME");
 		if (!home_path)
 			return (NULL);
+		if (!*home_path)
+			return (write(STDERR_FILENO, CD_HOME, 27), home_path);
 		path = minishell_strjoin(home_path, arg + 1);
 		minishell_free((void **)&home_path);
 		return (path);
+	}
+	else if (minishell_strequal(arg, "-"))
+	{
+		old_pwd = get_value_unquote(l_env, "$OLDPWD");
+		if (old_pwd && !*old_pwd)
+			write(STDERR_FILENO, CD_OPWD, 29);
+		return (old_pwd);
 	}
 	return (minishell_strdup(arg));
 }

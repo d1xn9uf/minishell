@@ -19,6 +19,7 @@ t_status	minishell_echo(char **argv);
 
 # define CD_ARGS	"minishell_cd: too many arguments\n"
 # define CD_HOME	"minishell_cd: HOME not set\n"
+# define CD_OPWD	"minishell_cd: OLDPWD not set\n"
 
 t_status	minishell_cd(t_minishell *minishell, char **argv, t_env **l_env);
 t_status	minishell_pwd(t_minishell *minishell, char **argv);
