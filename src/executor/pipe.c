@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:26:41 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/19 14:53:05 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	exec_redirect_if_needed(t_minishell *minishell, t_root *node,
 		cleanup_fds(minishell, true);
 		exit(minishell->exit_code);
 	}
-	// cleanup_fds(minishell, true); ????
+	cleanup_fds(minishell, true);
 }
 
 static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
