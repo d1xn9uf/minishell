@@ -53,10 +53,10 @@ static void	exec_redirect_if_needed(t_minishell *minishell, t_root *node,
 		else
 			rnode = node->left;
 		exec_redirect(minishell, rnode, input_fd, output_fd);
-		cleanup_fds(minishell);
+		cleanup_fds(minishell, true);
 		exit(minishell->exit_code);
 	}
-	cleanup_fds(minishell);
+	// cleanup_fds(minishell, true); ????
 }
 
 static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,

@@ -24,6 +24,20 @@ t_status	siginit_init(int32_t signum, void (*sighandler)(int32_t))
 	return (STATUS_SUCCESS);
 }
 
+void	sigint_hdoc(int32_t signum)
+{
+	int32_t	fd;
+
+	fd = 3;
+	(void)signum;
+	while (fd < MAX_FD)
+	{
+		close(fd);
+		fd++;
+	}
+	exit(STATUS_HDOCSIGINT);
+}
+
 void	sigint_handler(int32_t signum)
 {
 	(void)signum;

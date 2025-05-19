@@ -25,7 +25,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <dirent.h>
-# include <termios.h>
+# include <errno.h>
 # include "structs.h"
 # include "lexer.h"
 # include "parser.h"

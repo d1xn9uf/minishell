@@ -41,7 +41,7 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		if (!envp)
 			exit(EXIT_FAILURE);
 		execve(argv[0], argv, envp);
-		cleanup_fds(minishell);
+		cleanup_fds(minishell, true);
 		minishell_free_arr(envp);
 		exit(EXIT_FAILURE);
 	}

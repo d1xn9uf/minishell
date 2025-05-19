@@ -67,9 +67,12 @@ static void	close_hdoc_fds(t_root *root)
 	}
 }
 
-void	cleanup_fds(t_minishell *minishell)
+void	cleanup_fds(t_minishell *minishell, bool closebkp)
 {
-	close(minishell->stdfd[0]);
-	close(minishell->stdfd[1]);
+	if (closebkp)
+	{
+		close(minishell->stdfd[0]);
+		close(minishell->stdfd[1]);
+	}
 	close_hdoc_fds(minishell->root);
 }

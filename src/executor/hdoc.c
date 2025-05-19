@@ -67,6 +67,7 @@ static t_status	hdoc_keyword_file(t_root *cmd_node, t_root *hdoc_node,
 		*keyword = hdoc_node->right->tvalue;
 	else
 		*keyword = hdoc_node->right->left->tvalue;
+	cmd_node->hd.is_expand = true;
 	if (minishell_strchr(*keyword, CHAR_SINGLE_QUOTE)
 		|| minishell_strchr(*keyword, CHAR_DOUBLE_QUOTE))
 	{
@@ -74,8 +75,6 @@ static t_status	hdoc_keyword_file(t_root *cmd_node, t_root *hdoc_node,
 		if (hdoc_keyword_noquotes(keyword))
 			return (STATUS_HDOCFAILED);
 	}
-	else
-		cmd_node->hd.is_expand = true;
 	if (cmd_node->hd.is_hd)
 	{
 		unlink(cmd_node->hd.filename);
@@ -103,8 +102,8 @@ static t_status	handle_hdoc(t_minishell *minishell,
 	g_sig_pid = fork();
 	if (g_sig_pid == CHILD_PROCESS)
 	{
-		signal(SIGINT, SIG_DFL);
-		cleanup_fds(minishell);
+		signal(SIGINT, sigint_hdoc);
+		cleanup_fds(minishell, true);
 		hdoc_input(cmd_node->hd.filename, keyword);
 	}
 	if (!cmd_node->hd.is_expand)
@@ -112,7 +111,10 @@ static t_status	handle_hdoc(t_minishell *minishell,
 	status = 0;
 	waitpid(-1, &status, 0);
 	if (WTERMSIG(status) == SIGINT)
+	{
+		cleanup_fds(minishell, false);
 		return (STATUS_HDOCSIGINT);
+	}
 	return (STATUS_SUCCESS);
 }
 

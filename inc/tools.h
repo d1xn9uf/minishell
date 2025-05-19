@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 
+# define MAX_FD 1024
 # define FREAD_SIZE 1024
 # define FNAME_SIZE 20
 # define MAX_SINT64	"9223372036854775807"
@@ -58,7 +59,7 @@ bool		minishell_stderr(char *head, char *middle, char *till);
 // CLEAN
 void		minishell_reset(t_minishell *minishell);
 void		minishell_cleanup(t_minishell *minishell, int32_t exit_status);
-void		cleanup_fds(t_minishell *minishell);
+void		cleanup_fds(t_minishell *minishell, bool closestd);
 void		minishell_free_arr(char **arr);
 void		minishell_free_token(t_token *token);
 
@@ -93,6 +94,7 @@ char		*minishell_readfile(char *filename);
 
 // SIGNALS
 t_status	minishell_siginit(void);
+void		sigint_hdoc(int32_t signum);
 
 // EXIT STATUS
 void		minishell_setstatus(t_minishell *minishell, int status);

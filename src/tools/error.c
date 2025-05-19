@@ -14,8 +14,11 @@
 
 void	minishell_error(t_status status)
 {
-	if (status != STATUS_EMPTYCMD
-		&& status != STATUS_HDOCSIGINT)
+	if (status == STATUS_EMPTYCMD || status == STATUS_HDOCSIGINT)
+		return ;
+	else if (status == STATUS_SYNTAXERR)
+		minishell_stderr("minishell: SYNTAX_ERROR\n", NULL, NULL);
+	else
 		printf("MINISHELL_ERROR : %#08x\n", status);
 }
 

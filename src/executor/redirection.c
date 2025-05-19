@@ -80,10 +80,19 @@ static bool	fd_bkp(int bkpfd[], int32_t input_fd, int32_t output_fd)
 	return (true);
 }
 
-static void	fd_undobkp(int32_t fds[], int32_t input_fd, int32_t output_fd)
+static void	fd_undobkp(t_minishell *minishell,
+		int32_t fds[], int32_t input_fd, int32_t output_fd)
 {
-	dup2(fds[0], input_fd);
-	dup2(fds[1], output_fd);
+	if (dup2(fds[0], input_fd) == -1)
+	{
+		perror("dup2");
+		minishell_cleanup(minishell, STATUS_FAILURE);
+	}
+	if (dup2(fds[1], output_fd) == -1)
+	{
+		perror("dup2");
+		minishell_cleanup(minishell, STATUS_FAILURE);
+	}
 	close(fds[0]);
 	close(fds[1]);
 }
@@ -104,7 +113,7 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 		|| handle_ioa(node, cmd_node, input_fd, output_fd))
 	{
 		minishell->exit_code = 1;
-		fd_undobkp(bkpfd, input_fd, output_fd);
+		fd_undobkp(minishell, bkpfd, input_fd, output_fd);
 		return ;
 	}
 	if (cmd_node && cmd_node->hd.is_hd)
@@ -114,5 +123,5 @@ void	exec_redirect(t_minishell *minishell, t_root *node, int32_t input_fd,
 	if (cmd_node->hd.is_hd && setbool(&cmd_node->hd.is_hd, false)
 		&& minishell_free((void **)&cmd_node->hd.filename))
 		close(cmd_node->hd.fd);
-	fd_undobkp(bkpfd, input_fd, output_fd);
+	fd_undobkp(minishell, bkpfd, input_fd, output_fd);
 }
