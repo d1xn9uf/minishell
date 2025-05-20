@@ -102,10 +102,10 @@ typedef struct s_token
 	struct s_token	*prev_token;
 	uint32_t		priority;
 	t_hd			hd;
-	struct s_token	*right;
-	struct s_token	*left;
 	bool			is_filename;
 	bool			is_expanded;
+	struct s_token	*right;
+	struct s_token	*left;
 }	t_token;
 
 typedef t_token	t_root;

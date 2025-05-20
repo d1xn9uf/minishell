@@ -110,7 +110,7 @@ static t_status	handle_hdoc(t_minishell *minishell,
 		minishell_free((void **)&keyword);
 	status = 0;
 	waitpid(-1, &status, 0);
-	if (WTERMSIG(status) == SIGINT)
+	if (WEXITSTATUS(status) == STATUS_HDOCSIGINT)
 	{
 		cleanup_fds(minishell, false);
 		return (STATUS_HDOCSIGINT);

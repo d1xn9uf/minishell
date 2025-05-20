@@ -29,6 +29,7 @@ t_status	hdoc_keyword_noquotes(char **keyword)
 	t_token		interim;
 	t_status	status;
 
+	minishell_memset(&interim, 0, sizeof(t_token));
 	interim.tvalue = minishell_strdup(*keyword);
 	if (!interim.tvalue)
 		return (STATUS_MALLOCERR);
