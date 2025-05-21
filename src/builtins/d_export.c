@@ -6,13 +6,14 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:21:58 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/21 16:34:40 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 
 static void	reset_chosen(t_env *env);
+static bool	already_in(char *arg, t_env *env);
 
 t_status	default_export(t_env *env)
 {
@@ -59,6 +60,9 @@ t_status	export_inv(char *arg, t_env **l_env)
 
 	if (!arg)
 		return (STATUS_MALLOCERR);
+	if (already_in(arg, *l_env))
+		return (minishell_free((void **)&arg),
+			STATUS_SUCCESS);
 	if (!minishell_validkey(arg))
 		return (minishell_stderr("minishell_export: ",
 				arg, ": not a valid id\n"),
@@ -67,10 +71,6 @@ t_status	export_inv(char *arg, t_env **l_env)
 	if (!node)
 		return (minishell_free((void **)&arg), STATUS_MALLOCERR);
 	node->key = arg;
-	node->value = NULL;
-	node->next_key = NULL;
-	node->chosen = false;
-	node->valid = false;
 	if (!*l_env)
 		return (*l_env = node, STATUS_SUCCESS);
 	last = *l_env;
@@ -92,4 +92,15 @@ void	invalid_key(char *key, char *value, bool append)
 		minishell_stderr("minishell_export: ", key, "=");
 		minishell_stderr(value, ": not a valid id\n", NULL);
 	}
+}
+
+static bool	already_in(char *arg, t_env *env)
+{
+	while (env)
+	{
+		if (minishell_strequal(arg, env))
+			return (true);
+		env = env->next_key;
+	}
+	return (false);
 }
