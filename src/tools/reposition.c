@@ -43,7 +43,7 @@ static void	reposition_cmd(t_lexer *lexer, t_token *token, t_token **token_arg)
 	if (token->next_token)
 	{
 		tmp = token;
-		while (tmp->next_token)
+		while (tmp->next_token && !minishell_iscmdop(tmp->next_token))
 		{
 			if (tmp->next_token->ttype == TTOKEN_ARGUMENT)
 			{
