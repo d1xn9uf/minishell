@@ -42,6 +42,7 @@ static t_substr	*get_subs(char *s)
 			break ;
 		i += 1;
 	}
+	i += (q == s[i]);
 	node = (t_substr *)minishell_calloc(1, sizeof(t_substr));
 	if (!node)
 		return (minishell_freesubs(head), NULL);
