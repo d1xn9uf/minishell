@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:08:05 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 18:12:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ void		minishell_setstatus(t_minishell *minishell, int status);
 
 // TREE UTILS
 t_status	minishell_protect(t_token *root);
+void		fix_tree(t_token *token);
+void		clean_tree(t_token *token);
 
 // NORM UTILS
 bool		setuint32(uint32_t *i, uint32_t v);

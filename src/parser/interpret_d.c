@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   trans_utils.c                                      :+:      :+:    :+:   */
+/*   interpret_d.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 15:00:14 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 17:23:29 by mzary            ###   ########.fr       */
+/*   Created: 2025/05/22 17:45:33 by mzary             #+#    #+#             */
+/*   Updated: 2025/05/22 17:45:35 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
-t_status	update_command(t_token *token, t_env *env) // root case
+t_status	interpret_dollar(t_token *token, t_env *env, t_args args)
 {
-	t_status	s;
-	char		*temp;
+	char	*e_value;
 
-	if (token->is_expanded && !token->tvalue[0] && token->right)
-		token->right->ttype = TTOKEN_COMMAND;
-	else
-	{
-		s = minishell_remove(token);
-		if (s)
-			return (s);
-		temp = minishell_getpath(env, token->tvalue, &s);
-		if (!temp)
-			return (s);
-		minishell_free((void **)&token->tvalue);
-		token->tvalue = temp;
-	}
+	e_value = minishell_expand(token->tvalue, env, args);
+	if (!e_value)
+		return (STATUS_MALLOCERR);
+	minishell_free((void **)&token->tvalue);
+	token->tvalue = e_value;
+	token->is_expanded = true;
 	return (STATUS_SUCCESS);
 }

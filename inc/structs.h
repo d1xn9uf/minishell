@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 17:51:26 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 18:06:13 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,24 +74,20 @@ typedef enum e_status
 	STATUS_GETCWDINIT		= 0x000080
 }	t_status;
 
-typedef struct s_env
+typedef struct s_minishell
 {
-	char			*key;
-	char			*value;
-	struct s_env	*next_key;
+	char			*prompt;
+	char			*cmdline;
+	t_env			*env;
+	char			*cwd;
+	t_lexer			*lexer;
+	t_root			*root;
+	int32_t			stdfd[2];
+	bool			pipe_exit;
+	int32_t			exit_code;
+}	t_minishell;
 
-	bool			chosen;
-	bool			valid;
-}	t_env;
-
-typedef struct s_hd
-{
-	bool	tmp_hd;
-	bool	is_hd;
-	bool	is_expand;
-	char	*filename;
-	int32_t	fd;
-}	t_hd;
+/****************general****************/
 
 typedef struct s_token
 {
@@ -120,18 +116,21 @@ typedef struct s_lexer
 	char		**splited_cmdline;
 }	t_lexer;
 
-typedef struct s_minishell
+/*****************parsing*****************/
+
+typedef struct s_interp
 {
-	char			*prompt;
-	char			*cmdline;
-	t_env			*env;
-	char			*cwd;
-	t_lexer			*lexer;
-	t_root			*root;
-	int32_t			stdfd[2];
-	bool			pipe_exit;
-	int32_t			exit_code;
-}	t_minishell;
+	struct s_substr	*subs;
+
+}	t_interp;
+
+typedef struct s_substr
+{
+	char			q_type;
+	char			*value;
+	uint32_t		q_index[2];
+	struct s_substr	*next;
+}	t_substr;
 
 typedef struct s_match
 {
@@ -215,6 +214,29 @@ typedef struct s_split
 	char	**split;
 }	t_split;
 
+/***************environment***************/
+
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next_key;
+
+	bool			chosen;
+	bool			valid;
+}	t_env;
+
+/******************execution****************/
+
+typedef struct s_hd
+{
+	bool	tmp_hd;
+	bool	is_hd;
+	bool	is_expand;
+	char	*filename;
+	int32_t	fd;
+}	t_hd;
+
 typedef struct s_norm_pipe
 {
 	char		**argv;
@@ -225,4 +247,5 @@ typedef struct s_norm_pipe
 
 extern pid_t	g_sig_pid;
 
+/******************************************/
 #endif
