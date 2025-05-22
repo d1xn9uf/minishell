@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 17:01:07 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 21:21:46 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static t_status	separate(t_token *token, char **splits)
 			return (token->right = last_right, STATUS_MALLOCERR);
 		token->right->ttype = TTOKEN_ARGUMENT;
 		token = token->right;
-		token->is_expanded = true;
 		token->left = NULL;
 	}
 	return (token->right = last_right, STATUS_SUCCESS);

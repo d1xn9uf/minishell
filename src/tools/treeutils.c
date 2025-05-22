@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:31:19 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 18:11:49 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 21:33:49 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,17 @@ void	clean_tree(t_token *token)
 		clean_tree(token->left);
 		clean_tree(token->right);
 	}
+}
+
+bool	minishell_freesubs(t_substr *head)
+{
+	t_substr	*next;
+	while (head)
+	{
+		next = head->next;
+		minishell_free((void **)&head->value);
+		minishell_free((void **)&head);
+		head = next;
+	}
+	return (true);
 }

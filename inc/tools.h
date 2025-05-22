@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 21:42:46 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char		*minishell_i32tostr(int32_t nbr);
 uint8_t		minishell_strtoui8(char *str);
 
 char		*minishell_strjoin3(char *s1, char *s2, char *s3);
+char		*minishell_substr(char *str, uint32_t s, uint32_t e);
 
 // MEMORY UTILS
 void		*minishell_memset(void *b, int c, size_t len);
@@ -103,6 +104,7 @@ void		minishell_setstatus(t_minishell *minishell, int status);
 t_status	minishell_protect(t_token *root);
 void		fix_tree(t_token *token);
 void		clean_tree(t_token *token);
+bool		minishell_freesubs(t_substr *head);
 
 // NORM UTILS
 bool		setuint32(uint32_t *i, uint32_t v);

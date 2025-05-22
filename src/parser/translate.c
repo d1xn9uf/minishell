@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:13 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 21:28:29 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,20 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 {
 	t_status	s;
 
-	if (!token)
+	if (!token || !token->tvalue)
 		return (STATUS_SUCCESS);
-	s = minishell_interpret(token, env, args);
-	if (s)
-		return (s);
-	if (args.step == 1 && token->ttype == TTOKEN_COMMAND
-		&& !minishell_isbuiltin(token->tvalue))
+	if (!token->is_interpreted)
 	{
-		s = update_command(token, env);
+		s = minishell_interpret(token, env, args);
 		if (s)
 			return (s);
+		if (args.step == 1 && token->ttype == TTOKEN_COMMAND
+			&& !minishell_isbuiltin(token->tvalue))
+		{
+			s = update_command(token, env);
+			if (s)
+				return (s);
+		}
 	}
 	args.flag = check_flag(token);
 	s = update(token->right, env, args);

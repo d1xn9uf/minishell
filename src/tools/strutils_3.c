@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:51:41 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 20:53:49 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 21:42:15 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,20 @@ char	*minishell_strjoin3(char *s1, char *s2, char *s3)
 	res2 = minishell_strjoin(res1, s3);
 	minishell_free((void **)&res1);
 	return (res2);
+}
+
+char	*minishell_substr(char *str, uint32_t s, uint32_t e)
+{
+	char	*substr;
+	char	c;
+
+	if (!str || s > e)
+		return (NULL);
+	if (e >= minishell_strlen(str))
+		return (str);
+	c = str[e];
+	str[e] = 0;
+	substr = minishell_strdup(str + s);
+	str[e] = c;
+	return (substr);
 }
