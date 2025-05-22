@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:51 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:31:03 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 13:57:33 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	minishell_free_token(t_token *token)
 	while (token)
 	{
 		tmp = token->next_token;
-		if (token->tvalue)
-			minishell_free((void **)&token->tvalue);
+		minishell_free((void **)&token->tvalue);
+		minishell_free((void **)&token->d.flags);
+		minishell_free((void **)&token->a.flags);
 		minishell_free((void **)&token);
 		token = tmp;
 	}

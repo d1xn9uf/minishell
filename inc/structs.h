@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 17:51:26 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 13:57:20 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,13 @@ typedef struct s_hd
 	int32_t	fd;
 }	t_hd;
 
+typedef struct s_flags
+{
+	bool		*flags;
+	uint32_t	n;
+	uint32_t	i;
+}	t_flags;
+
 typedef struct s_token
 {
 	t_token_type	ttype;
@@ -106,6 +113,9 @@ typedef struct s_token
 	bool			is_expanded;
 	struct s_token	*right;
 	struct s_token	*left;
+
+	t_flags			d;
+	t_flags			a;
 }	t_token;
 
 typedef t_token	t_root;

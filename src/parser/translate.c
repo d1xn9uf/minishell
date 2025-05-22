@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:15:04 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 14:21:44 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,20 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 
 	if (!token)
 		return (STATUS_SUCCESS);
+	if (args.step == 0
+		&& (minishell_fillflags(token) || minishell_remove(token)))
+		return (STATUS_MALLOCERR);
+	/* debug */
+	// printf("dollar sign flags: ");
+	// for (uint32_t i = 0; i < token->d.n; i++)
+	// 	printf("[%d] ", token->d.flags[i]);
+	// printf("\n");
+	// printf("asterisk flags: ");
+	// for (uint32_t i = 0; i < token->a.n; i++)
+	// 	printf("[%d] ", token->a.flags[i]);
+	// printf("\n");
+	// printf("token after quotes removal [%s]\n", token->tvalue);
+	/* debug */
 	s = minishell_interpret(token, env, args);
 	if (s)
 		return (s);

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/21 16:34:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/22 14:13:15 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static bool	already_in(char *arg, t_env *env)
 {
 	while (env)
 	{
-		if (minishell_strequal(arg, env))
+		if (minishell_strequal(arg, env->key))
 			return (true);
 		env = env->next_key;
 	}
