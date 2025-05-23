@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 21:45:33 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 18:18:46 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,10 @@ typedef struct s_token
 	struct s_token	*right;
 	struct s_token	*left;
 
-	struct s_interp	interp;
 	bool			is_interpreted;
+	struct s_substr	*subs;
+	bool			*ast_flags;
+	uint32_t		ast_start_i;
 }	t_token;
 
 typedef t_token	t_root;
@@ -119,12 +121,6 @@ typedef struct s_lexer
 }	t_lexer;
 
 /*****************parsing*****************/
-
-typedef struct s_interp
-{
-	struct s_substr	*subs;
-
-}	t_interp;
 
 typedef struct s_substr
 {
@@ -154,7 +150,6 @@ typedef struct s_args
 {
 	char	*exit;
 	bool	flag;
-	uint8_t	step;
 }	t_args;
 
 typedef struct s_chunk

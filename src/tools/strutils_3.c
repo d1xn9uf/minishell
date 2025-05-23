@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:51:41 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 21:42:15 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 15:50:51 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,19 @@ char	*minishell_substr(char *str, uint32_t s, uint32_t e)
 	substr = minishell_strdup(str + s);
 	str[e] = c;
 	return (substr);
+}
+
+uint32_t	minishell_count(char *s, char c)
+{
+	uint32_t	count;
+	uint32_t	i;
+
+	count = 0;
+	i = 0;
+	while (s && s[i])
+	{
+		count += (s[i] == c);
+		i += 1;
+	}
+	return (count);
 }

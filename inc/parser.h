@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:00 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 17:47:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:46:16 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ t_status	update_command(t_token *token, t_env *env);
 t_status	minishell_interpret(t_token *token, t_env *env, t_args args);
 
 t_status	interpret_dollar(t_token *token, t_env *env, t_args args);
+char		*minshell_concatenate(t_substr *head);
+
 t_status	interpret_asterisk(t_token *token);
 
 char		*minishell_expand(char *content, t_env *env, t_args args);

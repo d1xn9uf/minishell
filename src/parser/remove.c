@@ -6,20 +6,43 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:54 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:58:56 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:48:41 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
+static t_status	remove_nosubs(t_token *token);
 static bool		*get_flags_quotes(char *s);
 
 t_status	minishell_remove(t_token *token)
 {
+	t_substr	*node;
+	t_token		interim;
+	char		*e_value;
+
+	if (!token->subs)
+		return (remove_nosubs(token));
+	node = token->subs;
+	while (node)
+	{
+		interim.tvalue = node->value;
+		if (!node->q_type && remove_nosubs(&interim))
+			return (STATUS_MALLOCERR);
+		node = node->next;
+	}
+	e_value = minishell_concatenate(token->subs);
+	if (!e_value)
+		return (STATUS_MALLOCERR);
+	minishell_free((void **)&token->tvalue);
+	token->tvalue = e_value;
+	return (STATUS_SUCCESS);
+}
+
+static t_status	remove_nosubs(t_token *token)
+{
 	t_quotes	vars;
 
-	if (token->is_expanded)
-		return (STATUS_SUCCESS);
 	minishell_memset(&vars, 0, sizeof(t_quotes));
 	vars.flags = get_flags_quotes(token->tvalue);
 	if (!vars.flags)

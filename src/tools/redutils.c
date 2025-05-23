@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:40 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:57:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:35:56 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_status	hdoc_keyword_noquotes(char **keyword)
 	interim.tvalue = minishell_strdup(*keyword);
 	if (!interim.tvalue)
 		return (STATUS_MALLOCERR);
+	interim.subs = NULL;
 	status = minishell_remove(&interim);
 	if (status)
 		return (status);

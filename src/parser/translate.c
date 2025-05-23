@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 21:28:29 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:22:02 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,12 @@ t_status	minishell_translate(t_token *root, t_env *env, char *str_exitcode)
 
 	args.exit = str_exitcode;
 	args.flag = check_flag(root);
-	args.step = 0;
 	status = update(root, env, args);
+	minishell_free((void **)&str_exitcode);
 	if (status)
-		return (minishell_free((void **)&str_exitcode), status);
-	args.step = 1;
-	status = update(root, env, args);
-	if (status)
-		return (minishell_free((void **)&str_exitcode), status);
+		return (status);
 	fix_tree(root);
 	clean_tree(root);
-	minishell_free((void **)&str_exitcode);
 	return (STATUS_SUCCESS);
 }
 
@@ -40,20 +35,21 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 {
 	t_status	s;
 
-	if (!token || !token->tvalue)
+	if (!token)
 		return (STATUS_SUCCESS);
-	if (!token->is_interpreted)
+	if (token->tvalue && *token->tvalue && !token->is_interpreted)
 	{
 		s = minishell_interpret(token, env, args);
 		if (s)
 			return (s);
-		if (args.step == 1 && token->ttype == TTOKEN_COMMAND
+		if (token->ttype == TTOKEN_COMMAND
 			&& !minishell_isbuiltin(token->tvalue))
 		{
 			s = update_command(token, env);
 			if (s)
 				return (s);
 		}
+		token->is_interpreted = true;
 	}
 	args.flag = check_flag(token);
 	s = update(token->right, env, args);
@@ -64,7 +60,7 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 
 static bool	check_flag(t_token *token)
 {
-	if (token->ttype == TTOKEN_COMMAND
+	if (token->ttype == TTOKEN_COMMAND && token->tvalue
 		&& minishell_strequal(token->tvalue, EXPORT))
 		return (false);
 	return (true);

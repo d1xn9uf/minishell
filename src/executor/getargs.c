@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:23 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 18:01:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:13:58 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	getargs_setargc(t_root *root, char **argv)
 	count = 0;
 	while (root)
 	{
-		if (root->tvalue && (root->tvalue[0] || !root->is_expanded))
+		if (root->tvalue && (root->tvalue[0] || !root->is_interpreted))
 			argv[count++] = root->tvalue;
 		root = root->right;
 	}

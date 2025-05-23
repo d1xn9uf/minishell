@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 21:42:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 15:50:56 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ uint8_t		minishell_strtoui8(char *str);
 
 char		*minishell_strjoin3(char *s1, char *s2, char *s3);
 char		*minishell_substr(char *str, uint32_t s, uint32_t e);
+uint32_t	minishell_count(char *s, char c);
 
 // MEMORY UTILS
 void		*minishell_memset(void *b, int c, size_t len);

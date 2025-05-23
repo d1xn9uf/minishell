@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:31 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:26:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 16:22:14 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*minishell_strdup(const char *s)
 
 bool	minishell_strequal(const char *s1, const char *s2)
 {
+	if (!s1 || !s2)
+		return (s1 == s2);
 	if (minishell_strlen(s1) == minishell_strlen(s2))
 	{
 		if (!minishell_strncmp(s1, s2, minishell_strlen(s1)))
