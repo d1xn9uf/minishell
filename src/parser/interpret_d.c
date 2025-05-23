@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:45:33 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 16:46:01 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 19:59:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void		get_sub_flags(bool *ast_flags, uint32_t *a_i, t_substr *node);
 
 t_status	interpret_dollar(t_token *token, t_env *env, t_args args)
 {
-	t_status	status;
 	char		*e_value;
 	uint32_t	count;
 
@@ -53,7 +52,7 @@ static t_status	expand_subs(t_substr *head, t_env *env, t_args args)
 	return (STATUS_SUCCESS);
 }
 
-char	*minshell_concatenate(t_substr *head)
+char	*minishell_concatenate(t_substr *head)
 {
 	char		*e_value;
 	char		*o_value;

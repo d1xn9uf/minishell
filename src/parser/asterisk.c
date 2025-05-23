@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/13 21:23:38 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 19:58:57 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		free_mem(t_match *ns, t_fixe *fixe);
 static t_status	add_to_tree(t_token *token, t_match *ns);
 static t_status	add_name_to_tree(t_norm_ast *local);
 
-t_status	minishell_asterisk(t_token *token, bool *asterisk)
+t_status	minishell_asterisk(t_token *token)
 {
 	t_match			*ns;
 	t_fixe			*fixe;
@@ -26,7 +26,7 @@ t_status	minishell_asterisk(t_token *token, bool *asterisk)
 	char			*n;
 
 	ns = NULL;
-	fixe = minishell_analyse(token->tvalue, asterisk);
+	fixe = minishell_analyse(token);
 	if (!fixe)
 		return (STATUS_MALLOCERR);
 	dirp = opendir(".");
@@ -99,6 +99,9 @@ static t_status	add_name_to_tree(t_norm_ast *local)
 	if (local->first && minishell_free((void **)&local->cur->tvalue))
 		local->first = false;
 	local->cur->tvalue = local->rep;
+	local->cur->is_interpreted = true;
+	local->cur->is_asterisked = true;
+	local->cur->is_filename = true;
 	local->ns = local->ns->o_next;
 	if (local->ns)
 	{
@@ -109,8 +112,6 @@ static t_status	add_name_to_tree(t_norm_ast *local)
 			return (free_mem(local->ns, NULL), STATUS_MALLOCERR);
 		}
 		local->cur = local->cur->right;
-		local->cur->left = NULL;
-		local->cur->is_filename = true;
 	}
 	else
 		local->cur->right = local->rright;

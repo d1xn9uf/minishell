@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 18:18:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 19:51:53 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,41 +74,25 @@ typedef enum e_status
 	STATUS_GETCWDINIT		= 0x000080
 }	t_status;
 
-typedef struct s_minishell
-{
-	char			*prompt;
-	char			*cmdline;
-	t_env			*env;
-	char			*cwd;
-	t_lexer			*lexer;
-	t_root			*root;
-	int32_t			stdfd[2];
-	bool			pipe_exit;
-	int32_t			exit_code;
-}	t_minishell;
-
-/****************general****************/
-
-typedef struct s_token
-{
-	t_token_type	ttype;
-	uint32_t		tid;
-	char			*tvalue;
-	struct s_token	*next_token;
-	struct s_token	*prev_token;
-	uint32_t		priority;
-	t_hd			hd;
-	bool			is_filename;
-	struct s_token	*right;
-	struct s_token	*left;
-
-	bool			is_interpreted;
-	struct s_substr	*subs;
-	bool			*ast_flags;
-	uint32_t		ast_start_i;
-}	t_token;
-
-typedef t_token	t_root;
+/*****************************************/
+typedef struct s_lexer		t_lexer;
+typedef struct s_substr		t_substr;
+typedef struct s_match		t_match;
+typedef struct s_args		t_args;
+typedef struct s_chunk		t_chunk;
+typedef struct s_result		t_result;
+typedef struct s_ast		t_ast;
+typedef struct s_fixe		t_fixe;
+typedef struct s_quotes		t_quotes;
+typedef struct s_norm_ast	t_norm_ast;
+typedef struct s_split		t_split;
+typedef struct s_env		t_env;
+typedef struct s_hd			t_hd;
+typedef struct s_norm_pipe	t_norm_pipe;
+typedef struct s_minishell	t_minishell;
+typedef struct s_token		t_token;
+typedef t_token				t_root;
+/*****************parsing*****************/
 
 typedef struct s_lexer
 {
@@ -119,8 +103,6 @@ typedef struct s_lexer
 	char		*spaced_cmdline;
 	char		**splited_cmdline;
 }	t_lexer;
-
-/*****************parsing*****************/
 
 typedef struct s_substr
 {
@@ -242,6 +224,43 @@ typedef struct s_norm_pipe
 }	t_norm_pipe;
 
 extern pid_t	g_sig_pid;
+
+/****************general****************/
+
+typedef struct s_minishell
+{
+	char			*prompt;
+	char			*cmdline;
+	t_env			*env;
+	char			*cwd;
+	t_lexer			*lexer;
+	t_root			*root;
+	int32_t			stdfd[2];
+	bool			pipe_exit;
+	int32_t			exit_code;
+}	t_minishell;
+
+typedef struct s_token
+{
+	t_token_type	ttype;
+	uint32_t		tid;
+	char			*tvalue;
+	struct s_token	*next_token;
+	struct s_token	*prev_token;
+	uint32_t		priority;
+	t_hd			hd;
+	bool			is_filename;
+	struct s_token	*right;
+	struct s_token	*left;
+
+	bool			is_interpreted;
+	struct s_substr	*subs;
+	bool			*ast_flags;
+	uint32_t		a_si;
+	bool			is_asterisked;
+}	t_token;
+
+typedef t_token	t_root;
 
 /******************************************/
 #endif

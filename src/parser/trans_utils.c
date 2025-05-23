@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:00:14 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 17:23:29 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 20:00:52 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ t_status	update_command(t_token *token, t_env *env) // root case
 	t_status	s;
 	char		*temp;
 
-	if (token->is_expanded && !token->tvalue[0] && token->right)
+	if (token->is_interpreted && !token->tvalue[0] && token->right)
 		token->right->ttype = TTOKEN_COMMAND;
 	else
 	{
-		s = minishell_remove(token);
-		if (s)
-			return (s);
+		// s = minishell_remove(token);
+		// if (s)
+		// 	return (s);
 		temp = minishell_getpath(env, token->tvalue, &s);
 		if (!temp)
 			return (s);

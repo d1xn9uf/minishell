@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 16:22:02 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/23 19:21:34 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 			if (s)
 				return (s);
 		}
-		token->is_interpreted = true;
 	}
 	args.flag = check_flag(token);
 	s = update(token->right, env, args);
