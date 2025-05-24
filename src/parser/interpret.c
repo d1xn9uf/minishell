@@ -14,33 +14,37 @@
 
 static t_substr	*get_subs(char *s);
 static t_substr	*get_substr(char *s, uint32_t *start_i);
+static t_status	interpret_ast(t_token *token, bool **ast_flags);
 
 t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
-	t_status	status;
-	bool		*ast_flags;
+	bool	**ast_flags;
 
 	token->subs = get_subs(token->tvalue);
 	if (!token->subs)
 		return (STATUS_MALLOCERR);
-	if (interpret_dollar(token, env, args) && minishell_freesubs(&token->subs))
+	if (interpret_dollar(token, env, &args) && minishell_freesubs(&token->subs))
 		return (STATUS_MALLOCERR);
-	ast_flags = token->ast_flags;
+	ast_flags = &token->ast_flags;
 	if (minishell_remove(token))
-		return (minishell_free((void **)&ast_flags), STATUS_MALLOCERR);
+		return (minishell_free((void **)ast_flags), STATUS_MALLOCERR);
 	if (minishell_freesubs(&token->subs) && args.flag && minishell_separate(token))
-		return (minishell_free((void **)&ast_flags), STATUS_MALLOCERR);
-	while (token && token->is_interpreted)
+		return (minishell_free((void **)ast_flags), STATUS_MALLOCERR);
+	return (interpret_ast(token, ast_flags));
+}
+
+static t_status	interpret_ast(t_token *token, bool **ast_flags)
+{
+	t_status	status;
+
+	status = STATUS_SUCCESS;
+	while (token && token->is_interpreted && !status)
 	{
 		if (!token->is_asterisked && minishell_strchr(token->tvalue, '*'))
-		{
 			status = minishell_asterisk(token);
-			if (status)
-				return (minishell_free((void **)&ast_flags), status);
-		}
 		token = token->next_token;
 	}
-	return (minishell_free((void **)&ast_flags), STATUS_SUCCESS);
+	return (minishell_free((void **)ast_flags), status);
 }
 
 static t_substr	*get_subs(char *s)

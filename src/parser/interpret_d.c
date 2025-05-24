@@ -16,12 +16,16 @@ static t_status	expand_subs(t_substr *head, t_env *env, t_args args);
 static t_status	get_ast_flags(t_token *token, uint32_t count);
 static void		get_sub_flags(bool *ast_flags, uint32_t *a_i, t_substr *node);
 
-t_status	interpret_dollar(t_token *token, t_env *env, t_args args)
+t_status	interpret_dollar(t_token *token, t_env *env, t_args *args)
 {
+	uint32_t	i;
 	char		*e_value;
 	uint32_t	count;
 
-	if (expand_subs(token->subs, env, args))
+	i = 0;
+	while (token->tvalue[i] && token->tvalue[i] != '=' && !args->flag)
+		args->flag = (token->tvalue[i++] == '$');
+	if (expand_subs(token->subs, env, *args))
 		return (STATUS_MALLOCERR);
 	e_value = minishell_concatenate(token->subs);
 	if (!e_value)

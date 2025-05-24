@@ -29,13 +29,13 @@ t_fixe	*minishell_analyse(t_token *token)
 	if (!asterisk)
 		return (minishell_free((void **)&fixe), NULL);
 	fixe->fixes = minishell_split(pattern, '*', asterisk);
-	if (!fixe->fixes)
+	if (!fixe->fixes && minishell_free((void **)&asterisk))
 		return (minishell_free((void **)&fixe), NULL);
 	fixe->count = 0;
 	while (fixe->fixes[fixe->count])
 		fixe->count += 1;
 	fixe->flags = (t_ast *)minishell_calloc(fixe->count, sizeof(t_ast));
-	if (!fixe->flags)
+	if (!fixe->flags && minishell_free((void **)&asterisk))
 		return (minishell_free((void **)&fixe->fixes),
 			minishell_free((void **)&fixe), NULL);
 	fill_flags(pattern, fixe, asterisk);

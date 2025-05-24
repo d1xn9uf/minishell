@@ -12,7 +12,7 @@
 
 #include "../../inc/parser.h"
 
-t_status	update_command(t_token *token, t_env *env) // root case
+t_status	update_command(t_token *token, t_env *env) // TODO: ROOT CASE
 {
 	t_status	s;
 	char		*temp;

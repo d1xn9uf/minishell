@@ -23,7 +23,7 @@ t_status	update_command(t_token *token, t_env *env);
 
 t_status	minishell_interpret(t_token *token, t_env *env, t_args args);
 
-t_status	interpret_dollar(t_token *token, t_env *env, t_args args);
+t_status	interpret_dollar(t_token *token, t_env *env, t_args *args);
 char		*minishell_concatenate(t_substr *head);
 
 char		*minishell_expand(char *content, t_env *env, t_args args);
