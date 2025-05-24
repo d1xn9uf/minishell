@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 04:11:16 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 20:15:01 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static t_substr	*get_subs(char *s);
 static t_substr	*get_substr(char *s, uint32_t *start_i);
 static t_status	interpret_ast(t_token *token, bool **ast_flags);
+static t_status	fix_subs(t_substr *head);
 
 t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
@@ -22,6 +23,8 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 
 	token->subs = get_subs(token->tvalue);
 	if (!token->subs)
+		return (STATUS_MALLOCERR);
+	if (fix_subs(token->subs) && minishell_freesubs(&token->subs))
 		return (STATUS_MALLOCERR);
 	if (interpret_dollar(token, env, &args) && minishell_freesubs(&token->subs))
 		return (STATUS_MALLOCERR);
@@ -93,4 +96,26 @@ static t_substr	*get_substr(char *s, uint32_t *start_i)
 		return (minishell_free((void **)&node), NULL);
 	*start_i = i;
 	return (node);
+}
+
+static t_status	fix_subs(t_substr *head)
+{
+	uint32_t	len;
+	char		*proper_value;
+
+	while (head && head->next)
+	{
+		len = minishell_strlen(head->value);
+		if (!head->q_type && head->value[len - 1] == '$'
+			&& head->next->q_type)
+		{
+			proper_value = minishell_substr(head->value, 0, len - 1);
+			if (!proper_value)
+				return (STATUS_MALLOCERR);
+			minishell_free((void **)&head->value);
+			head->value = proper_value;
+		}
+		head = head->next;
+	}
+	return (STATUS_SUCCESS);
 }

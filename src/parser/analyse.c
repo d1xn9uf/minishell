@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:10 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 19:45:03 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 20:18:28 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_fixe	*minishell_analyse(t_token *token)
 		return (minishell_free((void **)&fixe->fixes),
 			minishell_free((void **)&fixe), NULL);
 	fill_flags(pattern, fixe, asterisk);
-	return (fixe);
+	return (minishell_free((void **)&asterisk), fixe);
 }
 
 static bool	*convert_to(char *value, bool *ast_flags, uint32_t a_si)
