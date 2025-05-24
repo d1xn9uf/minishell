@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 20:56:19 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 04:11:16 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 	token->subs = get_subs(token->tvalue);
 	if (!token->subs)
 		return (STATUS_MALLOCERR);
-	if (interpret_dollar(token, env, args) && minishell_freesubs(token->subs))
+	if (interpret_dollar(token, env, args) && minishell_freesubs(&token->subs))
 		return (STATUS_MALLOCERR);
 	ast_flags = token->ast_flags;
 	if (minishell_remove(token))
 		return (minishell_free((void **)&ast_flags), STATUS_MALLOCERR);
-	if (minishell_freesubs(token->subs) && minishell_separate(token))
+	if (minishell_freesubs(&token->subs) && args.flag && minishell_separate(token))
 		return (minishell_free((void **)&ast_flags), STATUS_MALLOCERR);
 	while (token && token->is_interpreted)
 	{
@@ -58,7 +58,7 @@ static t_substr	*get_subs(char *s)
 	{
 		node->next = get_substr(s, &start_i);
 		if (!node->next)
-			return (minishell_freesubs(head), NULL);
+			return (minishell_freesubs(&head), NULL);
 		node = node->next;
 	}
 	return (head);
@@ -83,7 +83,7 @@ static t_substr	*get_substr(char *s, uint32_t *start_i)
 		i += 1;
 	}
 	i += (q == CHAR_DOUBLE_QUOTE || q == CHAR_SINGLE_QUOTE);
-	node->q_type = q;
+	node->q_type = q * (q == CHAR_DOUBLE_QUOTE || q == CHAR_SINGLE_QUOTE);
 	node->value = minishell_substr(s, *start_i, i);
 	if (!node->value)
 		return (minishell_free((void **)&node), NULL);

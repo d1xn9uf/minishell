@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 11:31:19 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/22 21:33:49 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 02:32:06 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,21 @@ void	clean_tree(t_token *token)
 	}
 }
 
-bool	minishell_freesubs(t_substr *head)
+bool	minishell_freesubs(t_substr **head)
 {
+	t_substr	*node;
 	t_substr	*next;
-	while (head)
+
+	if (!head)
+		return (true);
+	node = *head;
+	while (node)
 	{
-		next = head->next;
-		minishell_free((void **)&head->value);
-		minishell_free((void **)&head);
-		head = next;
+		next = node->next;
+		minishell_free((void **)&node->value);
+		minishell_free((void **)&node);
+		node = next;
 	}
+	*head = NULL;
 	return (true);
 }

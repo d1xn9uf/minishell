@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 18:07:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 04:09:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static char	*fetch(char *env_path, char *cmd, t_status *status)
 	path = NULL;
 	while (split[i])
 	{
+		*status = 0;
 		path = fetch_dir(cmd, split[i], status);
 		if (*status)
 			return (minishell_free_arr(split), NULL);

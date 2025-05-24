@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:45:33 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 19:59:26 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/24 03:43:36 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,31 @@ static t_status	expand_subs(t_substr *head, t_env *env, t_args args)
 
 char	*minishell_concatenate(t_substr *head)
 {
-	char		*e_value;
-	char		*o_value;
+	char		*value;
+	uint32_t	len;
 	t_substr	*node;
+	uint32_t	start;
 
-	o_value = NULL;
+	len = 0;
 	node = head;
 	while (node)
 	{
-		e_value = minishell_strjoin(o_value, node->value);
-		minishell_free((void **)&o_value);
-		if (!e_value)
-			return (NULL);
-		o_value = e_value;
+		len += minishell_strlen(node->value);
 		node = node->next;
 	}
-	return (e_value);
+	value = (char *)minishell_calloc(len + 1, sizeof(char));
+	if (!value)
+		return (NULL);
+	node = head;
+	start = 0;
+	while (node)
+	{
+		len = minishell_strlen(node->value);
+		minishell_strlcpy(value + start, node->value, len + 1);
+		start += len;
+		node = node->next;
+	}
+	return (value);
 }
 
 static t_status	get_ast_flags(t_token *token, uint32_t count)
