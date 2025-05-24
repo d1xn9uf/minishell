@@ -46,7 +46,10 @@ static t_status	minishell(t_minishell *minishell)
 
 	minishell->cmdline = readline(minishell->prompt);
 	if (!minishell->cmdline)
+	{
+		minishell_stderr("exit\n", NULL, NULL);
 		minishell_cleanup(minishell, minishell->exit_code);
+	}
 	if (!minishell->cmdline[0])
 		return (STATUS_EMPTYCMD);
 	add_history(minishell->cmdline);
