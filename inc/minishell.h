@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yhajbi <yhajbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:01 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:35:02 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 10:11:52 by yhajbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # include "builtins.h"
 
 // SHELL PROMPT
-# define PROMPT "MINISHELL> "
+# define PROMPT "m0hc33n@d1xn9uf$ "
 
 // INIT
 t_status	minishell_init(t_minishell **minishell, char **env);
