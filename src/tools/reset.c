@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yhajbi <yhajbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:39 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/07 15:11:07 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 09:51:46 by yhajbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	reset_token(t_root *root)
 		}
 		if (root->hd.is_hd)
 		{
+			if (root->hd.filename)
+				unlink(root->hd.filename);
 			minishell_free((void **)&root->hd.filename);
 			close(root->hd.fd);
 		}
