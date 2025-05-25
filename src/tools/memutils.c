@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:41 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:33:41 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 14:52:12 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*minishell_calloc(size_t count, size_t size)
 
 bool	minishell_free(void **p)
 {
-	if (*p)
+	if (p && *p)
 	{
 		free(*p);
 		*p = NULL;

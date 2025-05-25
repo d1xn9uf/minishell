@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 02:30:00 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 15:23:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_substr
 {
 	char			q_type;
 	char			*value;
+	bool			new_token;
 	struct s_substr	*next;
 }	t_substr;
 
@@ -132,6 +133,7 @@ typedef struct s_args
 {
 	char	*exit;
 	bool	flag;
+	bool	red_flag;
 }	t_args;
 
 typedef struct s_chunk
@@ -249,6 +251,7 @@ typedef struct s_token
 	struct s_token	*prev_token;
 	uint32_t		priority;
 	t_hd			hd;
+	bool			is_ambiguous;
 	bool			is_filename;
 	struct s_token	*right;
 	struct s_token	*left;

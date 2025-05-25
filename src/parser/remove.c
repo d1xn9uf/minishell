@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:54 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 03:59:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 13:51:00 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ t_status	minishell_remove(t_token *token)
 {
 	t_substr	*node;
 	t_token		interim;
-	char		*e_value;
 
 	if (!token->subs)
 		return (remove_nosubs(token));
@@ -36,11 +35,6 @@ t_status	minishell_remove(t_token *token)
 		}
 		node = node->next;
 	}
-	e_value = minishell_concatenate(token->subs);
-	if (!e_value)
-		return (STATUS_MALLOCERR);
-	minishell_free((void **)&token->tvalue);
-	token->tvalue = e_value;
 	return (STATUS_SUCCESS);
 }
 

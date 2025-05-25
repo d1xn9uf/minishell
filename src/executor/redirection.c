@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 15:50:29 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 15:24:27 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ static t_status	handle_ioa(t_root *node, t_root *cmd_node, int32_t input_fd,
 
 	while (minishell_isred(node))
 	{
+		if (node->is_ambiguous)
+		{
+			minishell_stderr("minishell: ",
+				node->tvalue, "ambiguous redirect\n");
+			return (STATUS_FAILURE);
+		}
 		if (node->ttype == TTOKEN_OUTPUT)
 			status = redirect_output(node, output_fd);
 		else if (node->ttype == TTOKEN_APPEND)

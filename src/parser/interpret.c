@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 20:15:01 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 13:13:38 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,9 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 	if (interpret_dollar(token, env, &args) && minishell_freesubs(&token->subs))
 		return (STATUS_MALLOCERR);
 	ast_flags = &token->ast_flags;
-	if (minishell_remove(token))
+	if (minishell_separate(token, args.flag) && minishell_freesubs(&token->subs))
 		return (minishell_free((void **)ast_flags), STATUS_MALLOCERR);
-	if (minishell_freesubs(&token->subs) && args.flag && minishell_separate(token))
-		return (minishell_free((void **)ast_flags), STATUS_MALLOCERR);
-	return (interpret_ast(token, ast_flags));
+	return (minishell_freesubs(&token->subs), interpret_ast(token, ast_flags));
 }
 
 static t_status	interpret_ast(t_token *token, bool **ast_flags)

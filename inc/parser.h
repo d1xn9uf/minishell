@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:00 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 19:52:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 13:13:47 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		*minishell_concatenate(t_substr *head);
 char		*minishell_expand(char *content, t_env *env, t_args args);
 bool		ignore(t_result *buff, uint32_t i);
 
-t_status	minishell_separate(t_token *token);
+t_status	minishell_separate(t_token *token, bool sep);
 
 t_status	minishell_asterisk(t_token *token);
 void		minishell_order(t_match **names);

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:45:33 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 03:43:36 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 14:49:09 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*minishell_concatenate(t_substr *head)
 
 	len = 0;
 	node = head;
-	while (node)
+	while (node && (node == head || !node->new_token))
 	{
 		len += minishell_strlen(node->value);
 		node = node->next;
@@ -75,7 +75,7 @@ char	*minishell_concatenate(t_substr *head)
 		return (NULL);
 	node = head;
 	start = 0;
-	while (node)
+	while (node &&  (node == head || !node->new_token))
 	{
 		len = minishell_strlen(node->value);
 		minishell_strlcpy(value + start, node->value, len + 1);
