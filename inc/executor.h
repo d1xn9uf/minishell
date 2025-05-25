@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:35:03 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:02:23 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:07:33 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void		exec_cmd(t_minishell *minishell, t_root *root);
 void		exec_failed(t_root *cmd_node, int32_t status);
 
 // UTILS
+bool		file_node_x_ambig(t_token *red_node, t_token **file_node);
 t_status	redirect_output(t_root *node, int32_t output_fd);
 t_status	redirect_append(t_root *node, int32_t output_fd);
 t_status	redirect_input(t_root *node, int32_t input_fd);

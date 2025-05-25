@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 17:43:30 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:48:44 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
 	bool	**ast_flags;
 
+	if (!*token->tvalue || minishell_strequal(token->tvalue, "\"\"")
+		|| minishell_strequal(token->tvalue, "''"))
+		token->is_empty = true;
 	if (token->ambig.red_flag)
 	{
 		token->ambig.saver = minishell_strdup(token->tvalue);
@@ -54,10 +57,10 @@ static t_status	interpret_ast(t_token *token, bool **ast_flags)
 	{
 		if (!token->is_asterisked && minishell_strchr(token->tvalue, '*'))
 			status = minishell_asterisk(token);
-		token = token->next_token;
+		token = token->right;
 	}
 	token = head;
-	if (token->ambig.red_flag && (c > 1 || *token->tvalue))
+	if (token->ambig.red_flag && (c > 1 || (!*token->tvalue && !token->is_empty)))
 	{
 		token->ambig.is_ambiguous = true;
 		minishell_free((void **)&token->tvalue);

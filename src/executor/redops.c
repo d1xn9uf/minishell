@@ -6,22 +6,31 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:20 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 15:32:28 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:08:50 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/executor.h"
 
-t_status	redirect_output(t_root *node, int32_t output_fd)
+bool	file_node_x_ambig(t_token *red_node, t_token **file_node)
+{
+	if (minishell_isred(red_node->right))
+		*file_node = red_node->right->left;
+	else
+		*file_node = red_node->right;
+	if ((*file_node)->ambig.is_ambiguous)
+	{
+		minishell_stderr("minishell: ", (*file_node)->tvalue,
+			": ambiguous redirect\n");
+		return (true);
+	}
+	return (false);
+}
+
+t_status	redirect_output(t_root *file_node, int32_t output_fd)
 {
 	int32_t	fd;
-	t_root	*file_node;
 
-	file_node = NULL;
-	if (minishell_isred(node->right))
-		file_node = node->right->left;
-	else
-		file_node = node->right;
 	if (file_node && file_node->ttype == TTOKEN_FILE)
 	{
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -41,16 +50,10 @@ t_status	redirect_output(t_root *node, int32_t output_fd)
 	return (STATUS_SUCCESS);
 }
 
-t_status	redirect_append(t_root *node, int32_t output_fd)
+t_status	redirect_append(t_root *file_node, int32_t output_fd)
 {
 	int32_t	fd;
-	t_root	*file_node;
 
-	file_node = NULL;
-	if (minishell_isred(node->right))
-		file_node = node->right->left;
-	else
-		file_node = node->right;
 	if (file_node && file_node->ttype == TTOKEN_FILE)
 	{
 		fd = open(file_node->tvalue, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -70,16 +73,10 @@ t_status	redirect_append(t_root *node, int32_t output_fd)
 	return (STATUS_SUCCESS);
 }
 
-t_status	redirect_input(t_root *node, int32_t input_fd)
+t_status	redirect_input(t_root *file_node, int32_t input_fd)
 {
 	int32_t	fd;
-	t_root	*file_node;
 
-	file_node = NULL;
-	if (minishell_isred(node->right))
-		file_node = node->right->left;
-	else
-		file_node = node->right;
 	if (file_node && file_node->ttype == TTOKEN_FILE)
 	{
 		fd = open(file_node->tvalue, O_RDONLY);

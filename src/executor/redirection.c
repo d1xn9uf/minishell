@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:21 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 17:06:46 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:08:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,19 @@ static t_status	handle_ioa(t_root *node, t_root *cmd_node, int32_t input_fd,
 		int32_t output_fd)
 {
 	t_status	status;
+	t_token		*file_node;
 
+	file_node = NULL;
 	while (minishell_isred(node))
 	{
+		if (file_node_x_ambig(node, &file_node))
+			return (STATUS_FAILURE);
 		if (node->ttype == TTOKEN_OUTPUT)
-			status = redirect_output(node, output_fd);
+			status = redirect_output(file_node, output_fd);
 		else if (node->ttype == TTOKEN_APPEND)
-			status = redirect_append(node, output_fd);
+			status = redirect_append(file_node, output_fd);
 		else if (node->ttype == TTOKEN_INPUT)
-			status = redirect_input(node, input_fd);
+			status = redirect_input(file_node, input_fd);
 		else if (node->ttype == TTOKEN_HEREDOC)
 			status = redirect_hdoc(cmd_node, input_fd);
 		if (status)

@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 17:10:37 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:14:44 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ typedef struct s_token
 	bool			*ast_flags;
 	uint32_t		a_si;
 	bool			is_asterisked;
+	bool			is_empty;
 }	t_token;
 
 typedef t_token	t_root;

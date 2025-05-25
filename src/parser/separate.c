@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 15:02:55 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 18:42:06 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_status	separate_subs(t_substr *head)
 			splits = minishell_split(head->value, SPACE, NULL);
 			if (!splits)
 				return (STATUS_MALLOCERR);
-			if (separate_sub(head, splits))
+			if (splits[0] && separate_sub(head, splits))
 				return (minishell_free_arr(splits), STATUS_MALLOCERR);
 			minishell_free_arr(splits);
 		}
@@ -90,7 +90,8 @@ static t_status	separate(t_token *token, t_substr *head, uint32_t a_si)
 			new = (t_token *)minishell_calloc(1, sizeof(t_token));
 			if (!new || separate(new, node->next, a_si))
 				return (STATUS_MALLOCERR);
-			new->right = token->right;
+			if (!new->right)
+				new->right = token->right;
 			new->ast_flags = token->ast_flags;
 			new->a_si = a_si;
 			token->right = new;
