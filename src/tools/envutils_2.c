@@ -6,19 +6,20 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 04:09:03 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 20:17:30 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tools.h"
 
-static char	*fetch(char *PATH, char *cmd, t_status *status);
+static char	*fetch(char *PATH, char *cmd, t_status *status, bool free);
 static char	*fetch_dir(char *cmd, char *dir, t_status *status);
 
 char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 {
 	char	*env_path;
 	t_env	*node;
+	bool	free;
 
 	if (!env || !cmd)
 		return (*status = STATUS_CMDNOTFOUND, NULL);
@@ -37,19 +38,22 @@ char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 		}
 		node = node->next_key;
 	}
-	if (!env_path)
-		return (*status = STATUS_CMDNOTFOUND, NULL);
-	return (fetch(env_path, cmd, status));
+	free = false;
+	if (!env_path && setbool(&free, true))
+		env_path = getcwd(NULL, 0);
+	return (fetch(env_path, cmd, status, free));
 }
 
-static char	*fetch(char *env_path, char *cmd, t_status *status)
+static char	*fetch(char *env_path, char *cmd, t_status *status, bool free)
 {
 	char	**split;
 	int		i;
 	char	*path;
 
+	if (!env_path)
+		return (*status = STATUS_MALLOCERR, NULL);
 	split = minishell_split(env_path, ':', NULL);
-	if (!split)
+	if ((!free || minishell_free((void **)&env_path)) && !split)
 		return (*status = STATUS_MALLOCERR, NULL);
 	i = 0;
 	path = NULL;

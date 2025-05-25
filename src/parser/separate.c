@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 18:42:06 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 21:01:18 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,12 @@
 
 static t_status	separate_subs(t_substr *head);
 static t_status	separate_sub(t_substr *node, char **splits);
-static t_status	separate(t_token *token, t_substr *head, uint32_t a_si);
-static t_status	replace_value(t_token *token, t_substr *head);
 
 t_status	minishell_separate(t_token *token, bool sep)
 {
 	if (sep && separate_subs(token->subs))
 		return (STATUS_MALLOCERR);
-	if (minishell_remove(token) || separate(token, token->subs, 0))
+	if (minishell_remove(token) || separate(token))
 		return (STATUS_MALLOCERR);
 	return (STATUS_SUCCESS);
 }
@@ -72,48 +70,5 @@ static t_status	separate_sub(t_substr *node, char **splits)
 		node->next->next = old_next;
 		node = node->next;
 	}
-	return (STATUS_SUCCESS);
-}
-
-static t_status	separate(t_token *token, t_substr *head, uint32_t a_si)
-{
-	t_substr	*node;
-	t_token		*new;
-
-	node = head;
-	while (node && node->next)
-	{
-		a_si += minishell_count(node->value, '*');
-		if (!node->q_type && !node->next->q_type)
-		{
-			node->next->new_token = true;
-			new = (t_token *)minishell_calloc(1, sizeof(t_token));
-			if (!new || separate(new, node->next, a_si))
-				return (STATUS_MALLOCERR);
-			if (!new->right)
-				new->right = token->right;
-			new->ast_flags = token->ast_flags;
-			new->a_si = a_si;
-			token->right = new;
-			break ;
-		}
-		node = node->next;
-	}
-	if (replace_value(token, head))
-			return (STATUS_MALLOCERR);
-	return (STATUS_SUCCESS);
-}
-
-static t_status	replace_value(t_token *token, t_substr *head)
-{
-	char	*new_value;
-
-	new_value = minishell_concatenate(head);
-	if (!new_value)
-		return (STATUS_MALLOCERR);
-	if (token->tvalue)
-		minishell_free((void **)&token->tvalue);
-	token->tvalue = new_value;
-	token->is_interpreted = true;
 	return (STATUS_SUCCESS);
 }

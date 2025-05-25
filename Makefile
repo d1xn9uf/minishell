@@ -6,7 +6,7 @@
 #    By: mzary <mzary@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/14 11:33:26 by mzary             #+#    #+#              #
-#    Updated: 2025/05/25 17:55:58 by mzary            ###   ########.fr        #
+#    Updated: 2025/05/25 21:03:42 by mzary            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ EXECUTOR_FILES	= executor.c getargs.c pipe.c redirection.c \
 PARSER_FILES	= parse.c translate.c interpret.c interpret_d.c \
 				  expand.c separate.c asterisk.c \
 				  analyse.c match.c remove.c trans_utils.c \
-				  expand_utils.c asterisk_utils.c
+				  expand_utils.c asterisk_utils.c sep_utils.c
 LEXER_FILES		= lexer.c lex.c spaceit.c splitit.c \
 				  validate.c token.c
 TOOLS_FILES		= strutils_0.c strutils_1.c strutils_2.c memutils.c \
