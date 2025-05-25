@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:56 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 13:13:38 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 17:43:30 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 {
 	bool	**ast_flags;
 
+	if (token->ambig.red_flag)
+	{
+		token->ambig.saver = minishell_strdup(token->tvalue);
+		if (!token->ambig.saver)
+			return (STATUS_MALLOCERR);
+	}
 	token->subs = get_subs(token->tvalue);
 	if (!token->subs)
 		return (STATUS_MALLOCERR);
@@ -36,14 +42,34 @@ t_status	minishell_interpret(t_token *token, t_env *env, t_args args)
 
 static t_status	interpret_ast(t_token *token, bool **ast_flags)
 {
+	t_token		*head;
 	t_status	status;
+	uint32_t	c;
+	t_token		*remove;
 
 	status = STATUS_SUCCESS;
-	while (token && token->is_interpreted && !status)
+	c = 0;
+	head = token;
+	while (token && token->is_interpreted && !status && setuint32(&c, c + 1))
 	{
 		if (!token->is_asterisked && minishell_strchr(token->tvalue, '*'))
 			status = minishell_asterisk(token);
 		token = token->next_token;
+	}
+	token = head;
+	if (token->ambig.red_flag && (c > 1 || *token->tvalue))
+	{
+		token->ambig.is_ambiguous = true;
+		minishell_free((void **)&token->tvalue);
+		token->tvalue = token->ambig.saver;
+		while (token->right && token->right->is_interpreted)
+		{
+			remove = token->right;
+			token->right = token->right->right;
+			remove->right = NULL;
+			remove->left = NULL;
+			reset_token(remove);
+		}
 	}
 	return (minishell_free((void **)ast_flags), status);
 }

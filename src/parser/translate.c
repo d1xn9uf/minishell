@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/24 15:45:02 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 17:45:44 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 	if (token->tvalue && *token->tvalue && !token->is_interpreted)
 	{
 		s = minishell_interpret(token, env, args);
-		if (s)
+		if (token->ambig.red_flag && !token->ambig.is_ambiguous
+			&& minishell_free((void **)&token->ambig.saver) && s)
 			return (s);
 		if (token->ttype == TTOKEN_COMMAND
 			&& !minishell_isbuiltin(token->tvalue))
@@ -51,10 +52,15 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 		}
 	}
 	args.flag = check_flag(token, args.flag);
+	if (token->right)
+		token->right->ambig.red_flag = token->ambig.red_flag;
+	if (token->left)
+		token->left->ambig.red_flag = token->ambig.red_flag;
 	s = update(token->right, env, args);
 	if (s)
 		return (s);
-	return (STATUS_SUCCESS);
+	s = update(token->left, env, args);
+	return (s);
 }
 
 static bool	check_flag(t_token *token, bool prev_flag)

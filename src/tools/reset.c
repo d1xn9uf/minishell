@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   reset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yhajbi <yhajbi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:39 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 09:51:46 by yhajbi           ###   ########.fr       */
+/*   Updated: 2025/05/25 17:35:58 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	reset_token(t_root *root)
+void	reset_token(t_root *root)
 {
 	if (root)
 	{
