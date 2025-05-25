@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yhajbi <yhajbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:29 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 16:27:40 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 10:07:18 by yhajbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,7 @@ static t_status	minishell(t_minishell *minishell)
 	add_history(minishell->cmdline);
 	status = minishell_lexer(minishell);
 	if (status)
-	{
-		if (status == STATUS_SYNTAXERR)
-			minishell->exit_code = 2;
 		return (minishell_free_token(minishell->lexer->token), status);
-	}
 	status = minishell_parser(minishell);
 	if (status)
 		return (status);
@@ -90,6 +86,8 @@ int	main(int ac, char **av, char **env)
 		status = minishell(ms);
 		if (status == STATUS_EMPTYCMD)
 			continue ;
+		else if (status == STATUS_SYNTAXERR)
+			ms->exit_code = 2;
 		if (status)
 			minishell_error(status);
 		minishell_reset(ms);
