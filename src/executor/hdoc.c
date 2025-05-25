@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hdoc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yhajbi <yhajbi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:22 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:30:56 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/25 09:49:22 by yhajbi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ static t_status	handle_hdoc(t_minishell *minishell,
 	waitpid(-1, &status, 0);
 	if (WEXITSTATUS(status) == STATUS_HDOCSIGINT)
 	{
-		cleanup_fds(minishell, false);
+		unlink(cmd_node->hd.filename);
 		return (STATUS_HDOCSIGINT);
 	}
 	return (STATUS_SUCCESS);
