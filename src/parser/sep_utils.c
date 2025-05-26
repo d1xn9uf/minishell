@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 21:00:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 07:59:45 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 09:19:42 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void		detect_new(t_substr *node);
 static bool		count_ast(t_substr *node, uint32_t *a_si);
 static t_status	fill_token(t_token *curr, t_token *prev, t_token *last,
 	uint32_t a_si);
-static t_status	replace_value(t_token *token, t_substr *head);
 
 t_status	separate(t_token *token)
 {
@@ -80,7 +79,7 @@ static t_status	fill_token(t_token *curr, t_token *prev, t_token *last, uint32_t
 	return (STATUS_SUCCESS);
 }
 
-static t_status	replace_value(t_token *token, t_substr *head)
+t_status	replace_value(t_token *token, t_substr *head)
 {
 	char	*new_value;
 

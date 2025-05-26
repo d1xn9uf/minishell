@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 07:16:32 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 09:20:53 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ t_status	minishell_separate(t_token *token, bool sep)
 {
 	if (sep && separate_subs(token->subs))
 		return (STATUS_MALLOCERR);
-	if (minishell_remove(token) || separate(token))
+	if (minishell_remove(token))
+		return (STATUS_MALLOCERR);
+	if (sep && separate(token))
+		return (STATUS_MALLOCERR);
+	else if (!sep && replace_value(token, token->subs))
 		return (STATUS_MALLOCERR);
 	return (STATUS_SUCCESS);
 }
