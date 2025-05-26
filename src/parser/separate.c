@@ -6,13 +6,15 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 10:09:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 11:19:24 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
 static t_status	separate_subs(t_substr *head);
+static void		detect_new(t_substr *head, bool split);
+static bool		space_at(char *value, uint8_t end);
 static t_status	separate_sub(t_substr *node, char **splits);
 
 t_status	minishell_separate(t_token *token, bool sep)
@@ -30,22 +32,62 @@ t_status	minishell_separate(t_token *token, bool sep)
 
 static t_status	separate_subs(t_substr *head)
 {
-	char	**splits;
+	char		**splits;
+	t_substr	*node;
 
-	while (head)
+	detect_new(head, false);
+	node = head;
+	while (node)
 	{
-		if (!head->q_type)
+		if (!node->q_type)
 		{
-			splits = minishell_split(head->value, SPACE, NULL);
+			splits = minishell_split(node->value, SPACE, NULL);
 			if (!splits)
 				return (STATUS_MALLOCERR);
-			if (splits[0] && separate_sub(head, splits))
+			if (splits[0] && separate_sub(node, splits))
 				return (minishell_free_arr(splits), STATUS_MALLOCERR);
 			minishell_free_arr(splits);
 		}
+		node = node->next;
+	}
+	detect_new(head, true);
+	return (STATUS_SUCCESS);
+}
+
+static void	detect_new(t_substr *head, bool split)
+{
+	while (head && head->next)
+	{
+		if (!split && head->q_type && !head->next->q_type
+			&& space_at(head->next->value, 0))
+			head->next->new_token = true;
+		else if (!split && !head->q_type && head->next->q_type
+			&& space_at(head->next->value, 1))
+			head->next->new_token = true;
+		else if (split && !head->q_type && !head->next->q_type)
+			head->next->new_token = true;
 		head = head->next;
 	}
-	return (STATUS_SUCCESS);
+}
+
+static bool	space_at(char *value, uint8_t end)
+{
+	uint32_t	i;
+
+	if (end == 0)
+	{
+		i = 0;
+		while (value[i] && minishell_isspace(value[i]))
+			i += 1;
+		return (i != 0);
+	}
+	else
+	{
+		i = minishell_strlen(value) - 1;
+		while (i >= 0 && minishell_isspace(value[i]))
+			i -= 1;
+		return (value[i + 1] != 0);
+	}
 }
 
 static t_status	separate_sub(t_substr *node, char **splits)
