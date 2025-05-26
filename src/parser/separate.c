@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 21:01:18 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 07:16:32 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +72,4 @@ static t_status	separate_sub(t_substr *node, char **splits)
 	}
 	return (STATUS_SUCCESS);
 }
+
