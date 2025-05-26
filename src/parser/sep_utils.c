@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 21:00:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 10:09:29 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:29:37 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static t_status	fill_token(t_norm_sep *tokens, uint32_t a_si);
 t_status	separate(t_token *token)
 {
 	t_substr	*head;
-	t_substr	*node;
 	uint32_t	a_si;
 	t_norm_sep	tokens;
 
@@ -29,7 +28,6 @@ t_status	separate(t_token *token)
 	head = token->subs;
 	while (head)
 	{
-		node = head->next;
 		if (count_ast(head, &a_si) && head == token->subs)
 			tokens.curr = token;
 		else
@@ -37,7 +35,9 @@ t_status	separate(t_token *token)
 		if (fill_token(&tokens, a_si) || replace_value(tokens.curr, head))
 			return (STATUS_MALLOCERR);
 		tokens.prev = tokens.curr;
-		head = node;
+		head = head->next;
+		while (head && !head->new_token)
+			head = head->next;
 	}
 	return (STATUS_SUCCESS);
 }
