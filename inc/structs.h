@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 18:14:44 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:12:31 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_lexer
 	char		*cmdline;
 	char		*spaced_cmdline;
 	char		**splited_cmdline;
-}	t_lexer;
+}				t_lexer;
 
 typedef struct s_substr
 {
@@ -110,7 +110,7 @@ typedef struct s_substr
 	char			*value;
 	bool			new_token;
 	struct s_substr	*next;
-}	t_substr;
+}				t_substr;
 
 typedef struct s_match
 {
@@ -118,7 +118,7 @@ typedef struct s_match
 	uint32_t		order;
 	struct s_match	*next;
 	struct s_match	*o_next;
-}	t_match;
+}				t_match;
 
 typedef enum e_default_priority
 {
@@ -127,20 +127,20 @@ typedef enum e_default_priority
 	PRIORITY_MEDIUM,
 	PRIORITY_IDLE,
 	PRIORITY_REMOVE
-}	t_default_priority;
+}				t_default_priority;
 
 typedef struct s_args
 {
 	char	*exit;
 	bool	flag;
 	bool	red_flag;
-}	t_args;
+}				t_args;
 
 typedef struct s_chunk
 {
 	char			*content;
 	struct s_chunk	*next;
-}	t_chunk;
+}				t_chunk;
 
 typedef struct s_result
 {
@@ -151,20 +151,20 @@ typedef struct s_result
 	char	*saver;
 	char	*result;
 	bool	flag[2];
-}	t_result;
+}				t_result;
 
 typedef struct s_ast
 {
 	bool	before;
 	bool	after;
-}	t_ast;
+}				t_ast;
 
 typedef struct s_fixe
 {
 	char		**fixes;
 	t_ast		*flags;
 	uint32_t	count;
-}	t_fixe;
+}				t_fixe;
 
 typedef struct s_quotes
 {
@@ -172,7 +172,7 @@ typedef struct s_quotes
 	uint32_t	fsize;
 	uint32_t	i[3];
 	char		*fvalue;
-}	t_quotes;
+}				t_quotes;
 
 typedef struct s_norm_ast
 {
@@ -183,7 +183,7 @@ typedef struct s_norm_ast
 	char		*rep;
 	t_match		*saver;
 	t_token		*cur;
-}	t_norm_ast;
+}				t_norm_ast;
 
 typedef struct s_split
 {
@@ -192,14 +192,21 @@ typedef struct s_split
 	char	c;
 	int		count;
 	char	**split;
-}	t_split;
+}				t_split;
 
 typedef struct s_ambig
 {
 	bool	red_flag;
 	bool	is_ambiguous;
 	char	*saver;
-}	t_ambig;
+}				t_ambig;
+
+typedef struct s_norm_sep
+{
+	t_token		*curr;
+	t_token		*last;
+	t_token		*prev;
+}				t_norm_sep;
 
 /***************environment***************/
 
@@ -211,7 +218,7 @@ typedef struct s_env
 
 	bool			chosen;
 	bool			valid;
-}	t_env;
+}				t_env;
 
 /******************execution****************/
 
@@ -222,7 +229,7 @@ typedef struct s_hd
 	bool	is_expand;
 	char	*filename;
 	int32_t	fd;
-}	t_hd;
+}				t_hd;
 
 typedef struct s_norm_pipe
 {
@@ -230,9 +237,9 @@ typedef struct s_norm_pipe
 	t_root		*cmd_node;
 	t_status	status;
 	char		**envp;
-}	t_norm_pipe;
+}				t_norm_pipe;
 
-extern pid_t	g_sig_pid;
+extern pid_t				g_sig_pid;
 
 /****************general****************/
 
@@ -247,7 +254,7 @@ typedef struct s_minishell
 	int32_t			stdfd[2];
 	bool			pipe_exit;
 	int32_t			exit_code;
-}	t_minishell;
+}				t_minishell;
 
 typedef struct s_token
 {
@@ -269,9 +276,9 @@ typedef struct s_token
 	uint32_t		a_si;
 	bool			is_asterisked;
 	bool			is_empty;
-}	t_token;
+}				t_token;
 
-typedef t_token	t_root;
+typedef t_token				t_root;
 
 /******************************************/
 #endif

@@ -6,13 +6,14 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 17:45:44 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:08:59 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
 static t_status	update(t_token *token, t_env *env, t_args args);
+static t_status	update_token(t_token *token, t_env *env, t_args args);
 static bool		check_flag(t_token *token, bool	prev_flag);
 
 t_status	minishell_translate(t_token *root, t_env *env, char *str_exitcode)
@@ -39,17 +40,9 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 		return (STATUS_SUCCESS);
 	if (token->tvalue && *token->tvalue && !token->is_interpreted)
 	{
-		s = minishell_interpret(token, env, args);
-		if (token->ambig.red_flag && !token->ambig.is_ambiguous
-			&& minishell_free((void **)&token->ambig.saver) && s)
+		s = update_token(token, env, args);
+		if (s)
 			return (s);
-		if (token->ttype == TTOKEN_COMMAND
-			&& !minishell_isbuiltin(token->tvalue))
-		{
-			s = update_command(token, env);
-			if (s)
-				return (s);
-		}
 	}
 	args.flag = check_flag(token, args.flag);
 	if (token->right)
@@ -60,6 +53,21 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 	if (s)
 		return (s);
 	s = update(token->left, env, args);
+	return (s);
+}
+
+static t_status	update_token(t_token *token, t_env *env, t_args args)
+{
+	t_status	s;
+
+	s = minishell_interpret(token, env, args);
+	if (token->ambig.red_flag && !token->ambig.is_ambiguous)
+		minishell_free((void **)&token->ambig.saver);
+	if (s)
+		return (s);
+	if (token->ttype == TTOKEN_COMMAND
+		&& !minishell_isbuiltin(token->tvalue))
+		s = update_command(token, env);
 	return (s);
 }
 

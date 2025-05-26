@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 21:00:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 09:19:42 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:09:29 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,29 @@
 
 static void		detect_new(t_substr *node);
 static bool		count_ast(t_substr *node, uint32_t *a_si);
-static t_status	fill_token(t_token *curr, t_token *prev, t_token *last,
-	uint32_t a_si);
+static t_status	fill_token(t_norm_sep *tokens, uint32_t a_si);
 
 t_status	separate(t_token *token)
 {
 	t_substr	*head;
 	t_substr	*node;
 	uint32_t	a_si;
-	t_token		*curr;
-	t_token		*last;
-	t_token 	*prev;
+	t_norm_sep	tokens;
 
 	(setuint32(&a_si, 0), detect_new(token->subs));
-	prev = NULL;
-	last = token->right;
+	tokens.prev = NULL;
+	tokens.last = token->right;
 	head = token->subs;
 	while (head)
 	{
 		node = head->next;
 		if (count_ast(head, &a_si) && head == token->subs)
-			curr = token;
+			tokens.curr = token;
 		else
-			curr = (t_token *)minishell_calloc(1, sizeof(t_token));
-		if (fill_token(curr, prev, last, a_si) || replace_value(curr, head))
+			tokens.curr = (t_token *)minishell_calloc(1, sizeof(t_token));
+		if (fill_token(&tokens, a_si) || replace_value(tokens.curr, head))
 			return (STATUS_MALLOCERR);
-		prev = curr;
+		tokens.prev = tokens.curr;
 		head = node;
 	}
 	return (STATUS_SUCCESS);
@@ -55,7 +52,7 @@ static void	detect_new(t_substr *node)
 	}
 }
 
-static bool		count_ast(t_substr *node, uint32_t *a_si)
+static bool	count_ast(t_substr *node, uint32_t *a_si)
 {
 	while (node && !node->new_token)
 	{
@@ -65,16 +62,16 @@ static bool		count_ast(t_substr *node, uint32_t *a_si)
 	return (true);
 }
 
-static t_status	fill_token(t_token *curr, t_token *prev, t_token *last, uint32_t a_si)
+static t_status	fill_token(t_norm_sep *tokens, uint32_t a_si)
 {
-	if (!curr)
+	if (!tokens->curr)
 		return (STATUS_MALLOCERR);
-	if (prev)
+	if (tokens->prev)
 	{
-		curr->ast_flags = prev->ast_flags;
-		curr->a_si = a_si;
-		curr->right = last;
-		prev->right = curr;
+		tokens->curr->ast_flags = tokens->prev->ast_flags;
+		tokens->curr->a_si = a_si;
+		tokens->curr->right = tokens->last;
+		tokens->prev->right = tokens->curr;
 	}
 	return (STATUS_SUCCESS);
 }

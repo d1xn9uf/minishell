@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:45:33 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 14:49:09 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 09:45:55 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*minishell_concatenate(t_substr *head)
 		return (NULL);
 	node = head;
 	start = 0;
-	while (node &&  (node == head || !node->new_token))
+	while (node && (node == head || !node->new_token))
 	{
 		len = minishell_strlen(node->value);
 		minishell_strlcpy(value + start, node->value, len + 1);
@@ -103,7 +103,7 @@ static t_status	get_ast_flags(t_token *token, uint32_t count)
 	return (STATUS_SUCCESS);
 }
 
-static void		get_sub_flags(bool *ast_flags, uint32_t *a_i, t_substr *node)
+static void	get_sub_flags(bool *ast_flags, uint32_t *a_i, t_substr *node)
 {
 	uint32_t	i;
 

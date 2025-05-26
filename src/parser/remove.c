@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:54 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 13:51:00 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 10:09:12 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ t_status	minishell_remove(t_token *token)
 		{
 			interim.tvalue = minishell_strdup(node->value);
 			if (!interim.tvalue || remove_nosubs(&interim))
-				return (minishell_free((void **)&interim.tvalue), STATUS_MALLOCERR);
+				return (minishell_free((void **)&interim.tvalue),
+					STATUS_MALLOCERR);
 			minishell_free((void **)&node->value);
 			node->value = interim.tvalue;
 		}

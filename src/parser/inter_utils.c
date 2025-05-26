@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   trans_utils.c                                      :+:      :+:    :+:   */
+/*   inter_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 15:00:14 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 09:46:03 by mzary            ###   ########.fr       */
+/*   Created: 2025/05/26 09:47:34 by mzary             #+#    #+#             */
+/*   Updated: 2025/05/26 09:49:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/parser.h"
 
-t_status	update_command(t_token *token, t_env *env)
+void	minishell_ambig(t_token *token, uint32_t c)
 {
-	t_status	s;
-	char		*temp;
+	t_token	*remove;
 
-	if (token->is_interpreted && !token->tvalue[0] && token->right)
-		token->right->ttype = TTOKEN_COMMAND;
-	else
+	if (token->ambig.red_flag
+		&& (c > 1 || (!*token->tvalue && !token->is_empty)))
 	{
-		temp = minishell_getpath(env, token->tvalue, &s);
-		if (!temp)
-			return (s);
+		token->ambig.is_ambiguous = true;
 		minishell_free((void **)&token->tvalue);
-		token->tvalue = temp;
+		token->tvalue = token->ambig.saver;
+		while (token->right && token->right->is_interpreted)
+		{
+			remove = token->right;
+			token->right = token->right->right;
+			remove->right = NULL;
+			remove->left = NULL;
+			reset_token(remove);
+		}
 	}
-	return (STATUS_SUCCESS);
 }
