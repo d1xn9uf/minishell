@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:08 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 11:45:59 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:57:22 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,8 @@ t_status	minishell_asterisk(t_token *token)
 	while (entry)
 	{
 		n = entry->d_name;
-		if (!minishell_strequal(n, ".") && !minishell_strequal(n, ".."))
-		{
-			if (minishell_matcher(fixe, n) && add_name(&ns, n))
-				return (free_mem(ns, fixe), closedir(dirp), STATUS_MALLOCERR);
-		}
+		if (minishell_matcher(fixe, n) && add_name(&ns, n))
+			return (free_mem(ns, fixe), closedir(dirp), STATUS_MALLOCERR);
 		entry = readdir(dirp);
 	}
 	return (free_mem(NULL, fixe), closedir(dirp), add_to_tree(token, ns));

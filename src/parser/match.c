@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/12 19:36:18 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/26 12:58:38 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ bool	minishell_matcher(t_fixe *fixe, char *s)
 {
 	uint32_t	c;
 
-	if (s[0] == '.' && (!fixe->count || fixe->fixes[0][0] != '.'))
+	if (s[0] == '.' && (!fixe->count
+			|| !(fixe->fixes[0][0] == '.' && !fixe->flags[0].before)))
 		return (false);
 	if (!fixe->count)
 		return (true);
