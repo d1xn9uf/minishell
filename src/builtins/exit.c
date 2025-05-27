@@ -25,7 +25,7 @@ t_status	minishell_exit(t_minishell *minishell, char **argv)
 		return (STATUS_FAILURE);
 	minishell_stderr("exit\n", NULL, NULL);
 	if (!argv[1])
-		exit_code = 0;
+		exit_code = minishell->exit_code;
 	else if (invalid(argv[1]))
 	{
 		minishell_stderr("minishell_exit: ",
