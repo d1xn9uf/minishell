@@ -22,6 +22,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <wait.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <signal.h>
 # include <dirent.h>

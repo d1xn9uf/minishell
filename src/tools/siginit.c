@@ -46,6 +46,7 @@ void	sigint_handler(int32_t signum)
 	rl_on_new_line();
 	if (g_sig_pid == 0)
 		rl_redisplay();
+	g_sig_pid = 130;
 }
 
 t_status	minishell_siginit(void)

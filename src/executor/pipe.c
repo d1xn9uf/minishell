@@ -74,7 +74,7 @@ static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
 	p.argv = executor_getargs(p.cmd_node, minishell, &p.status);
 	if (!p.argv)
 	{
-		exec_failed(p.cmd_node, p.status);
+		//exec_failed(p.cmd_node, p.status);
 		exit(p.status);
 	}
 	if (minishell_isbuiltin(p.argv[0]))

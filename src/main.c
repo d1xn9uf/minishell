@@ -50,6 +50,8 @@ static t_status	minishell(t_minishell *minishell)
 		minishell_stderr("exit\n", NULL, NULL);
 		minishell_cleanup(minishell, minishell->exit_code);
 	}
+	if (g_sig_pid == 130)
+		minishell->exit_code = 130;
 	if (!minishell->cmdline[0])
 		return (STATUS_EMPTYCMD);
 	add_history(minishell->cmdline);

@@ -32,3 +32,19 @@ bool	minishell_stderr(char *head, char *middle, char *till)
 		write(STDERR_FILENO, till, minishell_strlen(till));
 	return (true);
 }
+
+bool	minishell_stderr2(char *head, char *middle, char *middle2,
+			char *middle3, char *till)
+{
+	if (head)
+		write(STDERR_FILENO, head, minishell_strlen(head));
+	if (middle)
+		write(STDERR_FILENO, middle, minishell_strlen(middle));
+	if (middle2)
+		write(STDERR_FILENO, middle2, minishell_strlen(middle2));
+	if (middle3)
+		write(STDERR_FILENO, middle3, minishell_strlen(middle3));
+	if (till)
+		write(STDERR_FILENO, till, minishell_strlen(till));
+	return (true);
+}

@@ -60,20 +60,32 @@ static void	getargs_setargc(t_root *root, char **argv)
 
 static char	**getargs_check(t_minishell *ms, char **argv, t_status *status)
 {
+	struct stat st;
+
 	if (!argv[0])
 		return (minishell_free((void **)&argv), NULL);
-	if (!minishell_isbuiltin(argv[0]) && access(argv[0], F_OK))
+	if (!minishell_isbuiltin(argv[0]))
 	{
-		ms->exit_code = 127;
-		*status = 127;
-		return (minishell_free((void **)&argv), NULL);
-	}
-	if (!minishell_isbuiltin(argv[0]) && access(argv[0], X_OK))
-	{
-		minishell_stderr("minishell: permission denied: ", argv[0], "\n");
-		ms->exit_code = 126;
-		*status = 126;
-		return (minishell_free((void **)&argv), NULL);
+		if (stat(argv[0], &st))
+		{
+			minishell_stderr2("minishell: ", argv[0], ": " , strerror(errno), "\n");
+			if (errno == 20)
+				*status = 126;
+			else
+				*status = 127;
+			ms->exit_code = *status;
+			return (minishell_free((void **)&argv), NULL);
+		}
+		errno = 0;
+		if (access(argv[0], X_OK) || S_ISDIR(st.st_mode))
+		{
+			if (!errno)
+				errno = 21;
+			minishell_stderr2("minishell: ", argv[0], ": " , strerror(errno), "\n");
+			*status = 126;
+			ms->exit_code = *status;
+			return (minishell_free((void **)&argv), NULL);
+		}
 	}
 	return (argv);
 }
