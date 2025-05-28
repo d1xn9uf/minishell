@@ -6,97 +6,65 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 20:17:30 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:59:40 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tools.h"
 
-static char	*fetch(char *PATH, char *cmd, t_status *status, bool free);
-static char	*fetch_dir(char *cmd, char *dir, t_status *status);
+static char	*fetch(char *PATH, char *rel_path, t_status *status);
+static char	*construct_path(char *dirname, char *rel_path);
 
 char	*minishell_getpath(t_env *env, char *cmd, t_status *status)
 {
-	char	*env_path;
 	t_env	*node;
-	bool	free;
 
-	if (!env || !cmd)
+	if (!cmd)
 		return (*status = STATUS_CMDNOTFOUND, NULL);
-	if (!*cmd)
-		return (*status = STATUS_SUCCESS, NULL);
-	if (*cmd == '/' || *cmd == '.')
-		return (minishell_strdup(cmd));
-	env_path = NULL;
+	if (!*cmd || minishell_strchr(cmd, '/'))
+		return (*status = STATUS_SUCCESS, minishell_strdup(cmd));
 	node = env;
 	while (node)
 	{
 		if (minishell_strequal("PATH", node->key) && node->valid)
-		{
-			env_path = node->value;
-			break ;
-		}
+			return (fetch(minishell_strdup(node->value), cmd, status));
 		node = node->next_key;
 	}
-	free = false;
-	if (!env_path && setbool(&free, true))
-		env_path = getcwd(NULL, 0);
-	return (fetch(env_path, cmd, status, free));
+	return (fetch(getcwd(NULL, 0), cmd, status));
 }
 
-static char	*fetch(char *env_path, char *cmd, t_status *status, bool free)
+static char	*fetch(char *env_path, char *rel_path, t_status *status)
 {
-	char	**split;
-	int		i;
-	char	*path;
+	char		**split;
+	uint32_t	i;
+	char		*abs_path;
 
 	if (!env_path)
 		return (*status = STATUS_MALLOCERR, NULL);
 	split = minishell_split(env_path, ':', NULL);
-	if ((!free || minishell_free((void **)&env_path)) && !split)
+	if (minishell_free((void **)&env_path) && !split)
 		return (*status = STATUS_MALLOCERR, NULL);
 	i = 0;
-	path = NULL;
+	*status = 0;
 	while (split[i])
 	{
-		*status = 0;
-		path = fetch_dir(cmd, split[i], status);
-		if (*status)
+		abs_path = construct_path(split[i], rel_path);
+		if (!abs_path)
 			return (minishell_free_arr(split), NULL);
-		if (path)
-			break ;
+		if (access(abs_path, F_OK) == 0)
+			return (minishell_free_arr(split), abs_path);
 		i += 1;
 	}
-	if (!path)
-		*status = STATUS_CMDNOTFOUND;
-	return (minishell_free_arr(split), path);
+	*status = STATUS_CMDNOTFOUND;
+	return (minishell_free_arr(split), NULL);
 }
 
-static char	*fetch_dir(char *cmd, char *dir, t_status *status)
+static char	*construct_path(char *dirname, char *rel_path)
 {
-	DIR				*dirp;
-	struct dirent	*entry;
-	char			*path;
-	char			*join;
+	uint32_t	len;
 
-	dirp = opendir(dir);
-	if (!dirp)
-		return (NULL);
-	entry = readdir(dirp);
-	path = NULL;
-	while (entry && !path)
-	{
-		if (minishell_strequal(cmd, entry->d_name))
-		{
-			join = minishell_strjoin(dir, "/");
-			if (!join)
-				return (*status = STATUS_MALLOCERR, closedir(dirp), NULL);
-			path = minishell_strjoin(join, cmd);
-			if (!path && minishell_free((void **)&join))
-				return (*status = STATUS_MALLOCERR, closedir(dirp), NULL);
-			minishell_free((void **)&join);
-		}
-		entry = readdir(dirp);
-	}
-	return (closedir(dirp), path);
+	len = minishell_strlen(dirname);
+	if (dirname[len - 1] != '/')
+		return (minishell_strjoin3(dirname, "/", rel_path));
+	return (minishell_strjoin(dirname, rel_path));
 }

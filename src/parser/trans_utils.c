@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:00:14 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 09:46:03 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 10:27:03 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_status	update_command(t_token *token, t_env *env)
 	{
 		temp = minishell_getpath(env, token->tvalue, &s);
 		if (!temp)
-			return (s);
+			return ((!s) * STATUS_MALLOCERR + s);
 		minishell_free((void **)&token->tvalue);
 		token->tvalue = temp;
 	}

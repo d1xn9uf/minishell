@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:57 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 17:36:13 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 09:48:23 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # define FREAD_SIZE 1024
 # define FNAME_SIZE 20
 # define MAX_SINT64	"9223372036854775807"
-# define MIN_SINT64	"-9223372036854775808"
+# define MIN_SINT64	"9223372036854775808"
 
 // STRING FUNCTIONS
 bool		minishell_strchr(const char *s, int c);

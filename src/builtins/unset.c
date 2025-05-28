@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:13 by mzary             #+#    #+#             */
-/*   Updated: 2025/04/14 11:34:37 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 09:38:47 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	unset(char *key, t_env **l_env)
 	node = *l_env;
 	while (node)
 	{
-		if (minishell_strequal(key, node->key) && node->valid)
+		if (minishell_strequal(key, node->key))
 		{
 			pop_node(node, l_env);
 			return ;

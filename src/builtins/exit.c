@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:49 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/15 15:29:49 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 09:51:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,14 @@ static bool	invalid(char *code)
 	neg = false;
 	while (minishell_isspace(code[i]))
 		i += 1;
-	if (code[i] && (code[i] == '+' || code[i] == '-'))
+	if (code[i] == '+' || code[i] == '-')
 	{
-		if (code[i] == '-')
-		{
-			neg = true;
-			l[0] = i;
-		}
+		neg = (code[i] == '-');
 		i += 1;
 	}
-	if (!neg)
-		l[0] = i;
+	while (code[i] == '0')
+		i += 1;
+	l[0] = i;
 	while ('0' <= code[i] && code[i] <= '9')
 		i += 1;
 	l[1] = i;
@@ -75,9 +72,13 @@ static bool	invalid(char *code)
 static bool	is_overflow(char *code, uint32_t *l, bool neg)
 {
 	code[l[1]] = 0;
-	if (neg && minishell_strcmp(code + l[0], MIN_SINT64) > 0)
+	if (minishell_strlen(code + l[0]) > minishell_strlen(MIN_SINT64))
 		return (true);
-	if (!neg && minishell_strcmp(code + l[0], MAX_SINT64) > 0)
+	else if (minishell_strlen(code + l[0]) < minishell_strlen(MIN_SINT64))
+		return (false);
+	else if (neg && minishell_strcmp(code + l[0], MIN_SINT64) > 0)
+		return (true);
+	else if (!neg && minishell_strcmp(code + l[0], MAX_SINT64) > 0)
 		return (true);
 	return (false);
 }
