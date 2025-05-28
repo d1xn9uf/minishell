@@ -70,7 +70,7 @@ typedef enum e_status
 	STATUS_DIRFAILED		= 0x000010,
 	STATUS_TERMIOSAVE		= 0X000011,
 	STATUS_TERMIOSRES		= 0X000012,
-	STATUS_CMDNOTFOUND		= 0x00007F,
+	STATUS_CMDNOTFOUND		= 0x000013,
 	STATUS_GETCWDINIT		= 0x000080
 }	t_status;
 
@@ -239,7 +239,12 @@ typedef struct s_norm_pipe
 	char		**envp;
 }				t_norm_pipe;
 
-extern pid_t				g_sig_pid;
+typedef struct s_norm_pipe2
+{
+	int32_t	pipe_fd[2];
+	int32_t	info[2];
+	pid_t	forked;
+}				t_norm_pipe2;
 
 /****************general****************/
 

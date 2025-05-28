@@ -94,13 +94,14 @@ static t_status	handle_hdoc(t_minishell *minishell,
 {
 	int32_t	status;
 	char	*keyword;
+	pid_t	forked;
 
 	status = hdoc_keyword_file(cmd_node, hdoc_node, &keyword);
 	if (status || !cmd_node->hd.filename || cmd_node->hd.fd == -1)
 		return (STATUS_HDOCFAILED);
 	cmd_node->hd.is_hd = true;
-	g_sig_pid = fork();
-	if (g_sig_pid == CHILD_PROCESS)
+	forked = fork();
+	if (minishell_sigstatus(true, -1) && forked == CHILD_PROCESS)
 	{
 		signal(SIGINT, sigint_hdoc);
 		cleanup_fds(minishell, true);
@@ -110,7 +111,7 @@ static t_status	handle_hdoc(t_minishell *minishell,
 		minishell_free((void **)&keyword);
 	status = 0;
 	waitpid(-1, &status, 0);
-	if (WEXITSTATUS(status) == STATUS_HDOCSIGINT)
+	if (minishell_sigstatus(true, 0), WEXITSTATUS(status) == STATUS_HDOCSIGINT)
 	{
 		unlink(cmd_node->hd.filename);
 		return (STATUS_HDOCSIGINT);

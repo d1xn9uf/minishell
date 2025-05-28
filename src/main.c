@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-pid_t	g_sig_pid = 0;
-
 t_status	minishell_init(t_minishell **minishell, char **env)
 {
 	if (minishell)
@@ -50,7 +48,8 @@ static t_status	minishell(t_minishell *minishell)
 		minishell_stderr("exit\n", NULL, NULL);
 		minishell_cleanup(minishell, minishell->exit_code);
 	}
-	if (g_sig_pid == 130)
+	if (minishell_sigstatus(false, 0) == SIGINT
+		&& minishell_sigstatus(true, 0))
 		minishell->exit_code = 130;
 	if (!minishell->cmdline[0])
 		return (STATUS_EMPTYCMD);

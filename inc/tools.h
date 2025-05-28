@@ -58,7 +58,7 @@ bool		minishell_iscmdop(t_token *token);
 void		minishell_error(t_status status);
 bool		minishell_stderr(char *head, char *middle, char *till);
 bool		minishell_stderr2(char *head, char *middle, char *middle2,
-				char *middle3, char *till);
+				char *till);
 
 // CLEAN
 void		minishell_reset(t_minishell *minishell);
@@ -103,6 +103,7 @@ void		sigint_hdoc(int32_t signum);
 
 // EXIT STATUS
 void		minishell_setstatus(t_minishell *minishell, int status);
+int32_t		minishell_sigstatus(bool update, int32_t status);
 
 // TREE UTILS
 t_status	minishell_protect(t_token *root);

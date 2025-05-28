@@ -70,7 +70,7 @@ static t_status	update_token(t_token *token, t_env *env, t_args args)
 	else
 		s = minishell_remove(token);
 	if (s)
-			return (s);
+		return (s);
 	if (token->ttype == TTOKEN_COMMAND
 		&& !minishell_isbuiltin(token->tvalue))
 		s = update_command(token, env);

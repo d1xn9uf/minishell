@@ -30,6 +30,7 @@ void	sigint_hdoc(int32_t signum)
 
 	fd = 3;
 	(void)signum;
+	printf("\n");
 	while (fd < MAX_FD)
 	{
 		close(fd);
@@ -40,13 +41,13 @@ void	sigint_hdoc(int32_t signum)
 
 void	sigint_handler(int32_t signum)
 {
-	(void)signum;
+	if (minishell_sigstatus(false, 0) == -1)
+		return ;
+	minishell_sigstatus(true, signum);
 	printf("\n");
-	rl_replace_line("", 0);
 	rl_on_new_line();
-	if (g_sig_pid == 0)
-		rl_redisplay();
-	g_sig_pid = 130;
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 t_status	minishell_siginit(void)

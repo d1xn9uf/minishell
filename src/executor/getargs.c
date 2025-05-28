@@ -58,38 +58,6 @@ static void	getargs_setargc(t_root *root, char **argv)
 	argv[count] = 0;
 }
 
-static char	**getargs_check(t_minishell *ms, char **argv, t_status *status)
-{
-	struct stat st;
-
-	if (!argv[0])
-		return (minishell_free((void **)&argv), NULL);
-	if (!minishell_isbuiltin(argv[0]))
-	{
-		if (stat(argv[0], &st))
-		{
-			minishell_stderr2("minishell: ", argv[0], ": " , strerror(errno), "\n");
-			if (errno == 20)
-				*status = 126;
-			else
-				*status = 127;
-			ms->exit_code = *status;
-			return (minishell_free((void **)&argv), NULL);
-		}
-		errno = 0;
-		if (access(argv[0], X_OK) || S_ISDIR(st.st_mode))
-		{
-			if (!errno)
-				errno = 21;
-			minishell_stderr2("minishell: ", argv[0], ": " , strerror(errno), "\n");
-			*status = 126;
-			ms->exit_code = *status;
-			return (minishell_free((void **)&argv), NULL);
-		}
-	}
-	return (argv);
-}
-
 char	**executor_getargs(t_root *root, t_minishell *ms, t_status *status)
 {
 	char		**argv;

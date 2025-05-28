@@ -36,5 +36,6 @@ t_status	redirect_hdoc(t_root *cmd_node, int32_t input_fd);
 void		executor_handle_hdoc(t_minishell *minishell,
 				t_root *root, t_status *status);
 char		**executor_getargs(t_root *root, t_minishell *ms, t_status *status);
+char		**getargs_check(t_minishell *ms, char **argv, t_status *status);
 
 #endif

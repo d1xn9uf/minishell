@@ -60,6 +60,6 @@ void	minishell_reset(t_minishell *minishell)
 		if (minishell->cmdline)
 			minishell_free((void **)&minishell->cmdline);
 		minishell->pipe_exit = false;
-		g_sig_pid = 0;
+		minishell_sigstatus(true, 0);
 	}
 }

@@ -20,10 +20,8 @@ void	exec_failed(t_root *cmd_node, int32_t status)
 			cmd_node = cmd_node->right;
 		if (cmd_node)
 		{
-			write(STDERR_FILENO, "minishell: ", 11);
-			write(STDERR_FILENO, cmd_node->tvalue,
-				minishell_strlen(cmd_node->tvalue));
-			write(STDERR_FILENO, ": command not found\n", 20);
+			minishell_stderr("minishell: ", cmd_node->tvalue,
+				": command not found\n");
 		}
 	}
 }
@@ -32,9 +30,11 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 {
 	int32_t	status;
 	char	**envp;
+	pid_t	forked;
 
-	g_sig_pid = fork();
-	if (g_sig_pid == CHILD_PROCESS)
+	forked = fork();
+	minishell_sigstatus(true, -1);
+	if (forked == CHILD_PROCESS)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		envp = minishell_getenvp(minishell->env);
@@ -45,7 +45,8 @@ static void	exec_exec(t_minishell *minishell, char **argv)
 		minishell_free_arr(envp);
 		exit(EXIT_FAILURE);
 	}
-	waitpid(g_sig_pid, &status, 0);
+	waitpid(forked, &status, 0);
+	minishell_sigstatus(true, 0);
 	minishell_setstatus(minishell, status);
 }
 

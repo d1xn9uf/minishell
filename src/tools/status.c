@@ -23,3 +23,14 @@ void	minishell_setstatus(t_minishell *minishell, int status)
 	else
 		minishell->exit_code = 1;
 }
+
+int32_t	minishell_sigstatus(bool update, int32_t status)
+{
+	static int32_t	last_status;
+
+	if (update)
+		last_status = status;
+	else
+		return (last_status);
+	return (true);
+}

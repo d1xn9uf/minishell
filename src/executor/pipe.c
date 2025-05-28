@@ -74,7 +74,7 @@ static void	pipeit_child(t_minishell *minishell, t_root *node, int32_t input_fd,
 	p.argv = executor_getargs(p.cmd_node, minishell, &p.status);
 	if (!p.argv)
 	{
-		//exec_failed(p.cmd_node, p.status);
+		exec_failed(p.cmd_node, p.status);
 		exit(p.status);
 	}
 	if (minishell_isbuiltin(p.argv[0]))
@@ -108,31 +108,30 @@ static void	handle_parent(t_minishell *minishell, t_root *node,
 	}
 }
 
-void	pipeit(t_minishell *minishell, t_root *node, int32_t input_fd)
+void	pipeit(t_minishell *ms, t_root *node, int32_t input_fd)
 {
-	int32_t	pipe_fd[2];
-	int32_t	info[2];
+	t_norm_pipe2	var;
 
 	if (node == NULL)
 		return ;
-	if (node->ttype == TTOKEN_PIPE && pipe(pipe_fd) == -1)
+	if (node->ttype == TTOKEN_PIPE && pipe(var.pipe_fd) == -1)
 	{
 		perror("pipe");
 		return ;
 	}
-	g_sig_pid = fork();
-	if (g_sig_pid == CHILD_PROCESS)
+	var.forked = fork();
+	if (minishell_sigstatus(true, -1) && var.forked == CHILD_PROCESS)
 	{
 		if (node->ttype == TTOKEN_PIPE)
-			close(pipe_fd[PIPE_READ_END]);
+			close(var.pipe_fd[PIPE_READ_END]);
 		if (node->ttype == TTOKEN_PIPE)
-			pipeit_child(minishell, node, input_fd, pipe_fd[PIPE_WRITE_END]);
-		pipeit_child(minishell, node, input_fd, minishell->stdfd[1]);
+			pipeit_child(ms, node, input_fd, var.pipe_fd[PIPE_WRITE_END]);
+		pipeit_child(ms, node, input_fd, ms->stdfd[1]);
 	}
-	else if (g_sig_pid > 0)
+	else if (var.forked > 0)
 	{
-		info[0] = input_fd;
-		info[1] = g_sig_pid;
-		handle_parent(minishell, node, pipe_fd, info);
+		var.info[0] = input_fd;
+		var.info[1] = var.forked;
+		handle_parent(ms, node, var.pipe_fd, var.info);
 	}
 }

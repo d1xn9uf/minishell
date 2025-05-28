@@ -25,7 +25,7 @@ TOOLS_HDR		= inc/tools.h
 ## src files
 MINISHELL_FILES	= main.c
 EXECUTOR_FILES	= executor.c getargs.c pipe.c redirection.c \
-				  command.c hdoc.c redops.c
+				  command.c hdoc.c redops.c cmd_access.c
 PARSER_FILES	= parse.c translate.c interpret.c interpret_d.c \
 				  expand.c separate.c asterisk.c inter_utils.c \
 				  analyse.c match.c remove.c trans_utils.c \
