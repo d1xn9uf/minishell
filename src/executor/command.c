@@ -12,21 +12,21 @@
 
 #include "../../inc/executor.h"
 
-// void	exec_failed(t_root *cmd_node, int32_t status)
-// {
-// 	if (status == STATUS_CMDNOTFOUND)
-// 	{
-// 		while (cmd_node && !cmd_node->tvalue[0] && cmd_node->is_interpreted)
-// 			cmd_node = cmd_node->right;
-// 		if (cmd_node)
-// 		{
-// 			write(STDERR_FILENO, "minishell: ", 11);
-// 			write(STDERR_FILENO, cmd_node->tvalue,
-// 				minishell_strlen(cmd_node->tvalue));
-// 			write(STDERR_FILENO, ": command not found\n", 20);
-// 		}
-// 	}
-// }
+void	exec_failed(t_root *cmd_node, int32_t status)
+{
+	if (status == STATUS_CMDNOTFOUND)
+	{
+		while (cmd_node && !cmd_node->tvalue[0] && cmd_node->is_interpreted)
+			cmd_node = cmd_node->right;
+		if (cmd_node)
+		{
+			write(STDERR_FILENO, "minishell: ", 11);
+			write(STDERR_FILENO, cmd_node->tvalue,
+				minishell_strlen(cmd_node->tvalue));
+			write(STDERR_FILENO, ": command not found\n", 20);
+		}
+	}
+}
 
 static void	exec_exec(t_minishell *minishell, char **argv)
 {
@@ -60,7 +60,7 @@ void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
 	argv = executor_getargs(cmd_node, minishell, (t_status *)&status);
 	if (!argv)
 	{
-		//exec_failed(cmd_node, status);
+		exec_failed(cmd_node, status);
 		return ;
 	}
 	if (minishell_isbuiltin(argv[0]))
