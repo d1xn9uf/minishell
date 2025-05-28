@@ -19,7 +19,13 @@ void	minishell_setstatus(t_minishell *minishell, int status)
 		minishell->exit_code = WEXITSTATUS(status);
 	}
 	else if (WIFSIGNALED(status))
+	{
 		minishell->exit_code = 128 + WTERMSIG(status);
+		if (minishell->exit_code == 130)
+			minishell_stderr2(NULL, NULL, NULL, NULL);
+		else if (minishell->exit_code == 131)
+			minishell_stderr2("Quit", NULL, NULL, NULL);
+	}
 	else
 		minishell->exit_code = 1;
 }
