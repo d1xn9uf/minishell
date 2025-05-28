@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/28 11:00:41 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:03:01 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 			return (s);
 	}
 	else if (token->tvalue && quoted_empty(token->tvalue)
-		&& minishell_remove(token->tvalue))
+		&& minishell_remove(token))
 		return (STATUS_MALLOCERR);
 	args.flag = check_flag(token, args.flag);
 	if (token->right)
