@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:48 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/28 11:17:17 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 16:28:32 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static char	*fetch(char *env_path, char *rel_path, t_status *status)
 			return (minishell_free_arr(split), NULL);
 		if (access(abs_path, F_OK) == 0)
 			return (minishell_free_arr(split), abs_path);
+		minishell_free((void **)&abs_path);
 		i += 1;
 	}
 	*status = STATUS_CMDNOTFOUND;
