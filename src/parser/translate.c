@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/28 11:09:32 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:13:07 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,7 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 		return (STATUS_SUCCESS);
 	if (token->tvalue && *token->tvalue && !token->is_interpreted)
 	{
-		if (quoted_empty(token->tvalue))
-			s = minishell_remove(token);
-		else
-			s = update_token(token, env, args);
+		s = update_token(token, env, args);
 		if (s)
 			return (s);
 	}
