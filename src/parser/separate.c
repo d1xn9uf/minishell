@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 11:19:24 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 16:49:21 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_status	separate_subs(t_substr *head)
 	{
 		if (!node->q_type)
 		{
-			splits = minishell_split(node->value, SPACE, NULL);
+			splits = minishell_split(node->value, -1, NULL);
 			if (!splits)
 				return (STATUS_MALLOCERR);
 			if (splits[0] && separate_sub(node, splits))

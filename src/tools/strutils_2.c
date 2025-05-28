@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:30 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/14 15:51:15 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 17:07:17 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	s_count(t_split *split);
 static int	ft_split(t_split *split);
+static bool	cond(t_split *split, int i);
 
 char	**minishell_split(char *s, char c, bool *flags)
 {
@@ -41,13 +42,12 @@ static int	s_count(t_split *split)
 	split->count = 0;
 	while (split->s[i])
 	{
-		if (split->s[i] == split->c && (!split->flags || split->flags[i]))
+		if (cond(split, i))
 			i++;
 		else
 		{
 			split->count++;
-			while ((split->s[i] && split->s[i] != split->c)
-				|| (split->s[i] && split->flags && !split->flags[i]))
+			while (split->s[i] && !cond(split, i))
 				i++;
 		}
 	}
@@ -64,12 +64,10 @@ static int	ft_split(t_split *split)
 	split_i = -1;
 	while (++split_i < split->count)
 	{
-		while (split->s[i] && split->s[i] == split->c
-			&& (!split->flags || split->flags[i]))
+		while (split->s[i] && cond(split, i))
 			i++;
 		st = i;
-		while ((split->s[i] && split->s[i] != split->c)
-			|| (split->s[i] && split->flags && !split->flags[i]))
+		while (split->s[i] && !cond(split, i))
 			i++;
 		split->split[split_i] = (char *)minishell_calloc(i - st + 1,
 				sizeof(char));
@@ -79,6 +77,13 @@ static int	ft_split(t_split *split)
 	}
 	split->split[split->count] = NULL;
 	return (1);
+}
+
+static bool	cond(t_split *split, int i)
+{
+	return ((split->s[i] == split->c
+			|| (split->c == -1 && minishell_isspace(split->s[i])))
+		&& (!split->flags || split->flags[i]));
 }
 
 size_t	minishell_strlcat(char *dst, const char *src, size_t size)
@@ -97,17 +102,4 @@ size_t	minishell_strlcat(char *dst, const char *src, size_t size)
 	}
 	else
 		return (size + src_len);
-}
-
-bool	is_separator(char c)
-{
-	if (c == '_')
-		return (false);
-	if ('a' <= c && c <= 'z')
-		return (false);
-	if ('A' <= c && c <= 'Z')
-		return (false);
-	if ('0' <= c && c <= '9')
-		return (false);
-	return (true);
 }

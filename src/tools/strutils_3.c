@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 20:51:41 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/23 20:50:30 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 16:59:18 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,17 @@ uint32_t	minishell_count(char *s, char c)
 		i += 1;
 	}
 	return (count);
+}
+
+bool	is_separator(char c)
+{
+	if (c == '_')
+		return (false);
+	if ('a' <= c && c <= 'z')
+		return (false);
+	if ('A' <= c && c <= 'Z')
+		return (false);
+	if ('0' <= c && c <= '9')
+		return (false);
+	return (true);
 }
