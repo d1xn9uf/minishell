@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:33:53 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/28 11:03:01 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/28 11:09:32 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,15 @@ static t_status	update(t_token *token, t_env *env, t_args args)
 
 	if (!token)
 		return (STATUS_SUCCESS);
-	if (token->tvalue && *token->tvalue && !token->is_interpreted
-		&& !quoted_empty(token->tvalue))
+	if (token->tvalue && *token->tvalue && !token->is_interpreted)
 	{
-		s = update_token(token, env, args);
+		if (quoted_empty(token->tvalue))
+			s = minishell_remove(token);
+		else
+			s = update_token(token, env, args);
 		if (s)
 			return (s);
 	}
-	else if (token->tvalue && quoted_empty(token->tvalue)
-		&& minishell_remove(token))
-		return (STATUS_MALLOCERR);
 	args.flag = check_flag(token, args.flag);
 	if (token->right)
 		token->right->ambig.red_flag = token->ambig.red_flag;
