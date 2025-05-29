@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:27 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/25 20:42:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/29 19:46:26 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
 	argv = executor_getargs(cmd_node, minishell, (t_status *)&status);
 	if (!argv)
 	{
+		if (status == STATUS_SUCCESS)
+			minishell->exit_code = 0;
 		exec_failed(cmd_node, status);
 		return ;
 	}
