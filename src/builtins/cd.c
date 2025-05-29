@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:55 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/16 16:32:20 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/29 13:12:52 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_status	minishell_cd(t_minishell *minishell, char **argv, t_env **l_env)
 		if (!dest)
 			return (STATUS_MALLOCERR);
 		if (!*dest)
-			return (minishell_free((void **)&dest), STATUS_FAILURE);
+			return (minishell_free((void **)&dest), STATUS_SUCCESS);
 		return (cd(minishell, dest, l_env));
 	}
 	return (STATUS_FAILURE);
