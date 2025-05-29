@@ -82,8 +82,10 @@ bool	validate_red(t_token *token, t_status *status, int32_t *hdoc_count)
 		{
 			if (*hdoc_count == 16)
 			{
-				minishell_stderr("minishell: maximum here-document count exceeded\n",
-					NULL, NULL);
+				minishell_stderr(
+					"minishell: maximum here-document count exceeded\n",
+					NULL,
+					NULL);
 				*status = STATUS_TOMANYHDOC;
 				return (false);
 			}
@@ -93,7 +95,8 @@ bool	validate_red(t_token *token, t_status *status, int32_t *hdoc_count)
 	return (true);
 }
 
-t_status	lexer_validate(t_token *token, t_status *status, int32_t *hdoc_count)
+t_status	lexer_validate(t_token *token, t_status *status,
+				int32_t *hdoc_count)
 {
 	bool	tflag;
 
