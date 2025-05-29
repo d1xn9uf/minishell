@@ -22,7 +22,7 @@ void	minishell_setstatus(t_minishell *minishell, int status)
 	{
 		minishell->exit_code = 128 + WTERMSIG(status);
 		if (minishell->exit_code == 130)
-			minishell_stderr2(NULL, NULL, NULL, NULL);
+			printf("\n");
 		else if (minishell->exit_code == 131)
 			minishell_stderr2("Quit", NULL, NULL, NULL);
 	}
