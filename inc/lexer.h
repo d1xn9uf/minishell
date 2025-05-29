@@ -25,7 +25,7 @@ t_status		lexer_cmd_split(t_lexer *lexer);
 t_status		lexer_lex(t_lexer *lexer);
 t_status		lex_add_token(t_lexer *lexer, char *tvalue, t_token_type ttype);
 t_token			*lex_last_token(t_token *token);
-t_status		lexer_validate(t_token *token);
+t_status		lexer_validate(t_token *token, t_status *status, int32_t *hdoc_count);
 t_token_type	lex_get_token_type(char *token_vlaue);
 uint32_t		minishell_getokensize(t_token *token);
 void			move_token(t_token **head, uint32_t stid, uint32_t dtid);

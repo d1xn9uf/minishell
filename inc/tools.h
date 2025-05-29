@@ -15,7 +15,7 @@
 
 # include "minishell.h"
 
-# define MAX_FD 1024
+# define MAX_FD 16
 # define FREAD_SIZE 1024
 # define FNAME_SIZE 20
 # define MAX_SINT64	"9223372036854775807"

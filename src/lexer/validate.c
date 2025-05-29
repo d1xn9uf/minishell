@@ -70,7 +70,7 @@ bool	validate_pipe_and_or(t_token *token)
 	return (true);
 }
 
-bool	validate_red(t_token *token)
+bool	validate_red(t_token *token, t_status *status, int32_t *hdoc_count)
 {
 	if (minishell_isred(token))
 	{
@@ -78,18 +78,29 @@ bool	validate_red(t_token *token)
 			|| (token->next_token->ttype != TTOKEN_FILE
 				&& token->next_token->ttype != TTOKEN_HEREDOC_KEYWORD))
 			return (false);
+		if (token->ttype == TTOKEN_HEREDOC)
+		{
+			if (*hdoc_count == 16)
+			{
+				minishell_stderr("minishell: maximum here-document count exceeded\n",
+					NULL, NULL);
+				*status = STATUS_TOMANYHDOC;
+				return (false);
+			}
+			(*hdoc_count)++;
+		}
 	}
 	return (true);
 }
 
-t_status	lexer_validate(t_token *token)
+t_status	lexer_validate(t_token *token, t_status *status, int32_t *hdoc_count)
 {
 	bool	tflag;
 
 	tflag = true;
 	while (token)
 	{
-		if (!validate_red(token))
+		if (!validate_red(token, status, hdoc_count))
 			return (STATUS_SYNTAXERR);
 		if (!validate_pipe_and_or(token))
 			return (STATUS_SYNTAXERR);

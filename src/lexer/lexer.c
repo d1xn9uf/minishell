@@ -52,6 +52,8 @@ t_status	minishell_lexer(t_minishell *minishell)
 {
 	t_lexer		*lexer;
 	t_status	status;
+	t_status	status2;
+	int32_t		hdoc_count;
 
 	status = lexer_init(&lexer, minishell);
 	if (status)
@@ -59,8 +61,16 @@ t_status	minishell_lexer(t_minishell *minishell)
 	status = lexer_lex(lexer);
 	if (status)
 		return (status);
-	status = lexer_validate(lexer->token);
+	hdoc_count = 0;
+	status = lexer_validate(lexer->token, &status2, &hdoc_count);
 	if (status)
+	{
+		if (status2 == STATUS_TOMANYHDOC)
+		{
+			minishell_free_token(minishell->lexer->token);
+			minishell_cleanup(minishell, 2);
+		}
 		return (status);
+	}
 	return (STATUS_SUCCESS);
 }

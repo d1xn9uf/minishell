@@ -71,7 +71,8 @@ typedef enum e_status
 	STATUS_TERMIOSAVE		= 0X000011,
 	STATUS_TERMIOSRES		= 0X000012,
 	STATUS_CMDNOTFOUND		= 0x000013,
-	STATUS_GETCWDINIT		= 0x000080
+	STATUS_GETCWDINIT		= 0x000080,
+	STATUS_TOMANYHDOC		= 0x000090
 }	t_status;
 
 /*****************************************/
