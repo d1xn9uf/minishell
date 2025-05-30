@@ -25,7 +25,7 @@ void		exec_redirect(t_minishell *minishell, t_root *node,
 				int32_t input_fd, int32_t output_fd);
 void		pipeit(t_minishell *minishell, t_root *node, int32_t input_fd);
 void		exec_cmd(t_minishell *minishell, t_root *root);
-void		exec_failed(t_root *cmd_node, int32_t status);
+void		exec_failed(t_minishell *ms, t_root *cmd_node, int32_t status);
 
 // UTILS
 bool		file_node_x_ambig(t_token *red_node, t_token **file_node);

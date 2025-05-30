@@ -12,9 +12,11 @@
 
 #include "../../inc/executor.h"
 
-void	exec_failed(t_root *cmd_node, int32_t status)
+void	exec_failed(t_minishell *ms, t_root *cmd_node, int32_t status)
 {
-	if (status == STATUS_CMDNOTFOUND)
+	if (status == STATUS_SUCCESS)
+			ms->exit_code = 0;
+	else if (status == STATUS_CMDNOTFOUND)
 	{
 		while (cmd_node && !cmd_node->tvalue[0] && cmd_node->is_interpreted)
 			cmd_node = cmd_node->right;
@@ -61,9 +63,7 @@ void	exec_cmd(t_minishell *minishell, t_root *cmd_node)
 	argv = executor_getargs(cmd_node, minishell, (t_status *)&status);
 	if (!argv)
 	{
-		if (status == STATUS_SUCCESS)
-			minishell->exit_code = 0;
-		exec_failed(cmd_node, status);
+		exec_failed(minishell, cmd_node, status);
 		return ;
 	}
 	if (minishell_isbuiltin(argv[0]))
