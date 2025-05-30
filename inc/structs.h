@@ -6,7 +6,7 @@
 /*   By: mzary <mzary@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:34:59 by mzary             #+#    #+#             */
-/*   Updated: 2025/05/26 10:12:31 by mzary            ###   ########.fr       */
+/*   Updated: 2025/05/30 13:52:57 by mzary            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ typedef enum e_status
 	STATUS_TERMIOSAVE		= 0X000011,
 	STATUS_TERMIOSRES		= 0X000012,
 	STATUS_CMDNOTFOUND		= 0x000013,
-	STATUS_GETCWDINIT		= 0x000080,
 	STATUS_TOMANYHDOC		= 0x000090
 }	t_status;
 
