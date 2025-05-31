@@ -15,7 +15,7 @@
 void	exec_failed(t_minishell *ms, t_root *cmd_node, int32_t status)
 {
 	if (status == STATUS_SUCCESS)
-			ms->exit_code = 0;
+		ms->exit_code = 0;
 	else if (status == STATUS_CMDNOTFOUND)
 	{
 		while (cmd_node && !cmd_node->tvalue[0] && cmd_node->is_interpreted)

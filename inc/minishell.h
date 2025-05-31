@@ -35,10 +35,7 @@
 # include "builtins.h"
 
 // SHELL PROMPT
-# define PROMPT "m0hc33n@d1xn9uf$ "
-
-// INIT
-t_status	minishell_init(t_minishell **minishell, char **env);
+# define PROMPT "[m0ch33n@d1xn9uf] $ "
 
 // SIGNALS
 t_status	siginit_init(int32_t signum, void (*sighandler)(int32_t));
